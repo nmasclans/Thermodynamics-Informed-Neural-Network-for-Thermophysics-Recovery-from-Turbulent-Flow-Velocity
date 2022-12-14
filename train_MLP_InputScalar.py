@@ -47,6 +47,7 @@ parser.add_argument("--targets_limits",
     default={'c_p':[1500.0,3900.0],'rho':[145.0,850.0],'T':[90.0,200.0]},
     type=dict, help="targets minimum and maximum values, used for data normalization"
 )
+parser.add_argument("--num_batches_per_print_information", default=25000, type=int, help="number of batches for when results information is printed")
 
 args = parser.parse_args()
 args.num_features = len(args.features_idx)
@@ -229,16 +230,24 @@ class MLP(models.Model):
         # --> training using Adam optimizer, validate at each epoch and visualize validation results
         for epoch in range(1,self.epochs+1):
             # train
-            loss_epoch = 0; metric_epoch = 0
             tf.print("\n-----------------------------------------------------------------------------")
+            tf.print("Training Epoch:",epoch)
+            loss_epoch = 0; metric_epoch = 0
             for nbatch, (features, targets_gt) in enumerate(dataset):
                 grads, loss_batch, metric_batch = self.train_step(features, targets_gt)
                 self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
                 loss_epoch   += loss_batch
                 metric_epoch += metric_batch
+		# Print batch results, if required
+                if nbatch % args.num_batches_per_print_information == 0:
+	            tf.print(f"	Batch: {nbatch}, Loss {loss_batch:.5f}, Metric {metric_batch:.5f}")
             loss_epoch *= 1/nbatch; metric_epoch *= 1/nbatch
             tf.print('\nTraining Epoch:',epoch,', Loss:',loss_epoch,', Metric:',metric_epoch)
             self.hist.append(loss_epoch)
+            # Print time
+            now = datetime.now().strftime("%H:%M:%S")
+            print(f"Current Time: {now}")
+
 
     def validate(self, dataset, args):
         loss_val = 0; metric_val = 0
