@@ -20,24 +20,26 @@ from tensorflow.keras import models, layers, optimizers, activations, initialize
 
 
 parser = argparse.ArgumentParser(description="PINN_RANS_channel_flow")
-parser.add_argument("--ndim", default=3, type=int, help="problem dimensions")
-parser.add_argument("--cuda_visible_device", default=0, type=int, help="cuda visible device, for Hybrid machine choose 0 or 1")
-parser.add_argument("--features_idx", default=[0,1,2,3,4], type=str, help="Selected features index")
-parser.add_argument("--targets_name", default=['rho',], type=str, help="Selected targets name")
-parser.add_argument("--training_filenames", default=['/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz',], type=str, help="List of training filenames (abspath)")
-parser.add_argument("--validation_filenames", default=['/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz',], type=str, help="List of validation filenames (abspath)")
-parser.add_argument("--spatial_dimension", default=[128,128,128], type=list, help="Spatial discretization, grid of statistics data. Equals the shape of the stored quantities in 'statistic")
-parser.add_argument("--learning_rate", default=1e-3, type=float, help="Learning rate parameter of optimizer")
-parser.add_argument("--loss", default="MSE", type=str, help="Loss function name")
-parser.add_argument("--metrics", default=["RAE",], type=str, help="Metric function name")
-parser.add_argument("--num_hidden_layers", default=3, type=int, help="Number of hidden layers of the model")
-parser.add_argument("--num_neurons_per_layer", default=8, type=int, help="Number of neurons per layer of the model")
-parser.add_argument("--activation_function", default="relu", type=str, help="Activation function (relu, tanh)")
-parser.add_argument("--initializer_type", default="uniform", type=str, help="Type of initializers (He, Glorot), which can be 'uniform' or 'normal'")
-parser.add_argument("--initializer_seed", default=13, type=int, help="Seed of the deterministic initializer")
-parser.add_argument("--num_epochs", default=20, type=int, help="Number of training epochs")
-parser.add_argument("--batch_size", default=16, type=int, help="Batch size (recomended to be multiple of 8)")
-parser.add_argument("--visualization_step", default=10, type=int, help="plot 1 scatter point every #visualization_step points") # TODO
+parser.add_argument("--ndim",                   default=3,              type=int,   help="problem dimensions")
+parser.add_argument("--cuda_visible_device",    default=0,              type=int,   help="cuda visible device, for Hybrid machine choose 0 or 1")
+parser.add_argument("--features_idx",           default=[0,1,2,3,4],    type=str,   help="Selected features index")
+parser.add_argument("--targets_name",           default=['rho',],       type=str,   help="Selected targets name")
+parser.add_argument("--training_filenames",     default=['/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz',], type=str, help="List of training filenames (abspath)")
+parser.add_argument("--validation_filenames",   default=['/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz',], type=str, help="List of validation filenames (abspath)")
+parser.add_argument("--spatial_dimension",      default=[128,128,128],  type=list,  help="Spatial discretization, grid of statistics data. Equals the shape of the stored quantities in 'statistic")
+parser.add_argument("--learning_rate",          default=1e-3,           type=float, help="Learning rate parameter of optimizer")
+parser.add_argument("--loss",                   default="MSE",          type=str,   help="Loss function name")
+parser.add_argument("--metrics",                default=["RAE",],       type=str,   help="Metric function name")
+parser.add_argument("--num_hidden_layers",      default=3,              type=int,   help="Number of hidden layers of the model")
+parser.add_argument("--num_neurons_per_layer",  default=8,              type=int,   help="Number of neurons per layer of the model")
+parser.add_argument("--activation_function",    default="relu",         type=str,   help="Activation function (relu, tanh)")
+parser.add_argument("--initializer_type",       default="uniform",      type=str,   help="Type of initializers (He, Glorot), which can be 'uniform' or 'normal'")
+parser.add_argument("--initializer_seed",       default=13,             type=int,   help="Seed of the deterministic initializer")
+parser.add_argument("--num_epochs",             default=20,             type=int,   help="Number of training epochs")
+parser.add_argument("--batch_size",             default=1,              type=int,   help="Batch size (recomended to be multiple of 8)")
+parser.add_argument("--visualization_step",     default=100,            type=int,   help="") # TODO
+parser.add_argument("--batch_printing_step",    default=128,            type=int,   help="") # TODO
+parser.add_argument("--epochs_per_validation",  default=5,              type=int,   help="validation step to be done every #epochs_per_validation epochs")
 parser.add_argument("--features_limits", 
     default={'y':[0.0,0.0002],'u':[0.0,3.5],'TKE_normalized':[0.0,0.2],'vorticity_magn_normalized':[0.0,55.0],'enstrophy_normalized':[0.0,1400.0]},
     type=dict, help="features minimum and maximum values, used for data normalization"
@@ -62,14 +64,13 @@ assert in_type in ["uniform","normal"], f"argument --initializer_type is {in_typ
 
 # Results Visualizaton
 # We plot the quantities at the center of the computational domain
-def visualize_prediction(y_gt, y_pred, epoch, args):
-    y_gt_0   = y_gt[:,0]
-    y_pred_0 = y_pred[:,0]
-    palette = sns.color_palette("muted")
+def visualize_prediction(y_gt, y_pred, epoch, nbatch, args):
     target_idx = 0
-
+    y_gt_0   = tf.reshape(y_gt[:,:,:,target_idx],  shape=-1)
+    y_pred_0 = tf.reshape(y_pred[:,:,:,target_idx],shape=-1)
+    palette = sns.color_palette("muted")
     # probability distribution
-    fig_title = f"rho_kde_epoch_{epoch}"
+    fig_title = f"rho_kde_epoch_{epoch}_batch_{nbatch}"
     plt.figure()
     sns.histplot(data=y_gt_0,color=palette[0],bins=100,label="ground-truth")
     sns.histplot(data=y_pred_0,color=palette[1],bins=100,label="prediction")
@@ -78,17 +79,16 @@ def visualize_prediction(y_gt, y_pred, epoch, args):
     plt.legend()
     plt.savefig(fig_title)
     plt.close()
-    print(f"Visualization of validation results in '{fig_title}'")
+    print(f"  Visualization of validation results in '{fig_title}'")
     # scatter plot
-    fig_title = f"rho_scatterplot_epoch_{epoch}"
+    fig_title = f"rho_scatterplot_epoch_{epoch}_batch_{nbatch}"
     plt.figure()
     plt.scatter(x=y_gt_0[::args.visualization_step],y=y_pred_0[::args.visualization_step],s=1)
     plt.xlabel('scaled rho (ground truth)')
     plt.ylabel('scaled rho (prediction)')
     plt.savefig(fig_title)
     plt.close()
-    print(f"Visualization of validation results in '{fig_title}'")
-
+    print(f"  Visualization of validation results in '{fig_title}'")
 
 # ____________________________________________________________________________
 #
@@ -96,10 +96,10 @@ def visualize_prediction(y_gt, y_pred, epoch, args):
 # ____________________________________________________________________________
 
 
-features_tr  = np.zeros(shape = args.spatial_dimension + [args.num_features,])
-features_val = np.zeros(shape = args.spatial_dimension + [args.num_features,])
-targets_tr   = np.zeros(shape = args.spatial_dimension + [args.num_targets,])
-targets_val  = np.zeros(shape = args.spatial_dimension + [args.num_targets,])
+features_tr  = np.zeros(shape = args.spatial_dimension + [args.num_features,], dtype=np.float32)
+features_val = np.zeros(shape = args.spatial_dimension + [args.num_features,], dtype=np.float32)
+targets_tr   = np.zeros(shape = args.spatial_dimension + [args.num_targets,], dtype=np.float32)
+targets_val  = np.zeros(shape = args.spatial_dimension + [args.num_targets,], dtype=np.float32)
 args.features_name = []
 assert len(args.training_filenames) == 1,   'code implemented only for 1 training file' 
 assert len(args.validation_filenames) == 1, 'code implemented only for 1 validation file' 
@@ -119,15 +119,6 @@ with np.load(args.validation_filenames[0]) as f:
     for tt in range(args.num_targets):
         targets_val[:,:,:,tt]  = f[args.targets_name[tt]]
 
-# Reshape, to get one discretized node as NN input:
-features_tr  = features_tr.reshape(-1,  args.num_features)
-features_val = features_val.reshape(-1, args.num_features)
-targets_tr   = targets_tr.reshape(-1,   args.num_targets)
-targets_val  = targets_val.reshape(-1,  args.num_targets)
-args.targets_val_shape = targets_val.shape
-print(f"\nShape training features: {features_tr.shape}")
-print(f"Shape training targets: {targets_tr.shape}")
-
 # Normalize features and targets data
 if act_fun == "relu":
     args.min_value = 0; args.max_value = 1
@@ -138,53 +129,51 @@ for feat_idx in range(args.num_features):
     feat_min  = args.features_limits[feat_name][0]
     feat_max  = args.features_limits[feat_name][1]
     assert (feat_max-feat_min) > 0
-    features_tr[:,feat_idx]  = (features_tr[:,feat_idx]-feat_min)  / (feat_max-feat_min) * (args.max_value-args.min_value) + args.min_value
-    features_val[:,feat_idx] = (features_val[:,feat_idx]-feat_min) / (feat_max-feat_min) * (args.max_value-args.min_value) + args.min_value
+    features_tr[:,:,:,feat_idx]  = (features_tr[:,:,:,feat_idx] - feat_min)  / (feat_max-feat_min) * (args.max_value-args.min_value) + args.min_value
+    features_val[:,:,:,feat_idx] = (features_val[:,:,:,feat_idx] - feat_min) / (feat_max-feat_min) * (args.max_value-args.min_value) + args.min_value
     print(f"\nMin-Max Scaler to feature '{feat_name}', from (min,max)=({feat_min:.4f},{feat_max:.4f}) to ({args.min_value}, {args.max_value})")
-    print(f"Min-Max after scaling,  training  dataset: ({features_tr[:,feat_idx].min():.4f},{features_tr[:,feat_idx].max():.4f})")
-    print(f"Min-Max after scaling, validation dataset: ({features_val[:,feat_idx].min():.4f},{features_val[:,feat_idx].max():.4f})")
+    print(f"Min-Max after scaling,  training  dataset: ({features_tr[:,:,:,feat_idx].min():.4f},{features_tr[:,:,:,feat_idx].max():.4f})")
+    print(f"Min-Max after scaling, validation dataset: ({features_val[:,:,:,feat_idx].min():.4f},{features_val[:,:,:,feat_idx].max():.4f})")
 for targ_idx in range(args.num_targets):
     targ_name = args.targets_name[targ_idx]
     targ_min  = args.targets_limits[targ_name][0]
     targ_max  = args.targets_limits[targ_name][1]
     assert (targ_max-targ_min) > 0
-    targets_tr[:,targ_idx]  = (targets_tr[:,targ_idx]-targ_min)  / (targ_max-targ_min) * (args.max_value-args.min_value) + args.min_value
-    targets_val[:,targ_idx] = (targets_val[:,targ_idx]-targ_min) / (targ_max-targ_min) * (args.max_value-args.min_value) + args.min_value
+    targets_tr[:,:,:,targ_idx]  = (targets_tr[:,:,:,targ_idx]-targ_min)  / (targ_max-targ_min) * (args.max_value-args.min_value) + args.min_value
+    targets_val[:,:,:,targ_idx] = (targets_val[:,:,:,targ_idx]-targ_min) / (targ_max-targ_min) * (args.max_value-args.min_value) + args.min_value
     print(f"\nMin-Max Scaler to target '{targ_name}', from (min,max)=({targ_min:.4f},{targ_max:.4f}) to ({args.min_value},{args.max_value})")
-    print(f"Min-Max after scaling,  training  dataset: ({targets_tr[:, targ_idx].min():.4f},{targets_tr[:, targ_idx].max():.4f})")
-    print(f"Min-Max after scaling, validation dataset: ({targets_val[:,targ_idx].min():.4f},{targets_val[:,targ_idx].max():.4f})")
+    print(f"Min-Max after scaling,  training  dataset: ({targets_tr[:,:,:,targ_idx].min():.4f}, {targets_tr[:,:,:,targ_idx].max():.4f})")
+    print(f"Min-Max after scaling, validation dataset: ({targets_val[:,:,:,targ_idx].min():.4f},{targets_val[:,:,:,targ_idx].max():.4f})")
 
 # Training and validation datasets
-features_tr_tf  = tf.convert_to_tensor(features_tr,  dtype=np.float32)
-targets_tr_tf   = tf.convert_to_tensor(targets_tr,   dtype=np.float32)
-features_val_tf = tf.convert_to_tensor(features_val, dtype=np.float32)
-targets_val_tf  = tf.convert_to_tensor(targets_val,  dtype=np.float32)
+features_tr_tf  = tf.convert_to_tensor(features_tr)
+targets_tr_tf   = tf.convert_to_tensor(targets_tr)
+features_val_tf = tf.convert_to_tensor(features_val)
+targets_val_tf  = tf.convert_to_tensor(targets_val)
 dataset_tr      = tf.data.Dataset.from_tensor_slices((features_tr_tf, targets_tr_tf))
-dataset_tr      = dataset_tr.shuffle(buffer_size=np.product(args.spatial_dimension)).batch(args.batch_size)
+dataset_tr      = dataset_tr.shuffle(buffer_size=args.spatial_dimension[0]).batch(args.batch_size)
 dataset_val     = tf.data.Dataset.from_tensor_slices((features_val_tf, targets_val_tf))
 dataset_val     = dataset_val.batch(args.batch_size)
 print(f"\nDataset Training: \n{dataset_tr}")
 print(f"\nDataset Validation: \n{dataset_val}")
 
-"""
-# Squeeze targets, if only 1 target:
-if args.num_targets == 1: 
-    # squeeze:
-    targets_tr  = targets_tr.reshape(-1)
-    targets_val = targets_val.reshape(-1)
-"""
-
 # Loss function
 class MSE(tf.keras.losses.Loss):
     def call(self, y_gt, y_pred):
+        y_gt   = tf.reshape(y_gt,  (-1,args.num_targets))
+        y_pred = tf.reshape(y_pred,(-1,args.num_targets))
         return tf.reduce_mean(tf.square(y_gt - y_pred), axis = 0)
 
 class RSE(tf.keras.losses.Loss):
     def call(self, y_gt, y_pred):
+        y_gt   = tf.reshape(y_gt,  (-1,args.num_targets))
+        y_pred = tf.reshape(y_pred,(-1,args.num_targets))
         return tf.reduce_mean(tf.square(y_gt - y_pred)/tf.square(y_gt), axis = 0)
 
 class RAE(tf.keras.losses.Loss):
     def call(self, y_gt, y_pred):
+        y_gt   = tf.reshape(y_gt,  (-1,args.num_targets))
+        y_pred = tf.reshape(y_pred,(-1,args.num_targets))
         return tf.reduce_mean(tf.math.abs((y_gt - y_pred)/y_gt), axis = 0)
 
 # Loss
@@ -246,33 +235,29 @@ class MLP(models.Model):
             for nbatch, (x_batch_tr, y_batch_tr) in enumerate(dataset_tr):
                 loss_batch, grads, metric_batch = self.train_step(x_batch_tr, y_batch_tr)
                 self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
-                loss_epoch += loss_batch
+                loss_epoch   += loss_batch
                 metric_epoch += metric_batch
-                if nbatch % 5000 == 0:
+                if nbatch % args.batch_printing_step == 0:
                     tf.print(f"  Batch: {nbatch}, Loss: {loss_batch:.5f}, Metric: {metric_batch:.5f}")
             loss_epoch *= 1/nbatch; metric_epoch *= 1/nbatch
             tf.print('\nTraining Epoch:',epoch,', Loss:',loss_epoch,', Metric:',metric_epoch)
             self.epoch += 1
             self.hist.append(loss_epoch)
             # validate
-            loss_val = 0; metric_val = 0
-            num_points = 0; num_points_batch = 0
-            y_pred = np.zeros(shape = args.targets_val_shape)
-            tf.print("\n-----------------------------------------------------------------------------")
-            tf.print("Validation Epoch")
-            for nbatch, (x_batch, y_batch) in enumerate(dataset_val):
-                y_pred_batch, loss_batch, metric_batch = self.test_step(x_batch, y_batch)
-                loss_val += loss_batch; metric_val += metric_batch
-                num_points_batch = y_batch.shape[0]
-                y_pred[num_points:num_points+num_points_batch,:] = y_pred_batch
-                num_points += num_points_batch
-                if nbatch % 5000 == 0:
-                    tf.print(f"  Batch: {nbatch}, Loss: {loss_batch:.5f}, Metric: {metric_batch:.5f}")
-            loss_val *= 1/nbatch; metric_val *= 1/nbatch
-            tf.print(f"\nValidation Loss: {loss_val:.5f}, Metric: {metric_val:.5f}")
-            # Visualize prediction result
-            visualize_prediction(y_gt, y_pred, epoch, args)
-            # Print time
+            if epoch-1 % args.epochs_per_validation:
+                loss_val = 0; metric_val = 0
+                tf.print("\n-----------------------------------------------------------------------------")
+                tf.print("Validation Epoch")
+                for nbatch, (x_batch, y_batch) in enumerate(dataset_val):
+                    y_pred_batch, loss_batch, metric_batch = self.test_step(x_batch, y_batch)
+                    loss_val         += loss_batch
+                    metric_val       += metric_batch
+                    if nbatch % args.batch_printing_step == 0:
+                        tf.print(f"  Batch: {nbatch}, Loss: {loss_batch:.5f}, Metric: {metric_batch:.5f}")
+                        visualize_prediction(y_batch, y_pred_batch, epoch, nbatch, args)
+                loss_val *= 1/nbatch; metric_val *= 1/nbatch
+                tf.print(f"\nValidation Loss: {loss_val:.5f}, Metric: {metric_val:.5f}")
+            # print time
             now = datetime.now().strftime("%H:%M:%S")
             print(f"Current Time: {now}")
 
@@ -287,13 +272,14 @@ else: # act == 'tanh':
         initializer = initializers.GlorotUniform(seed=in_seed)
     else: # in_type  == "normal":
         initializer = initializers.GlorotNormal(seed=in_seed)
-inp = layers.Input(shape = (args.num_features))
-hl = inp
-# for i in range(args.num_hidden_layers):
-hl = layers.Dense(16, activation = act_fun, kernel_initializer=initializer)(hl)
-hl = layers.Dense(16, activation = act_fun, kernel_initializer=initializer)(hl)
-hl = layers.Dense(16, activation = act_fun, kernel_initializer=initializer)(hl)
-out = layers.Dense(args.num_targets, kernel_initializer = initializer)(hl)
+
+ny = args.spatial_dimension[1]
+nx = args.spatial_dimension[2]
+inp = layers.Input(shape = (ny, nx, args.num_features))
+hl = layers.Flatten()(inp)
+hl = layers.Dense(256, activation = act_fun, kernel_initializer=initializer)(hl)
+hl = layers.Dense(ny*nx*args.num_targets, activation = act_fun, kernel_initializer=initializer)(hl)
+out = layers.Reshape((ny,nx,args.num_targets))(hl)
 
 model = models.Model(inp, out)
 print(model.summary())
@@ -311,56 +297,5 @@ mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, epochs=args.
 # targets_val_pred, loss_validation = mlp.predict(dataset_val,args=args)
 
 mlp.fit_and_validate(dataset_tr, dataset_val, targets_val, args=args)
-
-"""
-
-# Model
-afun = args.activation_function
-npl  = args.num_neurons_per_layer
-model = models.Sequential([
-  layers.Flatten(input_shape=(args.num_features, 1)),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(1, activation=afun)
-])
-optimizer = optimizers.SGD(learning_rate=args.learning_rate)
-model.compile(optimizer = optimizer, loss = 'mse')
-print(model.summary())
-
-# Training
-hist = model.fit(features_tr, targets_tr, epochs=15, validation_split=0.1)
-targets_val_pred = model.predict(targets_val)
-
-"""
 
 

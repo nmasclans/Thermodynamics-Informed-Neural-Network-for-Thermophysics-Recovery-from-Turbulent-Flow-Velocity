@@ -17,8 +17,6 @@ from matplotlib import pyplot as plt
 from tensorflow.keras import models, layers, optimizers, activations, initializers
 # from ScipyOP import optimizer as SciOP # L-BFGS-B optimizer
 
-
-
 parser = argparse.ArgumentParser(description="PINN_RANS_channel_flow")
 parser.add_argument("--ndim", default=3, type=int, help="problem dimensions")
 parser.add_argument("--cuda_visible_device", default=0, type=int, help="cuda visible device, for Hybrid machine choose 0 or 1")
@@ -38,6 +36,8 @@ parser.add_argument("--initializer_seed", default=13, type=int, help="Seed of th
 parser.add_argument("--num_epochs", default=20, type=int, help="Number of training epochs")
 parser.add_argument("--batch_size", default=16, type=int, help="Batch size (recomended to be multiple of 8)")
 parser.add_argument("--visualization_step", default=100, type=int, help="") # TODO
+parser.add_argument("--batch_printing_step", default=20000, type=int, help="") # TODO
+parser.add_argument("--epochs_per_validation", default=1, type=int, help="validation step to be done every #epochs_per_validation epochs")
 parser.add_argument("--features_limits", 
     default={'y':[0.0,0.0002],'u':[0.0,3.5],'TKE_normalized':[0.0,0.2],'vorticity_magn_normalized':[0.0,55.0],'enstrophy_normalized':[0.0,1400.0]},
     type=dict, help="features minimum and maximum values, used for data normalization"
@@ -51,8 +51,6 @@ args = parser.parse_args()
 args.num_features = len(args.features_idx)
 args.num_targets  = len(args.targets_name)
 print(f"\nArguments:\n{args}")
-
-os.environ['CUDA_VISIBLE_DEVICES']  = str(args.cuda_visible_device)
 
 act_fun = args.activation_function
 in_type = args.initializer_type 
@@ -88,16 +86,17 @@ def visualize_prediction(y_gt, y_pred, epoch, args):
     plt.savefig(fig_title)
     plt.close()
     print(f"Visualization of validation results in '{fig_title}'")
+
 # ____________________________________________________________________________
 #
 #           Import statistics data from args.statistics_filename
 # ____________________________________________________________________________
 
 
-features_tr  = np.zeros(shape = args.spatial_dimension + [args.num_features,])
-features_val = np.zeros(shape = args.spatial_dimension + [args.num_features,])
-targets_tr   = np.zeros(shape = args.spatial_dimension + [args.num_targets,])
-targets_val  = np.zeros(shape = args.spatial_dimension + [args.num_targets,])
+features_tr  = np.zeros(shape = args.spatial_dimension + [args.num_features,], dtype=np.float32)
+features_val = np.zeros(shape = args.spatial_dimension + [args.num_features,], dtype=np.float32)
+targets_tr   = np.zeros(shape = args.spatial_dimension + [args.num_targets,],  dtype=np.float32)
+targets_val  = np.zeros(shape = args.spatial_dimension + [args.num_targets,],  dtype=np.float32)
 args.features_name = []
 assert len(args.training_filenames) == 1,   'code implemented only for 1 training file' 
 assert len(args.validation_filenames) == 1, 'code implemented only for 1 validation file' 
@@ -164,13 +163,6 @@ dataset_val     = dataset_val.batch(args.batch_size)
 print(f"\nDataset Training: \n{dataset_tr}")
 print(f"\nDataset Validation: \n{dataset_val}")
 
-"""
-# Squeeze targets, if only 1 target:
-if args.num_targets == 1: 
-    # squeeze:
-    targets_tr  = targets_tr.reshape(-1)
-    targets_val = targets_val.reshape(-1)
-"""
 
 # Loss function
 class MSE(tf.keras.losses.Loss):
@@ -206,7 +198,7 @@ class MLP(models.Model):
         self.sopt = sopt # L-BFGS-B optimizer 
         self.epochs = epochs # number of epochs for training using Adam
         self.hist = []
-        self.hit_test = []
+        self.hist_test = []
         self.epoch = 0
         self.loss_func = loss_func
         self.metric_func = metric_func
@@ -223,7 +215,7 @@ class MLP(models.Model):
         grads = tape.gradient(loss, trainable_vars)
         if self.metric_func is not None:
             metric = metric_func(y_gt, y_pred)
-        return loss, grads, metric
+        return grads, loss, metric
 
     @tf.function
     def test_step(self, x, y_gt):
@@ -233,94 +225,34 @@ class MLP(models.Model):
         if self.metric_func is not None:
             metric = metric_func(y_gt, y_pred)
         return y_pred, loss, metric
-    
-    def fit(self, dataset):        
-        # --> training using Adam optimizer 
-        for epoch in range(1,self.epochs+1):
-            loss_epoch = 0
-            tf.print("\n-----------------------------------------------------------------------------")
-            tf.print('Training Epoch:', self.epoch)
-            for nbatch, (x_batch_tr, y_batch_tr) in enumerate(dataset):
-                loss_batch, grads = self.train_step(x_batch_tr, y_batch_tr)
-                loss_epoch += loss_batch
-                if nbatch % 1000 == 0:
-                    tf.print('batch:',nbatch,'loss batch:',loss_batch,summarize=-1)
-            loss_epoch *= 1/nbatch
-            tf.print('\nTraining Epoch:',epoch,'Training Loss',loss_epoch)
-            self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
-            self.epoch += 1
-            self.hist.append(loss_epoch)   
-        # --> training using L-BFGS-B optimizer
-        # objective function for Scipy (L-BFGS-B) optimizer
-        # # def func(params_1d):
-        # #     self.sopt.assign_params(params_1d)
-        # #     tf.print('epoch:', self.epoch)
-        # #     loss, grads = self.train_step(x, y_gt)
-        # #     grads = tf.dynamic_stitch(self.sopt.idx, grads)
-        # #     self.epoch += 1
-        # #     self.hist.append(loss)
-        # #     return loss.numpy().astype(np.float64), grads.numpy().astype(np.float64)
-        # # self.sopt.minimize(func)
-        return self.hist
-    
-    def predict(self, dataset, args):
-        loss = 0
-        num_points = 0
-        num_points_batch = 0
-        y_pred = np.zeros(shape = args.targets_val_shape)
-        tf.print("\n-----------------------------------------------------------------------------")
-        tf.print("Validation Epoch")
-        for nbatch, (x_batch, y_batch) in enumerate(dataset):
-            y_pred_batch, loss_batch = self.test_step(x_batch, y_batch)
-            loss += loss_batch
-            num_points_batch = y_batch.shape[0]
-            y_pred[num_points:num_points+num_points_batch,:] = y_pred_batch
-            num_points += num_points_batch
-            # if nbatch % 1000 == 0:
-            tf.print('batch:', nbatch, 'loss batch:', loss_batch, summarize=-1)
-        loss *= 1/nbatch
-        tf.print("\nValidation Loss:",loss)
-        return y_pred, loss
 
-    def fit_and_validate(self, dataset_tr, dataset_val, y_gt, args):
+    def fit(self, dataset, args):
         # --> training using Adam optimizer, validate at each epoch and visualize validation results
         for epoch in range(1,self.epochs+1):
             # train
             loss_epoch = 0; metric_epoch = 0
             tf.print("\n-----------------------------------------------------------------------------")
-            tf.print('Training Epoch:', self.epoch)
-            for nbatch, (x_batch_tr, y_batch_tr) in enumerate(dataset_tr):
-                loss_batch, grads, metric_batch = self.train_step(x_batch_tr, y_batch_tr)
+            for nbatch, (features, targets_gt) in enumerate(dataset):
+                grads, loss_batch, metric_batch = self.train_step(features, targets_gt)
                 self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
-                loss_epoch += loss_batch
+                loss_epoch   += loss_batch
                 metric_epoch += metric_batch
-                if nbatch % 5000 == 0:
-                    tf.print(f"  Batch: {nbatch}, Loss: {loss_batch:.5f}, Metric: {metric_batch:.5f}")
             loss_epoch *= 1/nbatch; metric_epoch *= 1/nbatch
             tf.print('\nTraining Epoch:',epoch,', Loss:',loss_epoch,', Metric:',metric_epoch)
-            self.epoch += 1
             self.hist.append(loss_epoch)
-            # validate
-            loss_val = 0; metric_val = 0
-            num_points = 0
-            num_points_batch = 0
-            y_pred = np.zeros(shape = args.targets_val_shape)
-            tf.print("\n-----------------------------------------------------------------------------")
-            tf.print("Validation Epoch")
-            for nbatch, (x_batch, y_batch) in enumerate(dataset_val):
-                y_pred_batch, loss_batch, metric_batch = self.test_step(x_batch, y_batch)
-                loss_val += loss_batch; metric_val += metric_batch
-                num_points_batch = y_batch.shape[0]
-                y_pred[num_points:num_points+num_points_batch,:] = y_pred_batch
-                num_points += num_points_batch
-                if nbatch % 5000 == 0:
-                    tf.print(f"  Batch: {nbatch}, Loss: {loss_batch:.5f}, Metric: {metric_batch:.5f}")
-            loss_val *= 1/nbatch; metric_val *= 1/nbatch
-            tf.print(f"\nValidation Loss: {loss_val:.5f}, Metric: {metric_val:.5f}")
-            visualize_prediction(y_gt, y_pred, epoch, args)
-            # print time
-            now = datetime.now().strftime("%H:%M:%S")
-            print(f"Current Time: {now}")
+
+    def validate(self, dataset, args)
+        loss_val = 0; metric_val = 0
+        tf.print("\n-----------------------------------------------------------------------------")
+        tf.print("Validation Epoch")
+        for nbatch, (features, targets_gt) in enumerate(dataset):
+            _, loss_batch, metric_batch = self.test_step(features, targets_gt)
+            loss_val += loss_batch; metric_val += metric_batch
+        loss_val *= 1/nbatch; metric_val *= 1/nbatch
+        tf.print(f"\nValidation Loss: {loss_val:.5f}, Metric: {metric_val:.5f}")
+        # print time
+        now = datetime.now().strftime("%H:%M:%S")
+        print(f"Current Time: {now}")
 
 
 if act_fun == "relu":
@@ -333,12 +265,11 @@ else: # act == 'tanh':
         initializer = initializers.GlorotUniform(seed=in_seed)
     else: # in_type  == "normal":
         initializer = initializers.GlorotNormal(seed=in_seed)
+
 inp = layers.Input(shape = (args.num_features))
 hl = inp
-# for i in range(args.num_hidden_layers):
-hl = layers.Dense(16, activation = act_fun, kernel_initializer=initializer)(hl)
-hl = layers.Dense(16, activation = act_fun, kernel_initializer=initializer)(hl)
-hl = layers.Dense(16, activation = act_fun, kernel_initializer=initializer)(hl)
+for i in range(args.num_hidden_layers):
+    hl = layers.Dense(args.num_neurons_per_layer, activation = act_fun, kernel_initializer=initializer)(hl)
 out = layers.Dense(args.num_targets, kernel_initializer = initializer)(hl)
 
 model = models.Model(inp, out)
@@ -351,62 +282,4 @@ opt = optimizers.Adam(lr)
 
 # TRAINING
 mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, epochs=args.num_epochs) 
-# hist = mlp.fit(dataset_tr)
-
-# VALIDATION
-# targets_val_pred, loss_validation = mlp.predict(dataset_val,args=args)
-
-mlp.fit_and_validate(dataset_tr, dataset_val, targets_val, args=args)
-
-"""
-
-# Model
-afun = args.activation_function
-npl  = args.num_neurons_per_layer
-model = models.Sequential([
-  layers.Flatten(input_shape=(args.num_features, 1)),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(npl, activation=afun),
-  layers.Dense(1, activation=afun)
-])
-optimizer = optimizers.SGD(learning_rate=args.learning_rate)
-model.compile(optimizer = optimizer, loss = 'mse')
-print(model.summary())
-
-# Training
-hist = model.fit(features_tr, targets_tr, epochs=15, validation_split=0.1)
-targets_val_pred = model.predict(targets_val)
-
-"""
-
-
+hist = mlp.fit(dataset_tr)
