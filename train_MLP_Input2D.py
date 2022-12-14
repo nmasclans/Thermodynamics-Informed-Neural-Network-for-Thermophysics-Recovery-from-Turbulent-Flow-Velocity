@@ -52,7 +52,7 @@ parser.add_argument("--targets_limits",
     default={'c_p':[1500.0,3900.0],'rho':[145.0,850.0],'T':[90.0,200.0]},
     type=dict, help="targets minimum and maximum values, used for data normalization"
 )
-parser.add_argument("--num_batches_per_print_information", default=25000, type=int, help="number of batches for when results information is printed")
+parser.add_argument("--num_batches_per_print_information", default=25, type=int, help="number of batches for when results information is printed")
 
 args = parser.parse_args()
 args.num_features = len(args.features_idx)
@@ -104,8 +104,6 @@ features_val = np.zeros(shape = args.spatial_dimension + [args.num_features,], d
 targets_tr   = np.zeros(shape = args.spatial_dimension + [args.num_targets,], dtype=np.float32)
 targets_val  = np.zeros(shape = args.spatial_dimension + [args.num_targets,], dtype=np.float32)
 args.features_name = []
-assert len(args.training_filenames) == 1,   'code implemented only for 1 training file' 
-assert len(args.validation_filenames) == 1, 'code implemented only for 1 validation file' 
 with np.load(args.training_filename) as f:
     features_data  = f['x']
     all_features_name = f['features_names']
