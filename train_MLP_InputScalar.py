@@ -4,6 +4,9 @@ activate conda environment: 'tf-gpu'
 execute by: XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/lib/cuda python3 <python_script_name>
 '''
 
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 import argparse
 import os
 import sys
@@ -16,6 +19,7 @@ from datetime import datetime
 from matplotlib import pyplot as plt
 from tensorflow.keras import models, layers, optimizers, activations, initializers
 # from ScipyOP import optimizer as SciOP # L-BFGS-B optimizer
+
 
 parser = argparse.ArgumentParser(description="PINN_RANS_channel_flow")
 parser.add_argument("--ndim", default=3, type=int, help="problem dimensions")
@@ -35,9 +39,6 @@ parser.add_argument("--initializer_type", default="uniform", type=str, help="Typ
 parser.add_argument("--initializer_seed", default=13, type=int, help="Seed of the deterministic initializer")
 parser.add_argument("--num_epochs", default=20, type=int, help="Number of training epochs")
 parser.add_argument("--batch_size", default=16, type=int, help="Batch size (recomended to be multiple of 8)")
-parser.add_argument("--visualization_step", default=100, type=int, help="") # TODO
-parser.add_argument("--batch_printing_step", default=20000, type=int, help="") # TODO
-parser.add_argument("--epochs_per_validation", default=1, type=int, help="validation step to be done every #epochs_per_validation epochs")
 parser.add_argument("--features_limits", 
     default={'y':[0.0,0.0002],'u':[0.0,3.5],'TKE_normalized':[0.0,0.2],'vorticity_magn_normalized':[0.0,55.0],'enstrophy_normalized':[0.0,1400.0]},
     type=dict, help="features minimum and maximum values, used for data normalization"
@@ -241,7 +242,7 @@ class MLP(models.Model):
             tf.print('\nTraining Epoch:',epoch,', Loss:',loss_epoch,', Metric:',metric_epoch)
             self.hist.append(loss_epoch)
 
-    def validate(self, dataset, args)
+    def validate(self, dataset, args):
         loss_val = 0; metric_val = 0
         tf.print("\n-----------------------------------------------------------------------------")
         tf.print("Validation Epoch")
@@ -282,4 +283,4 @@ opt = optimizers.Adam(lr)
 
 # TRAINING
 mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, epochs=args.num_epochs) 
-hist = mlp.fit(dataset_tr)
+mlp.fit(dataset_tr, args)
