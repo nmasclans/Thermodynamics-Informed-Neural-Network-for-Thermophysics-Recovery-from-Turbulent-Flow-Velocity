@@ -1,6 +1,6 @@
 #!/bin/bash
 
-##SBATCH -N 1 
+#SBATCH -N 1 
 #SBATCH -c 80
 #SBATCH --gres=gpu:2
 #SBATCH --time=48:00:00
@@ -13,8 +13,8 @@ module load python/3.7.4_ML
 module load tensorflow/2.5.0
 
 
-for HIDDEN_LAYERS in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
-    for NEURONS_PER_HIDDEN_LAYER in 8 16 32 64; do
+for HIDDEN_LAYERS in 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
+    for NEURONS_PER_HIDDEN_LAYER in 8 16 32 64 128; do
         
         echo ""
         echo "----------------------------------------------------------------------------------"
@@ -26,8 +26,8 @@ for HIDDEN_LAYERS in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
         python3 train_MLP_InputScalar.py \
 		--num_hidden_layers $HIDDEN_LAYERS \
 		--num_neurons_per_layer $NEURONS_PER_HIDDEN_LAYER \
-	       	--num_epochs 20 \ 
-                --batch_size 128 \
+	       	--num_epochs 30 \
+		--batch_size 128 \
 		--training_filename "/gpfs/scratch/bsc44/bsc44529/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz" \
 		--validation_filename "/gpfs/scratch/bsc44/bsc44529/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz"
 
