@@ -27,7 +27,7 @@ for HIDDEN_LAYERS in 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
 		--num_hidden_layers $HIDDEN_LAYERS \
 		--num_neurons_per_layer $NEURONS_PER_HIDDEN_LAYER \
 	       	--num_epochs 30 \
-		--batch_size 128 \
+		--batch_size 64 \
 		--training_filename "/gpfs/scratch/bsc44/bsc44529/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz" \
 		--validation_filename "/gpfs/scratch/bsc44/bsc44529/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz"
 
