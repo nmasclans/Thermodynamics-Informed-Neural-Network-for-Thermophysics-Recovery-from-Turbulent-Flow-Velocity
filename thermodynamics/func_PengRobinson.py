@@ -1,6 +1,6 @@
 import numpy as np
 
-from functions.func_SubstanceLibrary import SubstanceLibrary
+from thermodynamics.func_SubstanceLibrary import SubstanceLibrary
 
 Ru = 8.314    # R universal
 

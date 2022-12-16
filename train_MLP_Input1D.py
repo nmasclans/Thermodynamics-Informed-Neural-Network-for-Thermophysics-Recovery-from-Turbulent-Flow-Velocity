@@ -6,7 +6,7 @@ execute by: XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/lib/cuda python3 <python_scri
 
 """
 NN input is a data-column of fixed x,z for all y, shape [128,num_features]
-Features used: idx 1,2,3,4: 'u', 'TKE_normalized', 'vorticity_magn_normalized', 'enstrophy_normalized'
+Features used: idx 1,2: 'u', 'TKE_normalized'
 Features not used: idx 0: 'y' ->> not used because it is 'included' from the data distribution of input data as y-parallel axis, shape [128,]
 
 """
@@ -30,7 +30,7 @@ from tensorflow.keras import models, layers, optimizers, activations, initialize
 
 parser = argparse.ArgumentParser(description="PINN_RANS_channel_flow")
 parser.add_argument("--ndim", default=3, type=int, help="problem dimensions")
-parser.add_argument("--features_idx", default=[1,2,3,4], type=str, help="Selected features index")
+parser.add_argument("--features_idx", default=[1,2], type=str, help="Selected features index")
 parser.add_argument("--targets_name", default=['rho',], type=str, help="Selected targets name")
 parser.add_argument("--training_filename", default='/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz', type=str, help="List of training filenames (abspath)")
 parser.add_argument("--validation_filename", default='/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz', type=str, help="List of validation filenames (abspath)")

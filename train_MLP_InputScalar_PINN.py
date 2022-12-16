@@ -3,12 +3,9 @@ Execution details (Hybrid Jofre cluster)
 activate conda environment: 'tf-gpu'
 execute by: XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/lib/cuda python3 <python_script_name>
 '''
-
 """
-NN input is a data-column of fixed x,z for all y, shape [128,num_features]
-Features used: idx 1,2,3,4: 'u', 'TKE_normalized', 'vorticity_magn_normalized', 'enstrophy_normalized'
-Features not used: idx 0: 'y' ->> not used because it is 'included' from the data distribution of input data as y-parallel axis, shape [128,]
-
+NN input is a scalar in spatial dimension, num_features per single point (x,y,z), shape [,num_features]
+Features used: idx 1,2: 'u', 'TKE_normalized'
 """
 
 import os
@@ -25,14 +22,14 @@ from datetime import datetime
 
 from matplotlib import pyplot as plt
 from tensorflow.keras import models, layers, optimizers, activations, initializers
+# from ScipyOP import optimizer as SciOP # L-BFGS-B optimizer
 
 from thermodynamics.func_GasEquation import GasEquationRelativeError
-# from ScipyOP import optimizer as SciOP # L-BFGS-B optimizer
 
 
 parser = argparse.ArgumentParser(description="PINN_RANS_channel_flow")
 parser.add_argument("--ndim", default=3, type=int, help="problem dimensions")
-parser.add_argument("--features_idx", default=[1,2,3,4], type=str, help="Selected features index")
+parser.add_argument("--features_idx", default=[1,2], type=str, help="Selected features index")
 parser.add_argument("--targets_name", default=['c_p','rho','T'], type=str, help="Selected targets name")
 parser.add_argument("--training_filename", default='/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz', type=str, help="List of training filenames (abspath)")
 parser.add_argument("--validation_filename", default='/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz', type=str, help="List of validation filenames (abspath)")
@@ -46,7 +43,7 @@ parser.add_argument("--activation_function", default="relu", type=str, help="Act
 parser.add_argument("--initializer_type", default="uniform", type=str, help="Type of initializers (He, Glorot), which can be 'uniform' or 'normal'")
 parser.add_argument("--initializer_seed", default=13, type=int, help="Seed of the deterministic initializer")
 parser.add_argument("--num_epochs", default=20, type=int, help="Number of training epochs")
-parser.add_argument("--batch_size", default=16, type=int, help="Batch size (recomended to be multiple of 8)")
+parser.add_argument("--batch_size", default=4, type=int, help="Batch size (recomended to be multiple of 8)")
 parser.add_argument("--features_limits", 
     default={'y':[0.0,0.0002],'u':[0.0,3.5],'TKE_normalized':[0.0,0.2],'vorticity_magn_normalized':[0.0,55.0],'enstrophy_normalized':[0.0,1400.0]},
     type=dict, help="features minimum and maximum values, used for data normalization"
@@ -56,7 +53,6 @@ parser.add_argument("--targets_limits",
     type=dict, help="targets minimum and maximum values, used for data normalization"
 )
 parser.add_argument("--num_batches_per_print_information", default=25000, type=int, help="number of batches for when results information is printed")
-parser.add_argument("--bSolver", default="Real", type=str, help="'bSolver' param of thermodynamics function, relative to gas equation; admissible values: 'Real', 'Ideal'")
 parser.add_argument("--Substance", default="N2", type=str, help="'Substance' param of thermodynamics function, relative to gas type; admissible values: 'N2'")
 parser.add_argument("--P_constant", default=6791600.0, type=float, help="Pressure value [Pa], constant along all domain (2*Pc of N2)")
 
@@ -73,6 +69,7 @@ in_type = args.initializer_type
 in_seed = args.initializer_seed
 assert act_fun in ["relu","tanh"],      f"argument --activation_function is {act_fun}, accepted values: 'relu', 'tanh'"
 assert in_type in ["uniform","normal"], f"argument --initializer_type is {in_type}, accepted values: 'uniform', 'random'"
+print(f"\nActivation function: {act_fun} \nInitializer type: {in_type}")
 
 # Results Visualizaton
 # We plot the quantities at the center of the computational domain
@@ -130,18 +127,12 @@ with np.load(args.validation_filename) as f:
     for tt in range(args.num_targets):
         targets_val[:,:,:,tt]  = f[args.targets_name[tt]]
 
-# Reshape data so that: shape [(x,z) point, y, num_features/num_targets] = [128*128, 128, num_features/num_targets]
-# 1. swap y-x axis, st data is organized from [z, y, x, features/targets] to [z, x, y, features/targets]
 # Reshape, to get one discretized node as NN input:
-features_tr  = np.einsum('ijkw->ikjw', features_tr)
-features_val = np.einsum('ijkw->ikjw', features_val)
-targets_tr   = np.einsum('ijkw->ikjw', targets_tr)
-targets_val  = np.einsum('ijkw->ikjw', targets_val)
-# 2. join dimensions corresponding to z,x (1st and 2nd dimension after axis swap):
-features_tr  = features_tr.reshape( [args.spatial_dimension[0]*args.spatial_dimension[2],args.spatial_dimension[1],args.num_features]) 
-features_val = features_val.reshape([args.spatial_dimension[0]*args.spatial_dimension[2],args.spatial_dimension[1],args.num_features]) 
-targets_tr   = targets_tr.reshape(  [args.spatial_dimension[0]*args.spatial_dimension[2],args.spatial_dimension[1],args.num_targets]) 
-targets_val  = targets_val.reshape( [args.spatial_dimension[0]*args.spatial_dimension[2],args.spatial_dimension[1],args.num_targets]) 
+features_tr  = features_tr.reshape(-1,  args.num_features)
+features_val = features_val.reshape(-1, args.num_features)
+targets_tr   = targets_tr.reshape(-1,   args.num_targets)
+targets_val  = targets_val.reshape(-1,  args.num_targets)
+args.targets_val_shape = targets_val.shape
 print(f"\nShape training features: {features_tr.shape}")
 print(f"Shape training targets: {targets_tr.shape}")
 
@@ -155,21 +146,21 @@ for feat_idx in range(args.num_features):
     feat_min  = args.features_limits[feat_name][0]
     feat_max  = args.features_limits[feat_name][1]
     assert (feat_max-feat_min) > 0
-    features_tr[:,:,feat_idx]  = (features_tr[:,:,feat_idx]-feat_min)  / (feat_max-feat_min) * (args.max_value-args.min_value) + args.min_value
-    features_val[:,:,feat_idx] = (features_val[:,:,feat_idx]-feat_min) / (feat_max-feat_min) * (args.max_value-args.min_value) + args.min_value
+    features_tr[:,feat_idx]  = (features_tr[:,feat_idx]-feat_min)  / (feat_max-feat_min) * (args.max_value-args.min_value) + args.min_value
+    features_val[:,feat_idx] = (features_val[:,feat_idx]-feat_min) / (feat_max-feat_min) * (args.max_value-args.min_value) + args.min_value
     print(f"\nMin-Max Scaler to feature '{feat_name}', from (min,max)=({feat_min:.4f},{feat_max:.4f}) to ({args.min_value}, {args.max_value})")
-    print(f"Min-Max after scaling,  training  dataset: ({features_tr[:,:,feat_idx].min():.4f}, {features_tr[:,:,feat_idx].max():.4f})")
-    print(f"Min-Max after scaling, validation dataset: ({features_val[:,:,feat_idx].min():.4f},{features_val[:,:,feat_idx].max():.4f})")
+    print(f"Min-Max after scaling,  training  dataset: ({features_tr[:,feat_idx].min():.4f},{features_tr[:,feat_idx].max():.4f})")
+    print(f"Min-Max after scaling, validation dataset: ({features_val[:,feat_idx].min():.4f},{features_val[:,feat_idx].max():.4f})")
 for targ_idx in range(args.num_targets):
     targ_name = args.targets_name[targ_idx]
     targ_min  = args.targets_limits[targ_name][0]
     targ_max  = args.targets_limits[targ_name][1]
     assert (targ_max-targ_min) > 0
-    targets_tr[:,:,targ_idx]  = (targets_tr[:,:,targ_idx]-targ_min)  / (targ_max-targ_min) * (args.max_value-args.min_value) + args.min_value
-    targets_val[:,:,targ_idx] = (targets_val[:,:,targ_idx]-targ_min) / (targ_max-targ_min) * (args.max_value-args.min_value) + args.min_value
+    targets_tr[:,targ_idx]  = (targets_tr[:,targ_idx]-targ_min)  / (targ_max-targ_min) * (args.max_value-args.min_value) + args.min_value
+    targets_val[:,targ_idx] = (targets_val[:,targ_idx]-targ_min) / (targ_max-targ_min) * (args.max_value-args.min_value) + args.min_value
     print(f"\nMin-Max Scaler to target '{targ_name}', from (min,max)=({targ_min:.4f},{targ_max:.4f}) to ({args.min_value},{args.max_value})")
-    print(f"Min-Max after scaling,  training  dataset: ({targets_tr[:,:,targ_idx].min():.4f}, {targets_tr[:,:,targ_idx].max():.4f})")
-    print(f"Min-Max after scaling, validation dataset: ({targets_val[:,:,targ_idx].min():.4f},{targets_val[:,:,targ_idx].max():.4f})")
+    print(f"Min-Max after scaling,  training  dataset: ({targets_tr[:, targ_idx].min():.4f},{targets_tr[:, targ_idx].max():.4f})")
+    print(f"Min-Max after scaling, validation dataset: ({targets_val[:,targ_idx].min():.4f},{targets_val[:,targ_idx].max():.4f})")
 
 # Training and validation datasets
 features_tr_tf  = tf.convert_to_tensor(features_tr,  dtype=np.float32)
@@ -187,30 +178,86 @@ print(f"\nDataset Validation: \n{dataset_val}")
 # Loss function
 class MSE(tf.keras.losses.Loss):
     def call(self, y_gt, y_pred):
-        y_gt   = tf.reshape(y_gt,  (-1,args.num_targets))
-        y_pred = tf.reshape(y_pred,(-1,args.num_targets))
         return tf.reduce_mean(tf.square(y_gt - y_pred), axis = 0)
 
 class RSE(tf.keras.losses.Loss):
     def call(self, y_gt, y_pred):
-        y_gt   = tf.reshape(y_gt,  (-1,args.num_targets))
-        y_pred = tf.reshape(y_pred,(-1,args.num_targets))
         return tf.reduce_mean(tf.square(y_gt - y_pred)/tf.square(y_gt), axis = 0)
 
 class RAE(tf.keras.losses.Loss):
     def call(self, y_gt, y_pred):
-        y_gt   = tf.reshape(y_gt,  (-1,args.num_targets))
-        y_pred = tf.reshape(y_pred,(-1,args.num_targets))
         return tf.reduce_mean(tf.math.abs((y_gt - y_pred)/y_gt), axis = 0)
 
 class RelError_RealGasEq(tf.keras.losses.Loss):
     def __init__(self, args):
-        self.args = args
-    def call(self, y_pred):
-        y_pred   = tf.reshape(y_pred, (-1,args.num_targets)).numpy()
-        rel_err = GasEquationRelativeError(T = y_pred[:,2], P = args.P_constant*np.ones(y_pred.shape[0]), 
-            rho = y_pred[:,1], bSolver = self.args.bSolver, Substance = args.Substance)
-        return rel_err.mean()
+        super().__init__()
+        self.rho_min   = args.targets_limits['rho'][0]
+        self.rho_max   = args.targets_limits['rho'][1] 
+        self.T_min     = args.targets_limits['T'][0]
+        self.T_max     = args.targets_limits['T'][1] 
+        self.min_value = args.min_value
+        self.max_value = args.max_value
+        if args.Substance == 'N2':
+            self.args  = args
+            # ----------------- N2 -
+            self.Ru    = 8.314            # R universal
+            self.MW    = 2.80134e-2       # Molecular weight kg/mol
+            self.R     = self.Ru/self.MW  # R specific
+            self.Tc    = 126.19           # Critical temperature [k]
+            self.pc    = 3.3958e+6;       # Critical pressure [Pa]
+            self.omega = 0.03720          # Acentric factor
+            self.NASA_coefficients =  [ 2.952576370000000000000, 0.001396900400000000000, -0.000000492631603000000, 0.000000000078601019000,
+                                       -0.000000000000004607552, -923.9486880000000000000, 5.871887620000000000000, 3.531005280000000000000,
+                                       -0.000123660980000000000, -0.000000502999433000000, 0.000000002435306120000, -0.000000000001408812400,
+                                       -1046.976280000000000000, 2.967470380000000000000, 0.000000000000000000000]
+            if self.omega > 0.49:         # Accentric factor
+                self.c = 0.379642 + 1.48503*self.omega - 0.164423*(self.omega**2) + 0.016666*(self.omega**3)
+            else:
+                self.c = 0.37464 + 1.54226*self.omega - 0.26992*(self.omega**2)
+            self.b = 0.077796*self.R*self.Tc/self.pc
+            self.P_constant = args.P_constant
+        else:
+            sys.exit("Not implemented Substance. Set Substance to 'N2'")
+
+    def call(self, y_gt, y_pred):
+        rho_scaled = y_pred[:,1]
+        T_scaled   = y_pred[:,2]    
+        rho = (rho_scaled - self.min_value) * (self.rho_max - self.rho_min) / (self.max_value - self.min_value) - self.rho_min
+        T   = (T_scaled   - self.min_value) * (self.T_max   - self.T_min)   / (self.max_value - self.min_value) - self.T_min
+        v   = 1/rho
+        tf.print('rho_scaled',rho_scaled)
+        tf.print('T_scaled',T_scaled)
+        tf.print('rho',rho)
+        tf.print('T',T)
+        tf.print('v',v)
+        tf.print('min_value:',self.min_value,', max_value:',self.max_value,', rho_min:',self.rho_min, ', rho_max:',self.rho_max)
+        
+        # ----------------------- Peng Robinson -----------------------
+        a   = (0.457236*(self.R*self.Tc)**2/self.pc) * tf.pow(1+self.c*(1-tf.math.sqrt(T/self.Tc)), 2)
+        a1  = (0.457236*(self.R*self.Tc)**2/self.pc)
+        a2  = tf.pow(1+self.c*(1-tf.math.sqrt(T/self.Tc)), 2)
+        a3  = tf.math.sqrt(T/self.Tc)
+        a4  = T/self.Tc
+        a5  = self.Tc
+        tf.print('a',a)
+        tf.print('a1',a1)
+        tf.print('a2',a2)
+        tf.print('a3',a3)
+        tf.print('a4',a4)
+        tf.print('a5',a5)
+        # G      = c*tf.math.sqrt(T/self.Tc) / (1+self.c*(1-tf.math.sqrt(T/self.Tc)))
+        # dadT   = -(1/T)*a*G
+        # d2adT2 = 0.457236*self.R**2 / T / 2 * self.c * (1+self.c) * self.Tc / self.pc * tf.math.sqrt(self.Tc/T)
+
+        # Equation of Real Gas:
+        P = self.R * T / (v - self.b) - a / (tf.math.pow(v,2) + 2*self.b*v - self.b**2)
+        tf.print('P',P)
+        
+        # relative error on the Equation of Real Gas
+        rel_err = tf.reduce_mean(tf.math.abs((P-self.P_constant)/self.P_constant))
+        tf.print('rel_err:',rel_err)
+
+        return rel_err
 
 # Loss
 if args.loss == "MSE":
@@ -222,8 +269,9 @@ else:
 metric_func = []
 if "RAE" in args.metrics:
     metric_func.append(RAE())
-if "RE_RealGasEq":
+if "RE_RealGasEq" in args.metrics:
     metric_func.append(RelError_RealGasEq(args))
+args.num_metrics = len(metric_func)
 
 
 # Model: Multi-Layer Perceptron
@@ -252,16 +300,16 @@ class MLP(models.Model):
         trainable_vars = self.trainable_variables
         grads = tape.gradient(loss, trainable_vars)
         for f in self.metric_func:
-            metric = f(y_gt, y_pred)
+            metric.append(f(y_gt, y_pred))
         return grads, loss, metric
 
     @tf.function
     def test_step(self, x, y_gt):
-        metric = None
+        metric = []
         y_pred = self.model(x)
         loss   = self.loss_func(y_gt, y_pred)
         for f in self.metric_func:
-            metric = f(y_gt, y_pred)
+            metric.append(f(y_gt, y_pred))
         return y_pred, loss, metric
 
     def fit(self, dataset, args):
@@ -270,17 +318,23 @@ class MLP(models.Model):
             # train
             tf.print("\n-----------------------------------------------------------------------------")
             tf.print("Training Epoch:",epoch)
-            loss_epoch = 0; metric_epoch = 0
+            loss_epoch = 0.0; metric_epoch = tf.zeros(args.num_metrics)
             for nbatch, (features, targets_gt) in enumerate(dataset):
                 grads, loss_batch, metric_batch = self.train_step(features, targets_gt)
                 self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
                 loss_epoch   += loss_batch
+                tf.print("metric_epoch:",metric_epoch,", metric_batch:", metric_batch)
                 metric_epoch += metric_batch
                 # Print batch results, if required
                 if nbatch % args.num_batches_per_print_information == 0:
-                    tf.print(f"    Batch: {nbatch}, Loss {loss_batch:.5f}, Metric {metric_batch:.5f}")
+                    tf.print(metric_batch)
+                    tf.print(f"    Batch: {nbatch}, Loss '{args.loss}': {loss_batch:.5f}, Metric {args.metrics}: {metric_batch}")
+                if nbatch == 5:
+                    sys.exit()
             loss_epoch *= 1/nbatch; metric_epoch *= 1/nbatch
-            tf.print('\nTraining Epoch:',epoch,', Loss:',loss_epoch,', Metric:',metric_epoch)
+            tf.print('\nTraining Epoch:',epoch)
+            tf.print(f"Loss '{args.loss}':",loss_epoch)
+            tf.print(f"Metric {args.metrics}:", metric_epoch)
             self.hist.append(loss_epoch)
             # Print time
             now = datetime.now().strftime("%H:%M:%S")
@@ -288,7 +342,7 @@ class MLP(models.Model):
 
 
     def validate(self, dataset, args):
-        loss_val = 0; metric_val = 0
+        loss_val = 0; metric_val = np.zeros(args.num_metrics)
         tf.print("\n-----------------------------------------------------------------------------")
         tf.print("Validation Epoch")
         for nbatch, (features, targets_gt) in enumerate(dataset):
@@ -312,13 +366,11 @@ else: # act == 'tanh':
     else: # in_type  == "normal":
         initializer = initializers.GlorotNormal(seed=in_seed)
 
-ny  = args.spatial_dimension[1]
-inp = layers.Input(shape = (ny,args.num_features))
-hl = layers.Flatten()(inp)
+inp = layers.Input(shape = (args.num_features))
+hl = inp
 for i in range(args.num_hidden_layers):
     hl = layers.Dense(args.num_neurons_per_layer, activation = act_fun, kernel_initializer=initializer)(hl)
-hl = layers.Dense(ny*args.num_targets, activation = act_fun, kernel_initializer=initializer)(hl)
-out = layers.Reshape(shape = (ny,args.num_targets))(hl)
+out = layers.Dense(args.num_targets, activation = act_fun, kernel_initializer = initializer)(hl)
 
 model = models.Model(inp, out)
 print(model.summary())
