@@ -1,0 +1,128 @@
+'''
+Execution details (Hybrid Jofre cluster)
+activate conda environment: 'tf-gpu'
+execute by: XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/lib/cuda python3 <python_script_name>
+'''
+"""
+PINNS: loss comes from a combination of:
+    (1) (Unsup. loss) Equation of State of Real Gas, 
+    (2) (Unsup. loss) Equation of Cp of Real Gas, 
+    (3) Supervised loss RAE.
+NN input is a SCALAR in spatial dimension, num_features per single point (x,y,z), shape [,num_features]
+Features used: idx 1,2: 'u', 'TKE_normalized'
+"""
+
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+import argparse
+import os
+import sys
+
+import tensorflow as tf
+
+from tensorflow.keras import models, layers, optimizers, activations, initializers, regularizers
+# from ScipyOP import optimizer as SciOP # L-BFGS-B optimizer
+
+from my_dataset_builder import get_datasets
+from my_losses import *
+from my_models import MLP
+from my_parser import get_arguments
+
+# Get arguments
+args = get_arguments()
+
+# ----- Datasets ----
+
+dataset_tr, dataset_val, args = get_datasets(args)
+
+# ----- Loss -----
+
+if args.loss == "MSE":
+    loss_func = MSE(args)
+elif args.loss == "RSE":
+    loss_func = RSE(args)
+elif args.loss == "Supervised_PINNS":
+    loss_func = Supervised_PINNS(args)
+else:
+    sys.exit(f"ValueError: Incorrect argument --loss = '{args.loss}'")
+
+# ----- Metrics -----
+
+metric_func = []
+for m in args.metrics:
+    if m == "MSE":
+        metric_func.append(MSE(args))
+    elif m == "RAE":
+        metric_func.append(RAE(args))
+    elif m == "RSE":
+        metric_func.append(RSE(args))
+    elif m == "RE_RealGasEq":
+        metric_func.append(RelError_RealGasEquation(args))
+    elif m == "RE_CpEq":
+        metric_func.append(RelError_CpEquation(args))
+    elif m == "Supervised_PINNS":
+        metric_func.append(Supervised_PINNS(args))
+    else:
+        sys.exit(f"ValueError: Incorrect argument --metric = '{m}'")
+args.num_metrics = len(metric_func)
+
+# ----- Optimizer -----
+
+if args.optimizer == 'Adam':
+    opt = optimizers.Adam(args.learning_rate)
+else:
+    sys.exit(f"argument --optimizer is {args.optimizer}, accepted values: 'Adam'")
+# sopt = SciOP(model)
+
+# ----- Model -----
+
+# Initializer: activation function type and distribution
+act_fun  = args.activation_function
+in_type  = args.initializer_type 
+if act_fun == "relu":
+    if in_type == "uniform":
+        initializer = initializers.HeUniform(seed=args.seed)
+    elif in_type == "normal":
+        initializer = initializers.HeNormal(seed=args.seed)
+    else:
+        sys.exit(f"argument --initializer_type is {in_type}, accepted values: 'uniform', 'random'")
+elif act_fun == 'tanh':
+    if in_type == "uniform":
+        initializer = initializers.GlorotUniform(seed=args.seed)
+    elif in_type  == "normal":
+        initializer = initializers.GlorotNormal(seed=args.seed)
+    else:
+        sys.exit(f"argument --initializer_type is {in_type}, accepted values: 'uniform', 'random'")
+else:
+    sys.exit(f"argument --activation_function is {act_fun}, accepted values: 'relu', 'tanh'")
+
+# Regularizer: regularizer type and factor
+reg_type = args.regularizer_type
+reg_fact = args.regularizer_factor
+if reg_type == "None":
+    regularizer = None
+elif reg_type == "L1":
+    regularizer = regularizers.L1(l1 = reg_fact)
+elif reg_type == "L2":
+    regularizer = regularizers.L2(l2 = reg_fact)
+else:
+    sys.exit(f"argument --regularizer_type is {reg_type}, accepted values: 'None', 'L1', 'L2'")
+
+# Model architecture
+inp = layers.Input(shape = (args.num_features))
+hl = inp
+for i in range(args.num_hidden_layers):
+    hl = layers.Dense(args.num_neurons_per_layer, activation = act_fun, kernel_initializer=initializer, kernel_regularizer=regularizer)(hl)
+out = layers.Dense(args.num_targets, activation = act_fun, kernel_initializer = initializer)(hl)
+
+model = models.Model(inp, out)
+print(model.summary())
+
+# Model + Optimizer + Loss + Metrics
+mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, epochs=args.num_epochs) 
+
+
+# ----- Training + Validation -----
+
+mlp.train_and_validate(dataset_tr, dataset_val, args)
