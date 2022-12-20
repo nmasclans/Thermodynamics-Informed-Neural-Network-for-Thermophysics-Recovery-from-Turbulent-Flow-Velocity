@@ -1,0 +1,1283 @@
+(tf-gpu) jofre@pc05v3:~/Students/Nuria_Masclans/repositories/NN_based_inference_in_High_Pressure_Transcritical_Turbulent_Channel_Flow$ XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/lib/cuda python3  train_MLP_InputScalar_PINN.py
+
+Arguments:
+Namespace(ndim=3, features_idx=[1, 2], targets_name=['c_p', 'rho', 'T'], training_filename='/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz', validation_filename='/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz', spatial_dimension=[128, 128, 128], learning_rate=0.001, loss='Supervised_PINNS', metrics=['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq'], num_hidden_layers=3, num_neurons_per_layer=8, activation_function='relu', initializer_type='normal', initializer_seed=1, num_epochs=100, batch_size=64, batch_size_validation=2097152, features_limits={'y': [0.0, 0.0002], 'u': [0.0, 3.5], 'TKE_normalized': [0.0, 0.2], 'vorticity_magn_normalized': [0.0, 55.0], 'enstrophy_normalized': [0.0, 1400.0]}, targets_limits={'c_p': [0.0, 3900.0], 'rho': [0.0, 850.0], 'T': [0.0, 200.0]}, num_batches_per_print_information=1000, Substance='N2', P_constant=6791600.0, visualization_step=100, num_features=2, num_targets=3)
+
+Activation function: relu 
+Initializer type: normal
+
+Shape training features: (2097152, 2)
+Shape training targets: (2097152, 3)
+Training Number of Batches per Epoch: 32768, with number of samples 2097152 and batch size 64
+
+Min-Max Scaler to feature 'u', from (min,max)=(0.0000,3.5000) to (0, 1)
+Min-Max after scaling,  training  dataset: (0.0011,0.9185)
+Min-Max after scaling, validation dataset: (0.0011,0.9185)
+
+Min-Max Scaler to feature 'TKE_normalized', from (min,max)=(0.0000,0.2000) to (0, 1)
+Min-Max after scaling,  training  dataset: (0.0000,0.8237)
+Min-Max after scaling, validation dataset: (0.0000,0.8237)
+
+Min-Max Scaler to target 'c_p', from (min,max)=(0.0000,3900.0000) to (0,1)
+Min-Max after scaling,  training  dataset: (0.3934,0.9933)
+Min-Max after scaling, validation dataset: (0.3934,0.9933)
+
+Min-Max Scaler to target 'rho', from (min,max)=(0.0000,850.0000) to (0,1)
+Min-Max after scaling,  training  dataset: (0.1738,0.9870)
+Min-Max after scaling, validation dataset: (0.1738,0.9870)
+
+Min-Max Scaler to target 'T', from (min,max)=(0.0000,200.0000) to (0,1)
+Min-Max after scaling,  training  dataset: (0.4736,0.9464)
+Min-Max after scaling, validation dataset: (0.4736,0.9464)
+
+Dataset Training: 
+<BatchDataset element_spec=(TensorSpec(shape=(None, 2), dtype=tf.float32, name=None), TensorSpec(shape=(None, 3), dtype=tf.float32, name=None))>
+
+Dataset Validation: 
+<BatchDataset element_spec=(TensorSpec(shape=(None, 2), dtype=tf.float32, name=None), TensorSpec(shape=(None, 3), dtype=tf.float32, name=None))>
+Model: "model"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_1 (InputLayer)        [(None, 2)]               0         
+                                                                 
+ dense (Dense)               (None, 8)                 24        
+                                                                 
+ dense_1 (Dense)             (None, 8)                 72        
+                                                                 
+ dense_2 (Dense)             (None, 8)                 72        
+                                                                 
+ dense_3 (Dense)             (None, 3)                 27        
+                                                                 
+=================================================================
+Total params: 195
+Trainable params: 195
+Non-trainable params: 0
+_________________________________________________________________
+None
+
+-----------------------------------------------------------------------------
+Training Epoch: 1
+WARNING:tensorflow:5 out of the last 5 calls to <function _BaseOptimizer._update_step_xla at 0x7f9238344a60> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:6 out of the last 6 calls to <function _BaseOptimizer._update_step_xla at 0x7f9238344a60> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+    Batch: 0 || Loss 'Supervised_PINNS': 0.992931247 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.45823586, 0.880035102, 0.932100236, 0.992931247, 1.4725101, 1]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.145038247 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0335980132, 0.0591467321, 0.159604788, 0.145038247, 0.0116155595, 0.16192849]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0913635939 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0138614988, 0.0270184185, 0.101095825, 0.0913635939, 0.0263724737, 0.0784968287]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.117893182 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0296712052, 0.0474631451, 0.131940141, 0.117893182, 0.0301447846, 0.0932659432]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.109908834 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0266014338, 0.0438193493, 0.120881222, 0.109908834, 0.0278447904, 0.104193732]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.107224844 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0230964739, 0.0393931642, 0.120827317, 0.107224844, 0.0281493645, 0.077480495]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.10874249 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0281766634, 0.0453733094, 0.12283092, 0.10874249, 0.0357456915, 0.0690318123]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.134713069 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0419512726, 0.0668141916, 0.152381822, 0.134713069, 0.0542964712, 0.0737796426]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0961597785 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0234518703, 0.0380147696, 0.106380068, 0.0961597785, 0.0380242839, 0.0725329444]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.12220455 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.032593444, 0.0547972, 0.136926726, 0.12220455, 0.0595905744, 0.0670411214]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0931911096 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0195602905, 0.0327255614, 0.105323367, 0.0931911096, 0.0299550127, 0.0593691468]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0942173451 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0156129114, 0.0281305313, 0.103088498, 0.0942173451, 0.0285905339, 0.0888749361]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.10723687 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0242102295, 0.04134259, 0.119063757, 0.10723687, 0.0354143679, 0.0844442397]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.132538557 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0383650959, 0.0612730868, 0.148782417, 0.132538557, 0.0410901941, 0.0940359533]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0983288586 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.02145583, 0.0359380879, 0.11001996, 0.0983288586, 0.0431708917, 0.0599580184]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0895893499 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0189082846, 0.0313968398, 0.101077832, 0.0895893499, 0.0287192576, 0.0585515499]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0977834165 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0212864522, 0.0354146771, 0.109567545, 0.0977834165, 0.0258025955, 0.0754911304]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.10882429 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0257755499, 0.0454240255, 0.12357638, 0.10882429, 0.027549617, 0.0720822215]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0957325175 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.023048481, 0.0377936661, 0.107436746, 0.0957325175, 0.0243374836, 0.0734937415]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0813842 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0128659336, 0.027339885, 0.0896230936, 0.0813842, 0.0364710689, 0.0603861064]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0753587037 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0145143718, 0.0237161238, 0.0817997, 0.0753587037, 0.0368732885, 0.0623161532]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0798613 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0169927906, 0.0296910275, 0.088582, 0.0798613, 0.037131831, 0.0528251156]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0787929446 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0179285854, 0.0307454225, 0.0894879699, 0.0787929446, 0.036268197, 0.0357574]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0849987566 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0144092301, 0.0338136777, 0.0961887, 0.0849987566, 0.0362986028, 0.0441793725]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0918842182 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0229568388, 0.0397020467, 0.103347808, 0.0918842182, 0.0348542519, 0.0572053939]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0787427798 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0136969462, 0.0261698663, 0.0869399682, 0.0787427798, 0.0326562561, 0.0592517853]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0686809495 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0075025293, 0.0153581826, 0.0757683, 0.0686809495, 0.0333118588, 0.0473512]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0632352 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00720055401, 0.0153185055, 0.0711478814, 0.0632352, 0.0342346579, 0.0289342683]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0831823051 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0166751854, 0.0343341045, 0.0941483602, 0.0831823051, 0.0361788273, 0.0424573533]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0659014061 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0107904784, 0.0231668875, 0.0735520199, 0.0659014061, 0.042040877, 0.0285570286]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.101030529 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0284735281, 0.0468147136, 0.115455426, 0.101030529, 0.0366989747, 0.049962949]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0814792886 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.019970512, 0.0349269174, 0.0914338604, 0.0814792886, 0.0340236239, 0.0492983945]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0773342401 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0191462841, 0.0317991413, 0.0902378559, 0.0773342401, 0.0251749326, 0.0262646675]
+
+Training Epoch: 1
+Loss 'Supervised_PINNS': 0.0997798592
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0219103619 0.0404664464 0.110195369 0.0997798592 0.0462574288 0.0699791685]
+Current Time: 13:53:04
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_1'
+Visualization of validation results in 'c_p_scatterplot_epoch_1'
+Visualization of validation results in 'rho_kde_epoch_1'
+Visualization of validation results in 'rho_scatterplot_epoch_1'
+Visualization of validation results in 'T_kde_epoch_1'
+Visualization of validation results in 'T_scatterplot_epoch_1'
+
+Validation Epoch: 1
+Loss 'Supervised_PINNS': 0.0740860775
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.01166939, 0.02557937, 0.08249746, 0.07408608, 0.03685744,
+       0.04402368])
+Current Time: 13:53:12
+
+-----------------------------------------------------------------------------
+Training Epoch: 2
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0813109055 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0155915925, 0.0336476676, 0.0918455422, 0.0813109055, 0.0381527096, 0.040192]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0547499284 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0031282322, 0.00728560239, 0.0590350032, 0.0547499284, 0.0424362049, 0.032783024]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0605872944 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00708471751, 0.0150682917, 0.0675907061, 0.0605872944, 0.0315544382, 0.0335928276]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0870879218 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0188261047, 0.0368042625, 0.099509649, 0.0870879218, 0.037532106, 0.037269935]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0719099641 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00782138575, 0.0181800816, 0.0782425702, 0.0719099641, 0.0455466211, 0.0476124622]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0831609592 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0162476525, 0.0552009456, 0.0923142657, 0.0831609592, 0.0428370126, 0.0502584428]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0668830127 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0107453056, 0.0252947193, 0.074652575, 0.0668830127, 0.038640514, 0.0329689682]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0716402 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00946610421, 0.032793276, 0.0819510669, 0.0716402, 0.0330282412, 0.0277651697]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0673788413 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00999618, 0.018045051, 0.0731653795, 0.0673788413, 0.0362449735, 0.0522204041]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0704287663 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0110387476, 0.0186433364, 0.0768039525, 0.0704287663, 0.0312307924, 0.0586252771]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0886478499 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0184803475, 0.0335261822, 0.100014783, 0.0886478499, 0.0367589854, 0.0496011972]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0559717268 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00639531249, 0.014560516, 0.0633829907, 0.0559717268, 0.0216289572, 0.0310243592]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0974814296 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0220436696, 0.0377288051, 0.109568156, 0.0974814296, 0.0350525416, 0.0632165223]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0670616105 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00761147961, 0.0172965247, 0.0742252395, 0.0670616105, 0.032908868, 0.043905288]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0504835844 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00599467522, 0.0108132781, 0.0567258485, 0.0504835844, 0.0252942648, 0.0257348046]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0773541406 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0106513128, 0.030385742, 0.0862914845, 0.0773541406, 0.0267186966, 0.0564908087]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0703973621 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00880267471, 0.0183373634, 0.0766567886, 0.0703973621, 0.0371822119, 0.0535370931]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0784993 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00886348262, 0.0358306877, 0.0855950639, 0.0784993, 0.0445170328, 0.0557154641]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0815980285 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0155227035, 0.0457567535, 0.0916943178, 0.0815980285, 0.0360093042, 0.0464163795]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0683386 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0122880815, 0.0213223379, 0.0763255134, 0.0683386, 0.0287661776, 0.0440156907]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.069105 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0113602765, 0.0225855913, 0.0772876516, 0.069105, 0.0378319286, 0.0349168107]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.068970941 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0110581303, 0.0202731453, 0.0779419914, 0.068970941, 0.0292270891, 0.0369464]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0581508763 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00914210174, 0.0163950305, 0.0656851307, 0.0581508763, 0.0247027893, 0.0313249305]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.086499542 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0126277311, 0.0319631137, 0.0961480662, 0.086499542, 0.0358868614, 0.0599240437]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0702859312 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00965856388, 0.0171451326, 0.0760678425, 0.0702859312, 0.0344550535, 0.059861552]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0681761578 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0128793148, 0.0225466881, 0.0770745, 0.0681761578, 0.0167072229, 0.0484583378]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0758840516 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104295751, 0.0378647186, 0.0840027705, 0.0758840516, 0.0431779325, 0.0436404273]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0577613264 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00502981292, 0.0107293166, 0.0643819869, 0.0577613264, 0.0231819153, 0.0393754095]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0594687313 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0074707414, 0.0136271389, 0.0650477633, 0.0594687313, 0.0375489667, 0.0367562659]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.055723343 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00840977207, 0.0148050264, 0.0623651184, 0.055723343, 0.0284597874, 0.0298527014]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0845659673 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0169789977, 0.0430133045, 0.0924958, 0.0845659673, 0.0452583432, 0.0604349449]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0663545579 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00598217873, 0.0287420824, 0.0731437504, 0.0663545579, 0.0237376541, 0.0546579249]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0886179 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0147128478, 0.0518026166, 0.100216053, 0.0886179, 0.0278967619, 0.0565537848]
+
+Training Epoch: 2
+Loss 'Supervised_PINNS': 0.0709309131
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0106335273 0.0243726559 0.0790072605 0.0709309131 0.0327369459 0.044513993]
+Current Time: 13:56:01
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_2'
+Visualization of validation results in 'c_p_scatterplot_epoch_2'
+Visualization of validation results in 'rho_kde_epoch_2'
+Visualization of validation results in 'rho_scatterplot_epoch_2'
+Visualization of validation results in 'T_kde_epoch_2'
+Visualization of validation results in 'T_scatterplot_epoch_2'
+
+Validation Epoch: 2
+Loss 'Supervised_PINNS': 0.067902647
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00929119, 0.02381147, 0.0761128 , 0.06790265, 0.02387595,
+       0.04624812])
+Current Time: 13:56:08
+
+-----------------------------------------------------------------------------
+Training Epoch: 3
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0683197528 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0120573817, 0.0209297687, 0.076386638, 0.0683197528, 0.0244264286, 0.0476779491]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0663604587 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00806767587, 0.015539567, 0.0727576092, 0.0663604587, 0.0305591393, 0.0509845763]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0716356486 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103749195, 0.0271831, 0.0810952261, 0.0716356486, 0.0229296051, 0.0446650535]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0541893244 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00582987629, 0.0105656059, 0.0597644262, 0.0541893244, 0.0207042396, 0.0430735797]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0858400613 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0154724196, 0.0709851161, 0.095228292, 0.0858400613, 0.039398022, 0.0571762472]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0922047 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0166476555, 0.0352663025, 0.104004644, 0.0922047, 0.0289845988, 0.0610251576]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0727875158 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0137267848, 0.0241591912, 0.0813793, 0.0727875158, 0.0279310048, 0.0489096865]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0555746369 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00301535963, 0.0103820553, 0.0620886423, 0.0555746369, 0.0242014155, 0.0348357819]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0611381978 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00812167861, 0.0151558639, 0.0691412, 0.0611381978, 0.0218368899, 0.0364154428]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0440709181 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00218871655, 0.00574850105, 0.0475136377, 0.0440709181, 0.0314095765, 0.0291905012]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0790763795 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00879675429, 0.0528753288, 0.0874424875, 0.0790763795, 0.0440641083, 0.0471598282]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0771665648 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0155223729, 0.026653992, 0.0875245258, 0.0771665648, 0.0226370599, 0.0488323495]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.067734018 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00452058623, 0.0290821865, 0.0751617476, 0.067734018, 0.0364009403, 0.0396452174]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.053389769 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00446931552, 0.00890961662, 0.0590838641, 0.053389769, 0.0190731194, 0.0421536639]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0662245452 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104160719, 0.0301114749, 0.0750293508, 0.0662245452, 0.0263150036, 0.035695605]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0542600416 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0068978318, 0.0124853589, 0.0592137873, 0.0542600416, 0.0237033032, 0.0451868065]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0554219149 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00359410909, 0.0148656508, 0.0613145679, 0.0554219149, 0.0186973754, 0.0450052172]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0753293559 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00987072941, 0.0239170939, 0.0840303674, 0.0753293559, 0.0364085287, 0.0446421243]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0698551759 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00588201359, 0.0271095838, 0.077340126, 0.0698551759, 0.0396195203, 0.0402112491]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0694990158 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00390877901, 0.0238699373, 0.0788594857, 0.0694990158, 0.0228137597, 0.0413005091]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0946023315 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0188296568, 0.0497417636, 0.108414233, 0.0946023315, 0.0287486948, 0.0499607548]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0584689192 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00446835672, 0.0102406144, 0.0661528781, 0.0584689192, 0.0180950724, 0.0373710655]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0740314722 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0112837376, 0.0204803199, 0.0831881166, 0.0740314722, 0.0245356336, 0.0502741709]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0687003881 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.01139843, 0.0195317436, 0.0759165213, 0.0687003881, 0.0285678636, 0.0511038229]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0542583838 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00457110303, 0.00883794576, 0.0602125041, 0.0542583838, 0.0207034163, 0.0401804]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0734580234 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0131694153, 0.023085922, 0.0798270181, 0.0734580234, 0.0327070057, 0.0632571]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0639318153 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00698438473, 0.0154389292, 0.0704531372, 0.0639318153, 0.0292036347, 0.046489425]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0708187446 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00748474337, 0.0493871085, 0.0793894082, 0.0708187446, 0.0356150419, 0.0374571234]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.068073675 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00649169646, 0.0134773599, 0.0740087256, 0.068073675, 0.0324852318, 0.056181673]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0680516139 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00839022268, 0.0219038296, 0.0754101351, 0.0680516139, 0.0285509415, 0.0486841351]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0643355474 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0101881837, 0.0189000834, 0.0738602057, 0.0643355474, 0.0199656356, 0.0325082019]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0681787133 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104262298, 0.0211476758, 0.0776660815, 0.0681787133, 0.0301040821, 0.030354429]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0633840188 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00424925191, 0.0129363611, 0.0697591305, 0.0633840188, 0.0269584879, 0.0488086753]
+
+Training Epoch: 3
+Loss 'Supervised_PINNS': 0.0682801604
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00920242816 0.0233131796 0.0760429576 0.0682801604 0.0279995799 0.046457164]
+Current Time: 13:58:58
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_3'
+Visualization of validation results in 'c_p_scatterplot_epoch_3'
+Visualization of validation results in 'rho_kde_epoch_3'
+Visualization of validation results in 'rho_scatterplot_epoch_3'
+Visualization of validation results in 'T_kde_epoch_3'
+Visualization of validation results in 'T_scatterplot_epoch_3'
+
+Validation Epoch: 3
+Loss 'Supervised_PINNS': 0.0691222325
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00875221, 0.02401756, 0.0766869 , 0.06912223, 0.02770726,
+       0.05001985])
+Current Time: 13:59:05
+
+-----------------------------------------------------------------------------
+Training Epoch: 4
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0708458573 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00563415699, 0.0170692205, 0.0773727819, 0.0708458573, 0.0262299031, 0.0632463843]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0778916702 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0106199598, 0.0195469949, 0.0867444575, 0.0778916702, 0.0276592802, 0.0573017374]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0567522421 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00435962109, 0.00926525798, 0.0646443591, 0.0567522421, 0.0180377252, 0.0323297903]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0796174482 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00694185682, 0.0391414277, 0.0915413275, 0.0796174482, 0.0270484276, 0.0367954075]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0886642635 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0110923341, 0.0300642867, 0.0974626318, 0.0886642635, 0.0298759788, 0.0770655274]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0937161 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0165267233, 0.0450094491, 0.103584625, 0.0937161, 0.0320174731, 0.0764664784]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0648114756 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00700135762, 0.01352676, 0.0694184303, 0.0648114756, 0.0506391302, 0.0421281345]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0756017044 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0133447908, 0.0245472547, 0.0840694606, 0.0756017044, 0.0371298268, 0.0463314876]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0560350493 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00424909405, 0.00874457, 0.0618392937, 0.0560350493, 0.0263848938, 0.0392512754]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0653742179 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00734547526, 0.0142180547, 0.0740960166, 0.0653742179, 0.022759499, 0.0382145122]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0611089244 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00688244263, 0.0136866393, 0.0690173, 0.0611089244, 0.0276591666, 0.0312916934]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.069117032 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00890373811, 0.0229881704, 0.078038834, 0.069117032, 0.0202652737, 0.0465943441]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.070588924 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0115683898, 0.0207633246, 0.079416126, 0.070588924, 0.0319451839, 0.0386150107]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0657381937 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00613140548, 0.0281688198, 0.0732919201, 0.0657381937, 0.0258882921, 0.045158267]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0563722737 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00343082566, 0.00782610755, 0.0604614317, 0.0563722737, 0.0346988365, 0.0453324094]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0598152094 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00522872293, 0.0108718872, 0.064512983, 0.0598152094, 0.0263336841, 0.0557145551]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0726153105 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0164752156, 0.0273477826, 0.0812165, 0.0726153105, 0.0336304344, 0.042790696]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0875292867 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00866453908, 0.0432775132, 0.0983295143, 0.0875292867, 0.0282148011, 0.0604419336]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0480006933 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00249284226, 0.00567852, 0.053246066, 0.0480006933, 0.0219954178, 0.0320429876]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0722501725 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0115124024, 0.0202485826, 0.0821281299, 0.0722501725, 0.0185715295, 0.0469051]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0650005415 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00456737401, 0.0402112901, 0.0731968954, 0.0650005415, 0.0218103118, 0.0426199585]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0855401531 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0132658454, 0.0514505357, 0.0978121758, 0.0855401531, 0.0312269833, 0.0416771211]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0616429634 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00707053766, 0.0132508194, 0.0684948042, 0.0616429634, 0.0215435661, 0.0469276458]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0816905946 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00964642689, 0.0311007053, 0.092441164, 0.0816905946, 0.0274317935, 0.0499448441]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0578043535 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00696141971, 0.014098051, 0.0643114373, 0.0578043535, 0.025340572, 0.0382114649]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0583172441 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00403942075, 0.0090124337, 0.0652111173, 0.0583172441, 0.0228310153, 0.0386525132]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0646441579 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00864614919, 0.0161095429, 0.0709800348, 0.0646441579, 0.0340243652, 0.0445768647]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0768088 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0132802622, 0.0229942072, 0.0848877802, 0.0768088, 0.0314509422, 0.057534907]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.072030969 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0117819747, 0.0261059497, 0.0795775726, 0.072030969, 0.0275183097, 0.0561707392]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0830437839 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0160178524, 0.0375773385, 0.0920673907, 0.0830437839, 0.0255426392, 0.0683560595]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0724108219 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00895292871, 0.0157362074, 0.0779733583, 0.0724108219, 0.0276293028, 0.0726920366]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0699562 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0113059049, 0.0234000534, 0.0774573088, 0.0699562, 0.0250824429, 0.0548210517]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0827350765 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0142709129, 0.0476604216, 0.0945736393, 0.0827350765, 0.029046502, 0.0417151451]
+
+Training Epoch: 4
+Loss 'Supervised_PINNS': 0.0675775483
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00885417685 0.0231270362 0.0751780346 0.0675775483 0.0277925692 0.0465553477]
+Current Time: 14:01:54
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_4'
+Visualization of validation results in 'c_p_scatterplot_epoch_4'
+Visualization of validation results in 'rho_kde_epoch_4'
+Visualization of validation results in 'rho_scatterplot_epoch_4'
+Visualization of validation results in 'T_kde_epoch_4'
+Visualization of validation results in 'T_scatterplot_epoch_4'
+
+Validation Epoch: 4
+Loss 'Supervised_PINNS': 0.0674589127
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00865477, 0.02251483, 0.07332725, 0.06745891, 0.03438813,
+       0.05358301])
+Current Time: 14:02:02
+
+-----------------------------------------------------------------------------
+Training Epoch: 5
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0732039958 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00770710362, 0.0341165364, 0.0803152546, 0.0732039958, 0.0279814787, 0.0615364052]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0649284422 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00698621571, 0.0154394293, 0.0689372122, 0.0649284422, 0.033126086, 0.0646606237]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0793025047 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00941208843, 0.0180198736, 0.0877291635, 0.0793025047, 0.0208176933, 0.0703741163]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0599733889 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00776402326, 0.0141328676, 0.0647726879, 0.0599733889, 0.0327587873, 0.0487935729]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0626126 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00888110232, 0.0158649534, 0.0675761625, 0.0626126, 0.043591, 0.0419256724]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0505668111 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00617909385, 0.0118927211, 0.0567429177, 0.0505668111, 0.0209960546, 0.0307287052]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0632635057 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00769081945, 0.0130994609, 0.0683816597, 0.0632635057, 0.0201810636, 0.0654006898]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0582474284 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00400660373, 0.00953369, 0.0633794144, 0.0582474284, 0.0271258652, 0.0483131]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0704986751 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00833392423, 0.0163098555, 0.0767033, 0.0704986751, 0.0275111273, 0.0638491809]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0463373214 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00242363475, 0.00626567053, 0.0517311245, 0.0463373214, 0.0216131471, 0.0279110577]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0666365921 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00668820925, 0.0156110125, 0.0746855736, 0.0666365921, 0.0252422504, 0.0436390638]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0834227204 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0151829869, 0.0513070226, 0.0941093564, 0.0834227204, 0.0218756869, 0.0594766438]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0729102567 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.014815486, 0.0248848852, 0.0825889781, 0.0729102567, 0.0309134051, 0.0374773145]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0738426 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00904351752, 0.0623251088, 0.0830144435, 0.0738426, 0.0273776688, 0.0469327904]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0482864082 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0057511949, 0.00995120406, 0.0526669025, 0.0482864082, 0.0244248919, 0.037103951]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0725636855 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0169609915, 0.0280216858, 0.0824382231, 0.0725636855, 0.0315370522, 0.034594]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0650523826 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00971896667, 0.0175196305, 0.0719183534, 0.0650523826, 0.0390469, 0.0361300781]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.075713262 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0108176172, 0.051094804, 0.0832036138, 0.075713262, 0.031183321, 0.0603204146]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0719096735 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0155410804, 0.0266208053, 0.0801039636, 0.0719096735, 0.0306980461, 0.0475669652]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0661053509 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00633108383, 0.0125981942, 0.0730647519, 0.0661053509, 0.0321110189, 0.0444244444]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0701676831 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103802392, 0.0181260612, 0.0788679272, 0.0701676831, 0.0262303986, 0.044503063]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0543370508 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.006213421, 0.0121841654, 0.0598462783, 0.0543370508, 0.0264727771, 0.0381274819]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0758475438 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0100507298, 0.0256921798, 0.0844062939, 0.0758475438, 0.0330924466, 0.0501326136]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0677654073 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00762573862, 0.0302498583, 0.0756691918, 0.0677654073, 0.025705047, 0.0465954505]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.062983118 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00738281, 0.0139286546, 0.0686206892, 0.062983118, 0.0276309848, 0.0532346703]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0837931633 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0129106604, 0.0322358124, 0.0922592, 0.0837931633, 0.0357660204, 0.0640920699]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0714436322 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00772470096, 0.0236839261, 0.0806356445, 0.0714436322, 0.0262482055, 0.043102961]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0504341535 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00475868536, 0.00917844381, 0.0546831973, 0.0504341535, 0.024165161, 0.0427107736]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0702858418 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0156187052, 0.0257113, 0.0782462433, 0.0702858418, 0.0320624113, 0.0448260605]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.065816015 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00940070581, 0.0293756779, 0.0751197785, 0.065816015, 0.0253369883, 0.0318649486]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0562147424 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0049294997, 0.0163540151, 0.0628982633, 0.0562147424, 0.0259399265, 0.0330213904]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0471574515 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00470745, 0.00971730147, 0.051081527, 0.0471574515, 0.0308434851, 0.0320787914]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.085124895 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0147999963, 0.0457911, 0.0959545448, 0.085124895, 0.0326591842, 0.050953377]
+
+Training Epoch: 5
+Loss 'Supervised_PINNS': 0.0669034496
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00864505768 0.0229890905 0.0743953362 0.0669034496 0.0290264171 0.0448449254]
+Current Time: 14:04:52
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_5'
+Visualization of validation results in 'c_p_scatterplot_epoch_5'
+Visualization of validation results in 'rho_kde_epoch_5'
+Visualization of validation results in 'rho_scatterplot_epoch_5'
+Visualization of validation results in 'T_kde_epoch_5'
+Visualization of validation results in 'T_scatterplot_epoch_5'
+
+Validation Epoch: 5
+Loss 'Supervised_PINNS': 0.0656048283
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00806051, 0.02272784, 0.0727461 , 0.06560483, 0.04076659,
+0.03331288])
+Current Time: 14:04:59
+
+-----------------------------------------------------------------------------
+Training Epoch: 6
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0546843 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00310743391, 0.012521551, 0.0604516827, 0.0546843, 0.0390297286, 0.0241998285]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0637389719 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00703019323, 0.0145033905, 0.0710267201, 0.0637389719, 0.0409221947, 0.0282537621]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.068099387 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0114642521, 0.019637635, 0.0753346309, 0.068099387, 0.0341488495, 0.0441679209]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0526206046 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00491026929, 0.0103150932, 0.0592495501, 0.0526206046, 0.0281079, 0.0241017323]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0837984756 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0156135298, 0.0472210236, 0.098099269, 0.0837984756, 0.0283913314, 0.0247992389]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0487564504 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00301197148, 0.00660711713, 0.0551039539, 0.0487564504, 0.0236881897, 0.0230446979]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0467533953 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00480929809, 0.00881352555, 0.0535239875, 0.0467533953, 0.0224389844, 0.0169030745]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0553547703 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00716891512, 0.0136115067, 0.0632803515, 0.0553547703, 0.0273219254, 0.0199829694]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0509074703 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00437444868, 0.00951698702, 0.0578732453, 0.0509074703, 0.0265370235, 0.0195516925]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0680545419 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0109043838, 0.044151675, 0.0777003244, 0.0680545419, 0.031864956, 0.0270778928]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0476823822 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00283374381, 0.00580764515, 0.0533286184, 0.0476823822, 0.0273061339, 0.0228887238]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0586781166 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00708649354, 0.0132340491, 0.066619657, 0.0586781166, 0.0308372602, 0.0229866598]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0552148968 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0065837861, 0.0131238392, 0.0627274215, 0.0552148968, 0.0318116248, 0.0185179822]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0549794622 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00333315856, 0.00829983409, 0.0636489168, 0.0549794622, 0.0264814571, 0.0141218137]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0719713792 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0152380327, 0.0256624203, 0.0818060935, 0.0719713792, 0.0331475697, 0.0321174189]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0579977408 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00390184671, 0.0109197842, 0.0658940896, 0.0579977408, 0.0359749943, 0.0168497]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0538798049 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0063477722, 0.0114121735, 0.0620489605, 0.0538798049, 0.0258578546, 0.016548492]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0617257878 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00869465154, 0.0512271523, 0.0709391311, 0.0617257878, 0.0266008675, 0.0231439359]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0588712841 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0090483753, 0.0156258121, 0.0640795603, 0.0588712841, 0.0401760414, 0.0359003209]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0539015494 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00423944276, 0.0193726663, 0.0601899512, 0.0539015494, 0.0299522243, 0.0275436454]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0727994815 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00947483, 0.0781301931, 0.0833591819, 0.0727994815, 0.0401276946, 0.0209936742]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.047911007 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00530139683, 0.00956519414, 0.0533414371, 0.047911007, 0.0251248889, 0.0272536762]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0656060576 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0105402162, 0.0195785612, 0.0732964873, 0.0656060576, 0.042515479, 0.0271731243]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0700531229 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0172511637, 0.0287646297, 0.0805491582, 0.0700531229, 0.0336686596, 0.0224692877]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0771518946 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0107150422, 0.0930515826, 0.0901521668, 0.0771518946, 0.0308865272, 0.0194151103]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0548858792 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00359263178, 0.00844952278, 0.0627711192, 0.0548858792, 0.0277714096, 0.0189184509]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0592952333 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0131078018, 0.0219345316, 0.0685376823, 0.0592952333, 0.0276629385, 0.0169879422]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0660337284 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00587304495, 0.0706625655, 0.074510783, 0.0660337284, 0.0384743884, 0.0257766582]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0571691319 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00681260088, 0.0131526673, 0.0646768287, 0.0571691319, 0.0262889415, 0.0279877521]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0486859605 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00587382866, 0.011688293, 0.0553631037, 0.0486859605, 0.033502467, 0.010452304]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0499058254 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00607291283, 0.0113792159, 0.0557718277, 0.0499058254, 0.0357462019, 0.0171374045]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0402727723 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00199723453, 0.00471392507, 0.0455319, 0.0402727723, 0.0254861377, 0.0129864067]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0496108346 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00622265, 0.0132364184, 0.0575507, 0.0496108346, 0.0211194325, 0.0145833325]
+
+Training Epoch: 6
+Loss 'Supervised_PINNS': 0.0600570366
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00756499311 0.0245451052 0.0681273714 0.0600570366 0.0322210267 0.0233283415]
+Current Time: 14:07:49
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_6'
+Visualization of validation results in 'c_p_scatterplot_epoch_6'
+Visualization of validation results in 'rho_kde_epoch_6'
+Visualization of validation results in 'rho_scatterplot_epoch_6'
+Visualization of validation results in 'T_kde_epoch_6'
+Visualization of validation results in 'T_scatterplot_epoch_6'
+
+Validation Epoch: 6
+Loss 'Supervised_PINNS': 0.0577846691
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00754942, 0.02537707, 0.065544  , 0.05778467, 0.03378063,
+       0.01971406])
+Current Time: 14:07:57
+
+-----------------------------------------------------------------------------
+Training Epoch: 7
+    Batch: 0 || Loss 'Supervised_PINNS': 0.041408781 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00243316987, 0.00525187887, 0.046246767, 0.041408781, 0.0304689351, 0.0136447502]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0430288129 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00289784907, 0.0062499526, 0.0474174, 0.0430288129, 0.0347376317, 0.0162112974]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0430169776 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00291168201, 0.00633689901, 0.0498400889, 0.0430169776, 0.0237347856, 0.0077142478]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0473643057 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00633052178, 0.0114281783, 0.0539574213, 0.0473643057, 0.0284235682, 0.0135601349]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0550986342 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00818847772, 0.0152963409, 0.0638885871, 0.0550986342, 0.0220372714, 0.0178403649]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0476344414 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00582158333, 0.0109931156, 0.0535417348, 0.0476344414, 0.0294598751, 0.018550653]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0659801662 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.013269987, 0.0226678159, 0.0757801309, 0.0659801662, 0.0341448635, 0.0194157846]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0576271601 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00669610826, 0.0125626447, 0.0659456179, 0.0576271601, 0.0335904807, 0.0151161319]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0653164759 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00942478795, 0.0176064875, 0.0733048, 0.0653164759, 0.0383938253, 0.0283324793]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0661213696 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0131101348, 0.0237884838, 0.0769121125, 0.0661213696, 0.0298526771, 0.0160640962]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0663774908 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00877693947, 0.0984632373, 0.0772353709, 0.0663774908, 0.0286856592, 0.0172062926]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.066361405 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0142212184, 0.0244281888, 0.0760483816, 0.066361405, 0.044368878, 0.0108581074]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0905709267 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0111371884, 0.184323236, 0.106865056, 0.0905709267, 0.0260007493, 0.0247880761]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.053584516 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00664013252, 0.0124162165, 0.0616490729, 0.053584516, 0.0256516561, 0.0170009099]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0520122312 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00671933591, 0.0152932117, 0.0597703867, 0.0520122312, 0.0311100259, 0.0108492039]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0521243513 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00431999238, 0.00811870117, 0.0581122525, 0.0521243513, 0.0311693531, 0.0251761451]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.064877063 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0140970638, 0.0249770526, 0.0744765624, 0.064877063, 0.0352103822, 0.017747717]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0545654595 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010225784, 0.0173799898, 0.0623187833, 0.0545654595, 0.0336859226, 0.0134183858]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0489580259 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00642101048, 0.0122560142, 0.0558035038, 0.0489580259, 0.0322175585, 0.0109347124]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0349012092 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00196347642, 0.00467996579, 0.0391664021, 0.0349012092, 0.023676509, 0.0120043587]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.053063862 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00676726922, 0.0120360786, 0.0611053109, 0.053063862, 0.0287728496, 0.0130232899]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0419725031 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00202319934, 0.00496060913, 0.0470565446, 0.0419725031, 0.0324530825, 0.0108195897]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.057579428 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00682340562, 0.0218695719, 0.0651295558, 0.057579428, 0.0305962134, 0.024161607]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0539433546 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00700873835, 0.0131352125, 0.0601097308, 0.0539433546, 0.032560356, 0.0259953327]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.047751084 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00590312667, 0.011333623, 0.0536487289, 0.047751084, 0.0305026043, 0.0178184174]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0478738584 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00641387142, 0.011835861, 0.0549466871, 0.0478738584, 0.0293393694, 0.00982569717]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0641450286 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00735332631, 0.0221044, 0.0740523115, 0.0641450286, 0.0317350253, 0.0172967687]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0644230619 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0118715763, 0.0216829553, 0.0746106, 0.0644230619, 0.0346034653, 0.012742375]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0527073778 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00743300794, 0.0136245815, 0.0600211658, 0.0527073778, 0.0291934777, 0.0177110024]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0600396246 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00874281861, 0.0165270958, 0.0684644282, 0.0600396246, 0.0298826806, 0.0227981266]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.058647465 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00702645397, 0.0136249699, 0.0663813427, 0.058647465, 0.0408522934, 0.0145716099]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0624520183 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0123720756, 0.0206802394, 0.0708627626, 0.0624520183, 0.0304144509, 0.0272036102]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0606929772 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00557580357, 0.0409549735, 0.0716444254, 0.0606929772, 0.0220488012, 0.0117255673]
+
+Training Epoch: 7
+Loss 'Supervised_PINNS': 0.0576517098
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00752778212 0.0268999841 0.0658474192 0.0576517098 0.0317474157 0.0179933403]
+Current Time: 14:10:47
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_7'
+Visualization of validation results in 'c_p_scatterplot_epoch_7'
+Visualization of validation results in 'rho_kde_epoch_7'
+Visualization of validation results in 'rho_scatterplot_epoch_7'
+Visualization of validation results in 'T_kde_epoch_7'
+Visualization of validation results in 'T_scatterplot_epoch_7'
+
+Validation Epoch: 7
+Loss 'Supervised_PINNS': 0.056991294
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00808789, 0.02313432, 0.06476056, 0.05699129, 0.03690796,
+       0.0149205 ])
+Current Time: 14:10:54
+
+-----------------------------------------------------------------------------
+Training Epoch: 8
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0479108468 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00569930254, 0.0108991964, 0.0543877, 0.0479108468, 0.0307429153, 0.0132639352]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0577569604 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00564345391, 0.0635348335, 0.067222476, 0.0577569604, 0.0271994211, 0.0125903599]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.070366919 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0130171245, 0.026524527, 0.0815131664, 0.070366919, 0.0329486616, 0.0186152365]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0694864169 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.014700505, 0.0256101042, 0.079627648, 0.0694864169, 0.0445484146, 0.0132945124]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.050801266 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00497293845, 0.00987382606, 0.0592784248, 0.050801266, 0.0192817952, 0.0145034399]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0683095902 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00878248364, 0.0192812774, 0.0802326724, 0.0683095902, 0.030526137, 0.0107083274]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0864467546 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.021153504, 0.10576158, 0.102949828, 0.0864467546, 0.0300802514, 0.0107886624]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0548375845 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00672728941, 0.0143228099, 0.0630544573, 0.0548375845, 0.0283462945, 0.0155938827]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0406637192 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00201457157, 0.00542996032, 0.0457608439, 0.0406637192, 0.027189834, 0.0133605637]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0470611751 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00427678227, 0.00789082423, 0.0513373204, 0.0470611751, 0.0374401808, 0.0224730037]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0586541742 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00522557693, 0.075942032, 0.0654767677, 0.0586541742, 0.0494344085, 0.0132931611]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0466384962 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0060863737, 0.0108848438, 0.0530497469, 0.0466384962, 0.0335296616, 0.00845732]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0445213728 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00488529, 0.00922482926, 0.0508664846, 0.0445213728, 0.0244063269, 0.013875531]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0667561591 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0148172714, 0.0256099906, 0.0774874762, 0.0667561591, 0.0332723856, 0.0143893771]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.056285236 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00462122634, 0.0388225913, 0.0638453439, 0.056285236, 0.0256051179, 0.0264845192]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0579609089 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00782877952, 0.0140220113, 0.0658155, 0.0579609089, 0.0337215587, 0.0193635337]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0643259212 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0108069628, 0.0191906262, 0.0737699792, 0.0643259212, 0.0406279825, 0.0124713834]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0713093 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00967455655, 0.0828007534, 0.0835298523, 0.0713093, 0.0323022343, 0.0125519186]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0673920587 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00689760456, 0.0769742653, 0.0794930756, 0.0673920587, 0.0239474773, 0.0140284635]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0509618372 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00260881428, 0.00757021597, 0.0564461686, 0.0509618372, 0.0367786139, 0.0212704055]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0558769591 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00895301532, 0.0155587308, 0.0655270144, 0.0558769591, 0.025404986, 0.00914848]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0689365938 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00993286539, 0.0810958445, 0.0782615766, 0.0689365938, 0.0446538441, 0.018619474]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0365118757 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00163931621, 0.00355321355, 0.0406366326, 0.0365118757, 0.0249017179, 0.0151239587]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0561276 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00758134061, 0.0133953514, 0.065529637, 0.0561276, 0.0248817205, 0.0121571682]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0510949343 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00668619433, 0.0129109547, 0.0588327348, 0.0510949343, 0.0291032754, 0.0111841764]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0527623519 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00618631067, 0.0116575286, 0.0594389, 0.0527623519, 0.0352420546, 0.0168702211]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0392758287 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00177516777, 0.00371183106, 0.041983325, 0.0392758287, 0.0355314687, 0.0213601645]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0497698747 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00870845746, 0.0155452974, 0.0572658889, 0.0497698747, 0.0272779148, 0.0122937094]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0525657348 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00417418452, 0.00967623759, 0.0600459613, 0.0525657348, 0.0300775692, 0.0152120879]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0479232185 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0043322295, 0.0098328907, 0.0543858968, 0.0479232185, 0.0273774, 0.0167675652]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0567112342 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103921006, 0.0184466094, 0.0649887696, 0.0567112342, 0.0353309363, 0.0118712336]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0682484135 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00712688407, 0.0555670224, 0.080002673, 0.0682484135, 0.0281430576, 0.0143196099]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0409173854 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0022226728, 0.0046349247, 0.0450963043, 0.0409173854, 0.0316050351, 0.0167983808]
+
+Training Epoch: 8
+Loss 'Supervised_PINNS': 0.0571496114
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00759922201 0.0278698932 0.0654934347 0.0571496114 0.0317277052 0.0158221964]
+Current Time: 14:13:39
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_8'
+Visualization of validation results in 'c_p_scatterplot_epoch_8'
+Visualization of validation results in 'rho_kde_epoch_8'
+Visualization of validation results in 'rho_scatterplot_epoch_8'
+Visualization of validation results in 'T_kde_epoch_8'
+Visualization of validation results in 'T_scatterplot_epoch_8'
+
+Validation Epoch: 8
+Loss 'Supervised_PINNS': 0.0568626225
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00790023, 0.02490482, 0.06494859, 0.05686262, 0.03146746,
+       0.01757006])
+Current Time: 14:13:48
+
+-----------------------------------------------------------------------------
+Training Epoch: 9
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0455761403 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00246619363, 0.0059915781, 0.0520190299, 0.0455761403, 0.0257932786, 0.0138158798]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0561748967 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00744765205, 0.0139635382, 0.0647593066, 0.0561748967, 0.0296775438, 0.013996955]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0638154894 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00648243539, 0.0973166749, 0.0742230341, 0.0638154894, 0.0291974321, 0.0151731819]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0496968105 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0031728046, 0.00687717833, 0.0583235621, 0.0496968105, 0.0218120068, 0.0085675884]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0742712617 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0150644658, 0.0478143431, 0.0872996375, 0.0742712617, 0.0257242229, 0.0185912717]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0674036443 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00683149369, 0.0996696, 0.0783933, 0.0674036443, 0.0311481152, 0.0157419108]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0416526981 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00216746097, 0.00473507214, 0.0475756377, 0.0416526981, 0.0265268963, 0.00939496141]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0589021333 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00426096329, 0.0107398843, 0.0670378804, 0.0589021333, 0.0364656076, 0.0162526835]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0505844504 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00315747201, 0.00798012, 0.0583669, 0.0505844504, 0.0270723179, 0.0118370056]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0594947599 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0102786748, 0.0179110207, 0.0686939359, 0.0594947599, 0.0343150981, 0.0110809803]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0611145645 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00750503689, 0.0713195, 0.0723209381, 0.0611145645, 0.0234896075, 0.00908854418]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0671997592 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0149805071, 0.024913853, 0.077577047, 0.0671997592, 0.035614, 0.0157672148]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0471006222 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00262649474, 0.00704316609, 0.0538666062, 0.0471006222, 0.030844368, 0.00922900718]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0598380342 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0105880806, 0.0185429882, 0.0683836713, 0.0598380342, 0.0385677218, 0.0127432458]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0444451496 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00543184346, 0.00931845, 0.0497040451, 0.0444451496, 0.0322966725, 0.0145224612]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0656914935 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0128081171, 0.0226973947, 0.075392358, 0.0656914935, 0.0367220342, 0.0170540288]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0595674962 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.01087284, 0.0206680521, 0.0696652234, 0.0595674962, 0.0292177312, 0.00913544651]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.075338006 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0109547833, 0.114114128, 0.0891899839, 0.075338006, 0.0289254058, 0.010934744]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.056346003 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0069493833, 0.0133096995, 0.0647632182, 0.056346003, 0.0324488245, 0.0129054822]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0470572747 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00254739122, 0.00534643652, 0.0526553579, 0.0470572747, 0.0335971862, 0.0157326888]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0706364065 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00759379799, 0.117466755, 0.0822293535, 0.0706364065, 0.0281902626, 0.0203389898]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0536308661 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0063406839, 0.0134336511, 0.0622497499, 0.0536308661, 0.026743466, 0.0115672238]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0541152172 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0075253807, 0.0155132199, 0.0633997619, 0.0541152172, 0.0239774846, 0.00997658446]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0486388616 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00630995631, 0.0113511411, 0.0548994094, 0.0486388616, 0.0342544205, 0.0129389195]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0701398179 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0148250386, 0.0257758964, 0.0820975527, 0.0701398179, 0.0317193083, 0.0128984321]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0461067744 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00349755585, 0.0079206517, 0.0534891784, 0.0461067744, 0.0223421399, 0.010812155]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0541692451 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0067590042, 0.0143877305, 0.0630281791, 0.0541692451, 0.0216366909, 0.0158303231]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0680106655 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0131307123, 0.0906527042, 0.0811910629, 0.0680106655, 0.0240986459, 0.0064795]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0548632853 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00663161045, 0.0139554925, 0.0642330125, 0.0548632853, 0.0231144391, 0.0116543099]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0675394237 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0131309228, 0.109289169, 0.0787696391, 0.0675394237, 0.0309847929, 0.0142523143]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0636838675 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00815203693, 0.050308343, 0.0744433329, 0.0636838675, 0.0233652, 0.0179268382]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0693051219 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104829809, 0.098064661, 0.0816412792, 0.0693051219, 0.0186664425, 0.0212544575]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0435639396 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00276399218, 0.00674672658, 0.051495906, 0.0435639396, 0.0134517616, 0.010220373]
+
+Training Epoch: 9
+Loss 'Supervised_PINNS': 0.0563403033
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00754126487 0.0283445511 0.0649772212 0.0563403033 0.0291718859 0.0144150835]
+Current Time: 14:16:34
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_9'
+Visualization of validation results in 'c_p_scatterplot_epoch_9'
+Visualization of validation results in 'rho_kde_epoch_9'
+Visualization of validation results in 'rho_scatterplot_epoch_9'
+Visualization of validation results in 'T_kde_epoch_9'
+Visualization of validation results in 'T_scatterplot_epoch_9'
+
+Validation Epoch: 9
+Loss 'Supervised_PINNS': 0.0568875708
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00952595, 0.02166349, 0.06601655, 0.05688757, 0.02504957,
+       0.01569375])
+Current Time: 14:16:41
+
+-----------------------------------------------------------------------------
+Training Epoch: 10
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0450723805 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00604051491, 0.0112578236, 0.0521388613, 0.0450723805, 0.0183987767, 0.0152141619]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0663364455 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010874, 0.0881164148, 0.0778518766, 0.0663364455, 0.0219869893, 0.0185624454]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0595486 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0143474126, 0.0242924448, 0.0699881464, 0.0595486, 0.0242276937, 0.0113531416]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0690858737 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0145034753, 0.0262711495, 0.0816614628, 0.0690858737, 0.0226013288, 0.0149657102]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0428192057 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00236447738, 0.00568038365, 0.0494868942, 0.0428192057, 0.020950878, 0.0113460124]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0501550287 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00648103282, 0.0117615359, 0.0582083501, 0.0501550287, 0.0239626542, 0.0119208246]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0573624149 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00996823, 0.0172697846, 0.0656578392, 0.0573624149, 0.0317743085, 0.0165871326]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0625251606 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00889719371, 0.0189127158, 0.0735318661, 0.0625251606, 0.0229733884, 0.0140233291]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0612762049 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0146260867, 0.0238569845, 0.07198558, 0.0612762049, 0.0248586815, 0.0120186992]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0511365384 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00662623532, 0.0120248189, 0.0582238734, 0.0511365384, 0.0260583181, 0.0195160657]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0454549231 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00552464835, 0.0102433013, 0.0531659685, 0.0454549231, 0.0189520102, 0.0102694593]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0880489796 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.016037697, 0.116135471, 0.104328863, 0.0880489796, 0.0304003377, 0.0154585075]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0513134822 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00593129033, 0.0116100572, 0.0595897846, 0.0513134822, 0.0210402291, 0.0153763248]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0456409529 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00288246782, 0.0071936124, 0.053548187, 0.0456409529, 0.0207655318, 0.00725851208]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0585211664 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0074148071, 0.0143092507, 0.0679836646, 0.0585211664, 0.0262365714, 0.0151057579]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0414168723 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00221288227, 0.00605907291, 0.0477215648, 0.0414168723, 0.0256831907, 0.00671299454]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0449594781 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00286990521, 0.0062558637, 0.0509411246, 0.0449594781, 0.0289082732, 0.0131575018]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0495588854 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00318242144, 0.00675482629, 0.0555270128, 0.0495588854, 0.0242083482, 0.0271644033]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0526251681 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00367879937, 0.00849225465, 0.0610956, 0.0526251681, 0.0215067454, 0.0159801617]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0337604471 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00154919608, 0.00348927733, 0.039499063, 0.0337604471, 0.0148119368, 0.00680002244]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0618827716 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00592480926, 0.0785399303, 0.0729114711, 0.0618827716, 0.0224725194, 0.0130634308]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0693107098 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0110530658, 0.101889439, 0.0816216841, 0.0693107098, 0.0233128425, 0.0168207567]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0668271855 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00688329106, 0.109866492, 0.0793555751, 0.0668271855, 0.0185854714, 0.0148417465]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0600622073 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0141884638, 0.0237920284, 0.0701051131, 0.0600622073, 0.0210444927, 0.0187366568]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0665229037 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00728564849, 0.112287462, 0.0797645077, 0.0665229037, 0.0189538226, 0.0081591513]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0609149262 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00647230959, 0.0993889794, 0.0715229586, 0.0609149262, 0.0204375871, 0.016527988]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0697967187 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103737181, 0.101281784, 0.0836566687, 0.0697967187, 0.0200724, 0.00864143297]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0678973123 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0116744796, 0.0237710346, 0.0801667571, 0.0678973123, 0.0258126967, 0.0118263662]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0473635495 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00319493259, 0.00720017357, 0.0537615456, 0.0473635495, 0.0261450261, 0.0173981115]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0433826372 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00239757, 0.00688999752, 0.0511827879, 0.0433826372, 0.0155567061, 0.00880736858]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0577824675 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00641354686, 0.0146735227, 0.0678152218, 0.0577824675, 0.023454763, 0.0118481424]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0543965064 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00985773373, 0.0172882695, 0.0648529083, 0.0543965064, 0.0162869133, 0.00885491911]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0605590232 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00982769765, 0.0190920196, 0.0705104619, 0.0605590232, 0.0270086192, 0.0144978957]
+
+Training Epoch: 10
+Loss 'Supervised_PINNS': 0.0548195429
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00742737344 0.027875673 0.0639547408 0.0548195429 0.0233394 0.0132218888]
+Current Time: 14:19:28
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_10'
+Visualization of validation results in 'c_p_scatterplot_epoch_10'
+Visualization of validation results in 'rho_kde_epoch_10'
+Visualization of validation results in 'rho_scatterplot_epoch_10'
+Visualization of validation results in 'T_kde_epoch_10'
+Visualization of validation results in 'T_scatterplot_epoch_10'
+
+Validation Epoch: 10
+Loss 'Supervised_PINNS': 0.0532925799
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00690225, 0.02620155, 0.0626002 , 0.05329258, 0.02090495,
+       0.01121928])
+Current Time: 14:19:37
+
+-----------------------------------------------------------------------------
+Training Epoch: 11
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0516219586 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00641793245, 0.0124432417, 0.0605581813, 0.0516219586, 0.0228288, 0.00892533]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0515048131 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00420152815, 0.0116696721, 0.0603937693, 0.0515048131, 0.0167336613, 0.0151643343]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0685741305 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0134048844, 0.103874862, 0.0815696418, 0.0685741305, 0.021941198, 0.0112429205]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0501676537 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00622745557, 0.0123578636, 0.0562167466, 0.0501676537, 0.0302449651, 0.0216975659]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0505393818 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00470593292, 0.00986554567, 0.0596546121, 0.0505393818, 0.0178438909, 0.0103130331]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0577291436 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0102075608, 0.0195285045, 0.0683543682, 0.0577291436, 0.0179718807, 0.0124845877]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0620023422 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.013892821, 0.023391515, 0.0716838, 0.0620023422, 0.0331615061, 0.0133915395]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0776047111 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00972667802, 0.170913979, 0.0946742296, 0.0776047111, 0.0121575017, 0.00649580453]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.060755726 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.011051055, 0.0206117406, 0.0697262064, 0.060755726, 0.0296800975, 0.0200675093]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0465921946 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00265956088, 0.00670467271, 0.055257231, 0.0465921946, 0.0157812536, 0.00808284059]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0473178625 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00661302498, 0.0124636926, 0.0541251712, 0.0473178625, 0.0233673584, 0.0168098826]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0656896159 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0114238085, 0.0219820905, 0.0751089826, 0.0656896159, 0.0350883603, 0.020935934]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0572225638 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00625868281, 0.0159350429, 0.0667730197, 0.0572225638, 0.0295709372, 0.00847051106]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0522203892 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00691617234, 0.0130549073, 0.0615634, 0.0522203892, 0.0193137228, 0.0103829913]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.037102446 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00200650212, 0.00482689636, 0.0428853221, 0.037102446, 0.017197527, 0.0107443426]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.052517537 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00423872797, 0.0127532827, 0.0617128909, 0.052517537, 0.022286376, 0.00918586366]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0556456782 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00693069026, 0.0302860346, 0.065284051, 0.0556456782, 0.0175037943, 0.0166805871]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.066270709 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00704258354, 0.0986803472, 0.0788371637, 0.066270709, 0.0205876026, 0.0114221731]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0451020524 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00296883541, 0.00635333685, 0.0509958416, 0.0451020524, 0.0296939518, 0.0133598298]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0456657745 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00552372821, 0.0101245791, 0.0538289845, 0.0456657745, 0.0161507614, 0.00987507869]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0541413166 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00993209053, 0.0173030719, 0.0621385835, 0.0541413166, 0.0263616946, 0.0179428235]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0518983416 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00676687295, 0.0133205205, 0.0601807274, 0.0518983416, 0.0261723213, 0.011365274]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.041074872 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00246408931, 0.00601715222, 0.0475497879, 0.041074872, 0.0227773562, 0.0075730728]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0482887737 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00401939126, 0.0109535865, 0.0565048158, 0.0482887737, 0.0215194412, 0.00932976417]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0625265539 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00731154531, 0.0176833272, 0.0740087703, 0.0625265539, 0.023119282, 0.0100760721]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0527828932 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00718237692, 0.0160537325, 0.0586923361, 0.0527828932, 0.0309146903, 0.027375564]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0531627 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0100867525, 0.0184391495, 0.0622071624, 0.0531627, 0.0253675375, 0.00860214233]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0407385603 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0020940972, 0.00482242694, 0.04645532, 0.0407385603, 0.0263948143, 0.00934825093]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0607605949 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00660060765, 0.104891799, 0.0725406334, 0.0607605949, 0.0196227282, 0.00765811885]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0531662703 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00693361694, 0.0127888257, 0.0623456426, 0.0531662703, 0.0221537501, 0.0107437987]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0650038421 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0115691507, 0.0222381633, 0.0761314109, 0.0650038421, 0.0267997179, 0.0141873751]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0509049 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00716613745, 0.0132048456, 0.0598516427, 0.0509049, 0.0191133507, 0.0111225005]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0423772223 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00255460967, 0.00682028, 0.0497914813, 0.0423772223, 0.0163826644, 0.00905770436]
+
+Training Epoch: 11
+Loss 'Supervised_PINNS': 0.0541604422
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00731787551 0.0283967871 0.0633077249 0.0541604422 0.0225808118 0.0125601282]
+Current Time: 14:22:24
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_11'
+Visualization of validation results in 'c_p_scatterplot_epoch_11'
+Visualization of validation results in 'rho_kde_epoch_11'
+Visualization of validation results in 'rho_scatterplot_epoch_11'
+Visualization of validation results in 'T_kde_epoch_11'
+Visualization of validation results in 'T_scatterplot_epoch_11'
+
+Validation Epoch: 11
+Loss 'Supervised_PINNS': 0.052867204
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.0068395 , 0.02588551, 0.06196602, 0.0528672 , 0.01994598,
+       0.01299788])
+Current Time: 14:22:33
+
+-----------------------------------------------------------------------------
+Training Epoch: 12
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0504692532 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00587423379, 0.0133435056, 0.058317598, 0.0504692532, 0.021983631, 0.016168097]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0593261421 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0105757127, 0.0223350227, 0.0694066361, 0.0593261421, 0.0252816342, 0.012726659]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0399576463 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00198717439, 0.0047856993, 0.0461744107, 0.0399576463, 0.019222647, 0.0109585328]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0830130577 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0150405616, 0.115074009, 0.0992108, 0.0830130577, 0.0248769373, 0.0115671773]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0566075295 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00644210493, 0.103226952, 0.0673855916, 0.0566075295, 0.0181710981, 0.00881943572]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0445279963 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00596847152, 0.0112344772, 0.0523404479, 0.0445279963, 0.0207541883, 0.00580217037]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0713072717 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.019026259, 0.033018481, 0.08454106, 0.0713072717, 0.0273138098, 0.00943041779]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0678248107 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0079432847, 0.122820951, 0.0806864053, 0.0678248107, 0.0189146809, 0.0138421403]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.051710438 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00476352, 0.0127718486, 0.0612967722, 0.051710438, 0.0164348893, 0.0102952924]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0595674366 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0136262178, 0.0239711683, 0.0697839707, 0.0595674366, 0.0210745446, 0.0163280237]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0474410541 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00253966078, 0.00861657504, 0.0559171289, 0.0474410541, 0.0157882832, 0.011285211]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0736239403 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0143579571, 0.0952771604, 0.086512439, 0.0736239403, 0.0261462927, 0.0179935582]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.063179858 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00660500908, 0.100924812, 0.0743201151, 0.063179858, 0.0224014409, 0.0148362014]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0523047037 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010034862, 0.0180362687, 0.0625339895, 0.0523047037, 0.0161205567, 0.0066545778]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0446334146 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00579984626, 0.0106204441, 0.0515631139, 0.0446334146, 0.0226186719, 0.0112105459]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0590818226 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00606574072, 0.0988151133, 0.0703708604, 0.0590818226, 0.014999439, 0.0128519014]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0530743897 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104620531, 0.0185804721, 0.0628494546, 0.0530743897, 0.0188059695, 0.009142261]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0484615974 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00650456, 0.0115978718, 0.0549270324, 0.0484615974, 0.0274614617, 0.0177382156]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0600333698 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00595560484, 0.0531534813, 0.0699920654, 0.0600333698, 0.0254282095, 0.014968954]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0509025976 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0037800821, 0.0106523177, 0.0595600456, 0.0509025976, 0.0220568962, 0.0104887011]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.051819779 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00614892459, 0.0126776472, 0.0603087433, 0.051819779, 0.0222925358, 0.0134353116]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0591786951 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0107924594, 0.0192607082, 0.0693892613, 0.0591786951, 0.0250717811, 0.0116010755]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0638209 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0117687918, 0.020836249, 0.0740099922, 0.0638209, 0.031640444, 0.0144886151]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0426933132 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00574580161, 0.0103310747, 0.0500607453, 0.0426933132, 0.0188864507, 0.00756074721]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0618652254 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00703891879, 0.113289207, 0.0735439733, 0.0618652254, 0.0144497501, 0.0158506911]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0594699644 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00758077623, 0.0162748, 0.070337221, 0.0594699644, 0.0208909065, 0.0111109652]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0456645936 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00319413026, 0.00689076027, 0.0531444885, 0.0456645936, 0.0187942572, 0.0126958033]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.044932086 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00328794122, 0.00763828494, 0.0513974279, 0.044932086, 0.0270631984, 0.0110782348]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0570119098 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0108504938, 0.0195909161, 0.0673983172, 0.0570119098, 0.0201506987, 0.0107818535]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0396184064 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00202289782, 0.00467269262, 0.0459387898, 0.0396184064, 0.0205294564, 0.00814429298]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0451840162 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00708243297, 0.0128221661, 0.0523547828, 0.0451840162, 0.01874483, 0.0142570632]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0603669733 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00763205672, 0.0160196126, 0.0684342459, 0.0603669733, 0.0370208174, 0.0191749148]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0632038713 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00693284161, 0.0961087, 0.0743479952, 0.0632038713, 0.0243332684, 0.0129214404]
+
+Training Epoch: 12
+Loss 'Supervised_PINNS': 0.0537379272
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00732103828 0.0287167281 0.0628766119 0.0537379272 0.0223408435 0.012025876]
+Current Time: 14:25:23
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_12'
+Visualization of validation results in 'c_p_scatterplot_epoch_12'
+Visualization of validation results in 'rho_kde_epoch_12'
+Visualization of validation results in 'rho_scatterplot_epoch_12'
+Visualization of validation results in 'T_kde_epoch_12'
+Visualization of validation results in 'T_scatterplot_epoch_12'
+
+Validation Epoch: 12
+Loss 'Supervised_PINNS': 0.0531510301
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00649703, 0.03376656, 0.06216003, 0.05315103, 0.0182887 ,
+       0.01594138])
+Current Time: 14:25:32
+
+-----------------------------------------------------------------------------
+Training Epoch: 13
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0459962711 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00265903748, 0.00630269246, 0.0542298816, 0.0459962711, 0.0117283072, 0.0143953525]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0427801535 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00563978031, 0.0104152476, 0.0506299697, 0.0427801535, 0.0150287226, 0.00773308147]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0449721813 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00309435, 0.00729457801, 0.0535196103, 0.0449721813, 0.0147484187, 0.00681648124]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0632936433 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0067299311, 0.114574403, 0.0766394213, 0.0632936433, 0.0102885533, 0.00953249447]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0386832952 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00220717629, 0.00529358955, 0.044838, 0.0386832952, 0.0185736865, 0.00955524482]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0434436426 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00286807958, 0.00749172503, 0.0512382388, 0.0434436426, 0.0149337891, 0.00959671661]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0644827485 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0141134514, 0.0243609939, 0.0758103207, 0.0644827485, 0.024301745, 0.0140431514]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0516952164 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0046162433, 0.0106366621, 0.0589775704, 0.0516952164, 0.0286889561, 0.0164426323]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.057068523 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00674432656, 0.0128737241, 0.0672482, 0.057068523, 0.0226551052, 0.0100445077]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.042252861 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00562513201, 0.0120954439, 0.0491338558, 0.042252861, 0.0217949562, 0.00766281737]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0582954362 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00616335077, 0.0835748315, 0.0704120323, 0.0582954362, 0.0111050876, 0.00855301693]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0735952109 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0225889627, 0.0385015532, 0.0871843323, 0.0735952109, 0.0262874328, 0.0121899489]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0638120621 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00668977061, 0.0749961808, 0.0743577406, 0.0638120621, 0.0257738847, 0.0174848363]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0667071342 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0147705488, 0.0261739548, 0.0787612274, 0.0667071342, 0.0258983355, 0.0110830814]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0416961201 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00247498741, 0.00565293385, 0.0487820692, 0.0416961201, 0.0184441768, 0.00826046709]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0626749471 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0106783258, 0.0190828964, 0.0726048127, 0.0626749471, 0.033290334, 0.0126205804]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.055140771 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103422636, 0.0182266142, 0.0650794432, 0.055140771, 0.0190225635, 0.011749614]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.043813765 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00264539942, 0.00767205423, 0.0509069674, 0.043813765, 0.0241121631, 0.00676973071]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0548731573 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0101169264, 0.0177468229, 0.0642487779, 0.0548731573, 0.0236045178, 0.0111368177]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0503982343 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00897712167, 0.0158428941, 0.0597471446, 0.0503982343, 0.016292138, 0.0097130388]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0484951511 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00315872044, 0.0303824041, 0.0549503602, 0.0484951511, 0.0220430084, 0.0233056471]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0378157906 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00531422859, 0.0100433873, 0.0441873223, 0.0378157906, 0.016711209, 0.00794814527]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0516339205 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0072080153, 0.0128316358, 0.0608595908, 0.0516339205, 0.0185195785, 0.0109428922]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0584519 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0106577799, 0.0195144136, 0.0683900937, 0.0584519, 0.0263372064, 0.0110610109]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0769122541 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00998084527, 0.178831577, 0.0923270881, 0.0769122541, 0.0222016498, 0.008304107]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0483677611 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00639294786, 0.0137363411, 0.0566681661, 0.0483677611, 0.0194441862, 0.0108881071]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0414449833 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0064217425, 0.011344525, 0.0466207303, 0.0414449833, 0.0236821752, 0.0178017914]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.051134292 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0068324469, 0.0122301383, 0.0602320246, 0.051134292, 0.0194305368, 0.0100561734]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0619642138 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0143811526, 0.0243073851, 0.072279349, 0.0619642138, 0.0294392332, 0.011968134]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0629890785 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0141978962, 0.0240633991, 0.0731004179, 0.0629890785, 0.0343514904, 0.0107359439]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0434657633 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0058272, 0.0112637952, 0.0504214428, 0.0434657633, 0.0217839982, 0.00950205885]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.082695283 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0155984992, 0.105102591, 0.0992658511, 0.082695283, 0.0194692146, 0.0133567788]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0559329577 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0106831677, 0.0196414981, 0.0664240345, 0.0559329577, 0.0208827816, 0.00705451518]
+
+Training Epoch: 13
+Loss 'Supervised_PINNS': 0.053608194
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00738318777 0.0298193898 0.0628012717 0.053608194 0.0220438913 0.0116265761]
+Current Time: 14:28:23
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_13'
+Visualization of validation results in 'c_p_scatterplot_epoch_13'
+Visualization of validation results in 'rho_kde_epoch_13'
+Visualization of validation results in 'rho_scatterplot_epoch_13'
+Visualization of validation results in 'T_kde_epoch_13'
+Visualization of validation results in 'T_scatterplot_epoch_13'
+
+Validation Epoch: 13
+Loss 'Supervised_PINNS': 0.0545404255
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00861075, 0.0232288 , 0.06348883, 0.05454043, 0.02405219,
+       0.01344141])
+Current Time: 14:28:31
+
+-----------------------------------------------------------------------------
+Training Epoch: 14
+    Batch: 0 || Loss 'Supervised_PINNS': 0.056975387 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0130482465, 0.0224049091, 0.0655802861, 0.056975387, 0.0237381682, 0.021373421]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0404326059 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00210429612, 0.00561176613, 0.0469462425, 0.0404326059, 0.0213373899, 0.00741874427]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0505321622 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00721265376, 0.0156421158, 0.059172567, 0.0505321622, 0.0208891258, 0.0110519528]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0704616085 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0105241612, 0.0858496502, 0.0841136, 0.0704616085, 0.0237027891, 0.00800453592]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.045001924 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0056007565, 0.00990607496, 0.0513443351, 0.045001924, 0.0255716313, 0.0136929341]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0409972109 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00563365733, 0.0127545847, 0.0471243411, 0.0409972109, 0.0252633132, 0.00771408]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0451026931 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00344330934, 0.00722592371, 0.0517887063, 0.0451026931, 0.0196947977, 0.0170225054]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0555898249 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00999421906, 0.0177006293, 0.0659588054, 0.0555898249, 0.0221694149, 0.00605836418]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0567314886 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00516430521, 0.028881764, 0.0676599815, 0.0567314886, 0.0169222243, 0.00911278557]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0521027595 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00994278211, 0.0172156449, 0.0590110905, 0.0521027595, 0.0325165391, 0.01642235]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0558936 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0082416907, 0.0168883409, 0.0636379048, 0.0558936, 0.0264187455, 0.023414012]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.058544904 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00639383635, 0.113469757, 0.0695339739, 0.058544904, 0.0207482, 0.00842908118]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0442725383 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00268902443, 0.00699754572, 0.0511385389, 0.0442725383, 0.0190966912, 0.0145203499]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0475078449 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0092747258, 0.0160838589, 0.0564004965, 0.0475078449, 0.0168862864, 0.00698815752]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0530394092 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00677998038, 0.0125993704, 0.0620285906, 0.0530394092, 0.0213008579, 0.0128644723]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0516008884 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.005783448, 0.0114898151, 0.0608960055, 0.0516008884, 0.0159960538, 0.0128447674]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0687470362 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0089519145, 0.1086796, 0.0818221942, 0.0687470362, 0.0194355026, 0.0134573337]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0590869263 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0111657344, 0.0202813242, 0.0693192557, 0.0590869263, 0.0218032673, 0.0145119242]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0615345165 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00645969203, 0.110519789, 0.0736648664, 0.0615345165, 0.0177745484, 0.0082516633]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0867110863 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0265215486, 0.0479395576, 0.102638453, 0.0867110863, 0.0286279488, 0.0173752569]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0488321297 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00944428518, 0.0165763963, 0.0564081483, 0.0488321297, 0.0262235478, 0.0108325556]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0575292 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00772064505, 0.0146164931, 0.0675803348, 0.0575292, 0.01905079, 0.0155985048]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0504502654 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00650099292, 0.0132598234, 0.0589772202, 0.0504502654, 0.0195857342, 0.0130991107]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0588695295 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00824253075, 0.114258878, 0.0707547888, 0.0588695295, 0.0150296809, 0.00762730418]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0496657975 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00625960901, 0.0121252881, 0.0574582703, 0.0496657975, 0.028959943, 0.00803185441]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0437929183 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00237750332, 0.00642269524, 0.0511376746, 0.0437929183, 0.0145185348, 0.0143092442]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0613850951 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00811042916, 0.0177072827, 0.0719354525, 0.0613850951, 0.026824791, 0.0115425242]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0599328466 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0107665798, 0.019881228, 0.0693887845, 0.0599328466, 0.0266595, 0.0175586678]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0565601662 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00582601, 0.0822516754, 0.0668408796, 0.0565601662, 0.0183285326, 0.0125460736]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0563081279 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00615815585, 0.012217612, 0.0659471676, 0.0563081279, 0.0231694132, 0.0123345107]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0571267605 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0101632578, 0.0186589081, 0.066713728, 0.0571267605, 0.0229658186, 0.0145919714]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0679758191 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0148989633, 0.0276665613, 0.079927884, 0.0679758191, 0.0279079136, 0.0124271773]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0645210892 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00684683584, 0.107797384, 0.0760012642, 0.0645210892, 0.0261219256, 0.011078896]
+
+Training Epoch: 14
+Loss 'Supervised_PINNS': 0.0534774475
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00744082453 0.0299196951 0.0627071038 0.0534774475 0.0217725951 0.0113475751]
+Current Time: 14:31:21
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_14'
+Visualization of validation results in 'c_p_scatterplot_epoch_14'
+Visualization of validation results in 'rho_kde_epoch_14'
+Visualization of validation results in 'rho_scatterplot_epoch_14'
+Visualization of validation results in 'T_kde_epoch_14'
+Visualization of validation results in 'T_scatterplot_epoch_14'
+
+Validation Epoch: 14
+Loss 'Supervised_PINNS': 0.0525336899
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00640611, 0.03677193, 0.06203355, 0.05253369, 0.01934178,
+       0.00972671])
+Current Time: 14:31:30
+
+-----------------------------------------------------------------------------
+Training Epoch: 15
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0540641844 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0101981238, 0.0178885404, 0.0639459416, 0.0540641844, 0.0200961698, 0.00897813495]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0629306659 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010290754, 0.107426137, 0.0751449689, 0.0629306659, 0.0172507446, 0.0108961556]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0375142917 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00196954375, 0.00524123432, 0.0445707, 0.0375142917, 0.0133969793, 0.00518036541]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.049726475 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00632093707, 0.0120270485, 0.0573972948, 0.049726475, 0.0262400899, 0.0118463235]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0715019 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0186790582, 0.0314770304, 0.0826143548, 0.0715019, 0.0381404459, 0.0159637369]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0360216685 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00174379814, 0.0058010905, 0.0413475595, 0.0360216685, 0.0215701088, 0.00786609203]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.061249271 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0141635491, 0.0246407669, 0.0729260072, 0.061249271, 0.0204280149, 0.00865665451]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0869620293 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0156880934, 0.136364952, 0.102325492, 0.0869620293, 0.0289946105, 0.0220217593]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0450575203 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00590915, 0.0110734226, 0.0530111603, 0.0450575203, 0.0166737884, 0.00981210545]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0502264 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00359984976, 0.00882599875, 0.0579920225, 0.0502264, 0.0266403407, 0.0116874985]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0470510609 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00266349805, 0.00628196402, 0.0533578061, 0.0470510609, 0.0293598641, 0.0142882708]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0430097617 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0022887059, 0.00697407359, 0.0505238213, 0.0430097617, 0.0180626214, 0.00784440897]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0515138134 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00661954144, 0.0133469785, 0.0598714948, 0.0515138134, 0.0289348625, 0.00723129697]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0463470556 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00323032332, 0.0072644758, 0.0533783324, 0.0463470556, 0.0242585447, 0.0121853426]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0586159825 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0132421181, 0.0230535511, 0.0687610433, 0.0586159825, 0.0229050666, 0.0131663978]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0611782335 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00837275386, 0.0190496147, 0.0724775195, 0.0611782335, 0.0226950627, 0.00926712342]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0566199683 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0114592165, 0.0200684909, 0.0663434789, 0.0566199683, 0.0229349248, 0.0125169046]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0749300644 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0122991139, 0.0958559, 0.0889408588, 0.0749300644, 0.0245318972, 0.0132418629]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.042916324 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00238639466, 0.0061085, 0.0503572226, 0.042916324, 0.0142086539, 0.012096785]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0639157593 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103720194, 0.101990782, 0.0767712072, 0.0639157593, 0.017717367, 0.00727059972]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0728767738 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103168404, 0.0898562297, 0.0850885436, 0.0728767738, 0.0335849226, 0.0144744711]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.103004277 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0151314056, 0.308421314, 0.123142697, 0.103004277, 0.0279252548, 0.0169759076]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0572406724 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0109430542, 0.0190941803, 0.0648714602, 0.0572406724, 0.0314799957, 0.0219550468]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0561938 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0106294947, 0.0191225484, 0.0671452209, 0.0561938, 0.015644934, 0.00913129095]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0397339202 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00320659508, 0.0068959929, 0.0458142757, 0.0397339202, 0.0208922364, 0.00993274711]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0591317415 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104821967, 0.0213478822, 0.0706867874, 0.0591317415, 0.0192309264, 0.00659219548]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0480184779 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00363342091, 0.0175370015, 0.0554793142, 0.0480184779, 0.0232640412, 0.0130862556]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0349156633 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00163036166, 0.00539017888, 0.0404034443, 0.0349156633, 0.0156996381, 0.0102294069]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0629265234 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0111346552, 0.0218606219, 0.0747264251, 0.0629265234, 0.0219510235, 0.00950279832]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0559728406 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00617074361, 0.0981285945, 0.0672676, 0.0559728406, 0.0146701392, 0.00691746781]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0613767169 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00695416378, 0.109608762, 0.0721043944, 0.0613767169, 0.0250576623, 0.0118743349]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.042639181 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00373428129, 0.00754500227, 0.0497008972, 0.042639181, 0.0194921959, 0.00929241534]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0447014719 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00218636263, 0.00577900419, 0.0531458, 0.0447014719, 0.0115650631, 0.0102832606]
+
+Training Epoch: 15
+Loss 'Supervised_PINNS': 0.0532708801
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00740226777 0.0302745365 0.0625345334 0.0532708801 0.0216786359 0.0107547883]
+Current Time: 14:34:20
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_15'
+Visualization of validation results in 'c_p_scatterplot_epoch_15'
+Visualization of validation results in 'rho_kde_epoch_15'
+Visualization of validation results in 'rho_scatterplot_epoch_15'
+Visualization of validation results in 'T_kde_epoch_15'
+Visualization of validation results in 'T_scatterplot_epoch_15'
+
+Validation Epoch: 15
+Loss 'Supervised_PINNS': 0.0546194948
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00899597, 0.0219989 , 0.06383044, 0.05461949, 0.02465918,
+       0.01089222])
+Current Time: 14:34:28
+
+-----------------------------------------------------------------------------
+Training Epoch: 16
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0427699 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00256010378, 0.0059783007, 0.0488991775, 0.0427699, 0.022004135, 0.0145014264]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0632896051 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00834585633, 0.0733706653, 0.0751553103, 0.0632896051, 0.020172637, 0.0114809191]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0476682484 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00606876379, 0.0111501673, 0.0552943535, 0.0476682484, 0.0251282714, 0.00919937342]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.046519652 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00248537608, 0.0062647257, 0.0527389, 0.046519652, 0.030947946, 0.0123373587]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.055391185 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0133820772, 0.0232476946, 0.0652092621, 0.055391185, 0.0237927884, 0.00844492298]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0619477741 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0111503182, 0.020098554, 0.0725808442, 0.0619477741, 0.0236412548, 0.0151897138]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0379754826 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00170861406, 0.00433051, 0.0438730828, 0.0379754826, 0.0205708779, 0.00819929875]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0554763041 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0135922777, 0.0235784035, 0.0655542091, 0.0554763041, 0.0221202038, 0.00820916891]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0488894396 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00319700711, 0.00769117055, 0.0569118746, 0.0488894396, 0.0218515564, 0.0117478538]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0444945358 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00602785731, 0.0118889622, 0.0529495366, 0.0444945358, 0.0160824955, 0.00526655326]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.057593219 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00603139261, 0.102832861, 0.0676282942, 0.057593219, 0.0201022793, 0.0148035688]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0525466613 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00788663141, 0.0246320758, 0.0626924783, 0.0525466613, 0.0170615762, 0.00686521269]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0463847965 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00603679, 0.0120439902, 0.0541367717, 0.0463847965, 0.0207030475, 0.0100507531]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0506272316 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00346630742, 0.00782895181, 0.0587515123, 0.0506272316, 0.0216280334, 0.0146322045]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0522106327 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00995143224, 0.0177092943, 0.0603515618, 0.0522106327, 0.0240181684, 0.0152756693]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0430298783 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00204940746, 0.00525395572, 0.0493608229, 0.0430298783, 0.0213314127, 0.0140807722]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0629815087 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00972969737, 0.0971915424, 0.0750651434, 0.0629815087, 0.0191400684, 0.0101539027]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0614648946 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0110554695, 0.0208260491, 0.0720846653, 0.0614648946, 0.0292669162, 0.00870471634]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0547673516 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010755863, 0.0217723399, 0.0645991638, 0.0547673516, 0.0214412212, 0.00943898689]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0634443313 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00855378155, 0.10148757, 0.076277107, 0.0634443313, 0.014987126, 0.0092393076]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0403559022 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00441141287, 0.00847788807, 0.0468613394, 0.0403559022, 0.0164700374, 0.0121982712]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0740571171 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00928160734, 0.145176739, 0.0894368663, 0.0740571171, 0.016429618, 0.00864651799]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0544109792 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00772837317, 0.014077316, 0.0646190047, 0.0544109792, 0.0131992307, 0.0139585007]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0494574 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00742093474, 0.0214705, 0.0579947233, 0.0494574, 0.0176279843, 0.0129882349]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0510861836 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0115173524, 0.0190619901, 0.0577611066, 0.0510861836, 0.0298681483, 0.0189048387]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.040322952 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00236608577, 0.00565358205, 0.0480014384, 0.040322952, 0.00839703158, 0.0108209495]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0494605191 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00645579398, 0.0123920897, 0.0574766062, 0.0494605191, 0.023868762, 0.0109235868]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0423489735 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00437077275, 0.00867713057, 0.0502323806, 0.0423489735, 0.0100822244, 0.0115484502]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.045201879 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00577380322, 0.0105268396, 0.0521523245, 0.045201879, 0.024372641, 0.0104275253]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0549165048 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00951457676, 0.0172204468, 0.0647087693, 0.0549165048, 0.0226197653, 0.00887508318]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0736509189 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0120807886, 0.121399879, 0.0876747072, 0.0736509189, 0.023250863, 0.0118606566]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0741138086 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0147890551, 0.116999499, 0.0875200257, 0.0741138086, 0.0341070183, 0.00687084626]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0640159324 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00648203865, 0.105325371, 0.0766043514, 0.0640159324, 0.0208816566, 0.00644290075]
+
+Training Epoch: 16
+Loss 'Supervised_PINNS': 0.0531230681
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00738249766 0.0305041745 0.0624014586 0.0531230681 0.0212529134 0.0107694939]
+Current Time: 14:37:19
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_16'
+Visualization of validation results in 'c_p_scatterplot_epoch_16'
+Visualization of validation results in 'rho_kde_epoch_16'
+Visualization of validation results in 'rho_scatterplot_epoch_16'
+Visualization of validation results in 'T_kde_epoch_16'
+Visualization of validation results in 'T_scatterplot_epoch_16'
+
+Validation Epoch: 16
+Loss 'Supervised_PINNS': 0.054028552
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.0088176 , 0.02273034, 0.06377069, 0.05402855, 0.01973186,
+       0.01038816])
+Current Time: 14:37:27
+
+-----------------------------------------------------------------------------
+Training Epoch: 17
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0424077474 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00557450205, 0.0101093212, 0.0504943244, 0.0424077474, 0.0116707124, 0.00845215]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0677178949 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0181269627, 0.0319067948, 0.0796140134, 0.0677178949, 0.0306777917, 0.00958908163]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0591304377 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0105589442, 0.019875681, 0.0701112673, 0.0591304377, 0.0198123027, 0.0106019387]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.104235843 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0200399701, 0.252824396, 0.126862392, 0.104235843, 0.0129255578, 0.0145337284]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.05066837 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00351644796, 0.00847902242, 0.0592832528, 0.05066837, 0.0207020566, 0.0117155742]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0397529826 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00397658208, 0.00767176272, 0.0451810509, 0.0397529826, 0.0245687254, 0.0115126725]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0413971767 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00224221847, 0.00556475716, 0.0481241234, 0.0413971767, 0.0209954716, 0.00798330456]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0720417723 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0153106702, 0.0293158498, 0.0851829872, 0.0720417723, 0.0266743936, 0.0122794062]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.050635621 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0099285068, 0.0172133986, 0.0596389472, 0.050635621, 0.0232339688, 0.00601062644]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0511744134 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00698006386, 0.0131767364, 0.0603707433, 0.0511744134, 0.0204172246, 0.00836091675]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0492812507 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00775192492, 0.0392874926, 0.058119718, 0.0492812507, 0.0194570161, 0.00839773752]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0530865639 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00685732951, 0.0142149059, 0.0630958155, 0.0530865639, 0.0140195051, 0.0120796105]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0751875564 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0143238781, 0.116115533, 0.0897592232, 0.0751875564, 0.0217818283, 0.0120199155]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0572699271 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0100155901, 0.0178741757, 0.0681713149, 0.0572699271, 0.0180233717, 0.00930538]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.03860626 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00554141402, 0.0096821, 0.0452214591, 0.03860626, 0.0161414593, 0.00814943202]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0612303279 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0134674618, 0.0235078856, 0.072349377, 0.0612303279, 0.0217693988, 0.0117388386]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0418996476 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00239405804, 0.00618829764, 0.0494079292, 0.0418996476, 0.0149088902, 0.00882417522]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0469148494 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00530257402, 0.0119845159, 0.0555735528, 0.0469148494, 0.018212596, 0.0063474318]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0567154065 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00635585422, 0.0831420943, 0.0662847683, 0.0567154065, 0.0177822784, 0.0190936327]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0610914081 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104754968, 0.0195271894, 0.0720083639, 0.0610914081, 0.0268813483, 0.00796577893]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0509696752 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00343193766, 0.012937407, 0.0591663718, 0.0509696752, 0.0280520618, 0.00831369497]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.080152005 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010555909, 0.207939252, 0.0974001, 0.080152005, 0.0150621757, 0.00725712208]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0627924576 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0145187452, 0.0255122688, 0.074436523, 0.0627924576, 0.0204766728, 0.0119557325]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0692307949 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0186797138, 0.0321742, 0.0815884694, 0.0692307949, 0.0276698079, 0.0119303921]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0434271 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00243875827, 0.00615631975, 0.0514118262, 0.0434271, 0.0122247338, 0.0107516171]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0603354685 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0139703797, 0.0249003395, 0.0710555762, 0.0603354685, 0.0283854101, 0.00652464945]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0510559082 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00522257527, 0.0100028357, 0.0591713898, 0.0510559082, 0.0153663307, 0.0218216255]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0386833251 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00188316358, 0.00580517389, 0.0443486385, 0.0386833251, 0.0241562538, 0.00788787]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0568923205 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103805652, 0.0183111429, 0.0669646338, 0.0568923205, 0.0203156658, 0.0128904656]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0388966128 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00204575271, 0.00488850893, 0.0455980934, 0.0388966128, 0.0153520387, 0.00882933382]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0708200634 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0105299316, 0.0976621881, 0.0841245428, 0.0708200634, 0.0223986786, 0.0128056454]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.046564281 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00260018581, 0.00693614921, 0.0545153432, 0.046564281, 0.019097399, 0.0104226358]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0424929224 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00625464832, 0.0112242075, 0.0498753488, 0.0424929224, 0.0192381162, 0.00668829773]
+
+Training Epoch: 17
+Loss 'Supervised_PINNS': 0.0527586192
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00735156704 0.03014265 0.062072318 0.0527586192 0.0207606312 0.010247631]
+Current Time: 14:40:18
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_17'
+Visualization of validation results in 'c_p_scatterplot_epoch_17'
+Visualization of validation results in 'rho_kde_epoch_17'
+Visualization of validation results in 'rho_scatterplot_epoch_17'
+Visualization of validation results in 'T_kde_epoch_17'
+Visualization of validation results in 'T_scatterplot_epoch_17'
+
+Validation Epoch: 17
+Loss 'Supervised_PINNS': 0.0520771258
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00737288, 0.02591047, 0.06168078, 0.05207713, 0.01900118,
+       0.00832382])
+Current Time: 14:40:26
+
+-----------------------------------------------------------------------------
+Training Epoch: 18
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0623038374 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0144237094, 0.024781378, 0.0731385723, 0.0623038374, 0.0287743695, 0.00915541]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0557207726 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00558929518, 0.106157064, 0.0650601909, 0.0557207726, 0.0279359594, 0.00879024807]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0708776191 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0190751459, 0.0323146619, 0.0831900388, 0.0708776191, 0.0264716484, 0.0167842228]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0499532185 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00598298339, 0.0127169304, 0.0568504147, 0.0499532185, 0.0274702404, 0.0172586143]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0616340712 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0179176088, 0.0305544436, 0.0728589296, 0.0616340712, 0.0248155333, 0.0086537376]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0527754575 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00658871559, 0.0131656453, 0.0606464557, 0.0527754575, 0.0249265861, 0.0176563561]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0413926654 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0021219335, 0.00588759594, 0.0484061725, 0.0413926654, 0.0188847966, 0.00779246259]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0424227491 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00579952216, 0.0100057302, 0.0483388193, 0.0424227491, 0.0278726593, 0.00964426715]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0384532101 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0022679423, 0.00545104081, 0.0451029688, 0.0384532101, 0.0148596596, 0.00884869136]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0517385341 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00904282, 0.0161050167, 0.0612964295, 0.0517385341, 0.0175469965, 0.00946690794]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0437773764 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00349013018, 0.00787997432, 0.0507176518, 0.0437773764, 0.0199487377, 0.0120837865]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0370318 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00194034039, 0.00608347, 0.0434921794, 0.0370318, 0.0173586644, 0.00502188411]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0614026748 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0121343145, 0.0238338057, 0.0737007484, 0.0614026748, 0.0174073279, 0.00701346062]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0626009 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0101027116, 0.10775888, 0.0742741823, 0.0626009, 0.024519207, 0.00729641085]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0508158393 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00712953741, 0.0160019491, 0.0593045801, 0.0508158393, 0.0261601508, 0.00756160729]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0717154816 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.013343446, 0.0700611323, 0.0841254219, 0.0717154816, 0.0308145694, 0.0133368373]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0619181 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00645827549, 0.103759699, 0.0736200809, 0.0619181, 0.0184140168, 0.0118062887]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0421108045 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00222939369, 0.00614223816, 0.0480751581, 0.0421108045, 0.0256968979, 0.0108098462]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0438209772 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00641046232, 0.0125051467, 0.0518823862, 0.0438209772, 0.0168192424, 0.00633142609]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0494737141 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00943171047, 0.0165116116, 0.0578468181, 0.0494737141, 0.0259588473, 0.00600371696]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.07216236 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0139200874, 0.124054514, 0.0872103646, 0.07216236, 0.0164744668, 0.00746613648]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0519667827 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00840161, 0.0162689611, 0.0610615201, 0.0519667827, 0.0167018808, 0.0144737475]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0569193251 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104495352, 0.0199000556, 0.0667063072, 0.0569193251, 0.0282886121, 0.00725415256]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0472603738 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00637448393, 0.012690004, 0.0554754622, 0.0472603738, 0.0201904625, 0.00860956684]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0593197569 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0117871268, 0.0207767654, 0.0693829134, 0.0593197569, 0.0238620713, 0.0142721971]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0529725328 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00667592883, 0.0132188499, 0.0617798865, 0.0529725328, 0.0264996793, 0.00898656249]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0535146 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00931851473, 0.0167417843, 0.0627080798, 0.0535146, 0.0220767241, 0.0114046112]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0663756505 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00715253688, 0.107315324, 0.0809277594, 0.0663756505, 0.00832623, 0.00800815225]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0492018 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00642597815, 0.0135324532, 0.0558756, 0.0492018, 0.0352823287, 0.00973085128]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0372772887 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00149144558, 0.00479103671, 0.0425425731, 0.0372772887, 0.023100175, 0.00933210365]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0537691601 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0101153925, 0.0184552073, 0.0626932755, 0.0537691601, 0.0219320171, 0.0142133674]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0672414899 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0182573, 0.0315708481, 0.0801699683, 0.0672414899, 0.0231088288, 0.00794636924]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0707322061 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0216771197, 0.036254786, 0.0826893896, 0.0707322061, 0.0326627381, 0.013144156]
+
+Training Epoch: 18
+Loss 'Supervised_PINNS': 0.0524907708
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00731420703 0.0298290979 0.0618061237 0.0524907708 0.0206560884 0.00980296358]
+Current Time: 14:43:17
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_18'
+Visualization of validation results in 'c_p_scatterplot_epoch_18'
+Visualization of validation results in 'rho_kde_epoch_18'
+Visualization of validation results in 'rho_scatterplot_epoch_18'
+Visualization of validation results in 'T_kde_epoch_18'
+Visualization of validation results in 'T_scatterplot_epoch_18'
+
+Validation Epoch: 18
+Loss 'Supervised_PINNS': 0.0601296201
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00665313, 0.10061699, 0.07235513, 0.06012962, 0.01483578,
+       0.00761936])
+Current Time: 14:43:25
+
+-----------------------------------------------------------------------------
+Training Epoch: 19
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0926776752 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0125477454, 0.231272474, 0.113348313, 0.0926776752, 0.0137771172, 0.00621313974]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0521127097 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0094151767, 0.0169879701, 0.0605420917, 0.0521127097, 0.0233532693, 0.0134370904]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0454790406 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00271686702, 0.00688217068, 0.052275572, 0.0454790406, 0.0244164299, 0.0121693555]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0426798724 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00456471, 0.00833988842, 0.0493991338, 0.0426798724, 0.0220538415, 0.00955181755]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0361173302 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00183662761, 0.0040946505, 0.0411193669, 0.0361173302, 0.0254654568, 0.00675290078]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0611661524 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00841893069, 0.0961014107, 0.0731042325, 0.0611661524, 0.0133253187, 0.0135023324]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0367482752 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00180930214, 0.00440922054, 0.0429705419, 0.0367482752, 0.0144168343, 0.00930157769]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0682793483 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0116639892, 0.0962099805, 0.0808879286, 0.0682793483, 0.0233147964, 0.0123752793]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0524821766 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00718314, 0.0138009256, 0.0615958087, 0.0524821766, 0.0223899111, 0.00966539327]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0511935279 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00989127625, 0.0189380758, 0.0603483059, 0.0511935279, 0.022434976, 0.00671388209]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0554958954 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00727884611, 0.0158783589, 0.0669194758, 0.0554958954, 0.0126568675, 0.00694629271]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0479400717 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00724349357, 0.0153873125, 0.0566667728, 0.0479400717, 0.0197642855, 0.0063022445]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0511383377 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00825159159, 0.0144453133, 0.06022631, 0.0511383377, 0.0194164049, 0.0101564657]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0620160252 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0147127248, 0.0262938682, 0.07364434, 0.0620160252, 0.0207038634, 0.0103016496]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0882356167 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0134596722, 0.211659506, 0.106563769, 0.0882356167, 0.0206785239, 0.00916751567]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0537479371 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00416475115, 0.0131193912, 0.0648854896, 0.0537479371, 0.0113582015, 0.00703725591]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0503459945 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00390464603, 0.00857641734, 0.0570358895, 0.0503459945, 0.0314635485, 0.0157093]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0496844314 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00660046237, 0.0124063306, 0.0581397414, 0.0496844314, 0.0243603326, 0.00736599881]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0798611641 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00895449147, 0.151953056, 0.095153071, 0.0798611641, 0.0246646553, 0.0127224606]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0591556653 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00625203876, 0.113567837, 0.070310019, 0.0591556653, 0.0141292075, 0.0149472859]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.041421894 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00593265472, 0.0109125413, 0.0483447313, 0.041421894, 0.0186393671, 0.00882171094]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0428510644 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00270217913, 0.00580116035, 0.0495753586, 0.0428510644, 0.0202996284, 0.0116081517]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0452089682 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00591183407, 0.0110041471, 0.0534137376, 0.0452089682, 0.0173035823, 0.00747622363]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0414053351 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00214282447, 0.00492322678, 0.0477244705, 0.0414053351, 0.0240269676, 0.00823060237]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0403767489 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00259107491, 0.00666499557, 0.0475999452, 0.0403767489, 0.0152938683, 0.0076740277]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0389566049 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00155704224, 0.00421111472, 0.0456922054, 0.0389566049, 0.0169458371, 0.00708256802]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0521463491 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0101844063, 0.0181267243, 0.0615285449, 0.0521463491, 0.0232142787, 0.0060208058]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0486607701 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00629633898, 0.011659313, 0.0575168468, 0.0486607701, 0.0185521096, 0.00792083889]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0686126724 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010816019, 0.116308153, 0.0813656896, 0.0686126724, 0.0244698972, 0.0107313301]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0391645059 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00522106513, 0.00971556734, 0.0448300876, 0.0391645059, 0.0260043088, 0.00700005423]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0410844497 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00219721347, 0.00718041556, 0.0480586, 0.0410844497, 0.0183292367, 0.00804642588]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0735280216 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00856855791, 0.121560685, 0.0888716653, 0.0735280216, 0.0164767802, 0.00783005636]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0592971295 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00672697509, 0.115278624, 0.071851857, 0.0592971295, 0.0123261781, 0.00583025534]
+
+Training Epoch: 19
+Loss 'Supervised_PINNS': 0.0522601567
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00725108711 0.0294792 0.0615427 0.0522601567 0.0206746124 0.009584466]
+Current Time: 14:46:17
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_19'
+Visualization of validation results in 'c_p_scatterplot_epoch_19'
+Visualization of validation results in 'rho_kde_epoch_19'
+Visualization of validation results in 'rho_scatterplot_epoch_19'
+Visualization of validation results in 'T_kde_epoch_19'
+Visualization of validation results in 'T_scatterplot_epoch_19'
+
+Validation Epoch: 19
+Loss 'Supervised_PINNS': 0.0523520447
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00776381, 0.02404501, 0.061792  , 0.05235204, 0.02065306,
+       0.00853135])
+Current Time: 14:46:25
+
+-----------------------------------------------------------------------------
+Training Epoch: 20
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0638477 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0165387, 0.0279645268, 0.0757778957, 0.0638477, 0.024275925, 0.00797792245]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0574556626 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00688266056, 0.0144166825, 0.0693239, 0.0574556626, 0.0140520344, 0.00591340847]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0456492826 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00265536807, 0.00679117767, 0.0546233617, 0.0456492826, 0.0135559235, 0.00594998524]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0426219553 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00232436252, 0.00595141249, 0.0497597605, 0.0426219553, 0.0221305639, 0.00601088908]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0402141921 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00226875325, 0.00519385794, 0.0464968532, 0.0402141921, 0.0174247716, 0.0127423313]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0623960495 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0171561334, 0.0287114587, 0.0738839582, 0.0623960495, 0.0271093696, 0.00577946]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0521036 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0100305183, 0.0170347653, 0.0598338954, 0.0521036, 0.032702595, 0.00966224261]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0449205935 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00529837934, 0.00986508746, 0.0531493239, 0.0449205935, 0.0160387773, 0.00797253754]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0340148956 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00146330299, 0.00376611575, 0.0403548218, 0.0340148956, 0.011253681, 0.00605669944]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.066673182 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00735955546, 0.0972088873, 0.0802236497, 0.066673182, 0.0139335077, 0.0110091334]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0454621688 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00242202799, 0.00749477325, 0.0527894497, 0.0454621688, 0.0237217061, 0.00858437736]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0823249668 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0225956198, 0.068445079, 0.0974632874, 0.0823249668, 0.0341002718, 0.00944305398]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0386424176 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00212308555, 0.00532751717, 0.0460353047, 0.0386424176, 0.0128930043, 0.00524872215]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0387951657 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00203050789, 0.0049218405, 0.0447062887, 0.0387951657, 0.022673998, 0.00762730744]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0606664419 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00647626212, 0.0982328877, 0.0727205426, 0.0606664419, 0.0181578677, 0.00674218498]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0513058379 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00639790855, 0.0164624825, 0.0595721789, 0.0513058379, 0.0225335322, 0.0139474198]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0662078559 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010976918, 0.0274466276, 0.0785521641, 0.0662078559, 0.0198417455, 0.0138194636]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0555709936 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00621273, 0.0349436514, 0.0650918856, 0.0555709936, 0.0192129444, 0.0157618746]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0458105505 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00964633655, 0.0163312647, 0.0543507487, 0.0458105505, 0.0181367546, 0.00516274711]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.04499726 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00306002307, 0.00788465235, 0.053440284, 0.04499726, 0.0113749551, 0.0110753691]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0649130791 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00694002071, 0.106659919, 0.078565605, 0.0649130791, 0.0146834115, 0.00592255546]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0370672 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00553972414, 0.0101097925, 0.0436159819, 0.0370672, 0.0166580081, 0.00508613791]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0551913418 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00693809846, 0.0143444361, 0.06394694, 0.0551913418, 0.0302149821, 0.0101229269]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0545723699 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00946259219, 0.0168484431, 0.0645422265, 0.0545723699, 0.0214700494, 0.00791584887]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0433280505 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00564572215, 0.0105851954, 0.0503007919, 0.0433280505, 0.0186115131, 0.0122626442]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0413946509 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00208896748, 0.00519174384, 0.0471193306, 0.0413946509, 0.0265903827, 0.0104014874]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0542828068 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0103873704, 0.0186076332, 0.0642200038, 0.0542828068, 0.022569675, 0.00649835775]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.0516724326 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00305266236, 0.0100616347, 0.0615142547, 0.0516724326, 0.0169317517, 0.00767853856]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.047854282 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00284132711, 0.034585882, 0.0562951155, 0.047854282, 0.014897082, 0.0132848397]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.0435225852 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00588985905, 0.0121835517, 0.0504531749, 0.0435225852, 0.0231954828, 0.00840498]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0764424875 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0116109475, 0.11861328, 0.0917853415, 0.0764424875, 0.0219503455, 0.00819176063]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0603700466 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0102112712, 0.0178648569, 0.0707368627, 0.0603700466, 0.0243884809, 0.0134170838]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.0740953386 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0138548017, 0.0969146863, 0.0881407633, 0.0740953386, 0.0240367465, 0.0117905019]
+
+Training Epoch: 20
+Loss 'Supervised_PINNS': 0.0523653962
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0073312684 0.029583497 0.0617015176 0.0523653962 0.0208235364 0.00921502803]
+Current Time: 14:49:15
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_20'
+Visualization of validation results in 'c_p_scatterplot_epoch_20'
+Visualization of validation results in 'rho_kde_epoch_20'
+Visualization of validation results in 'rho_scatterplot_epoch_20'
+Visualization of validation results in 'T_kde_epoch_20'
+Visualization of validation results in 'T_scatterplot_epoch_20'
+
+Validation Epoch: 20
+Loss 'Supervised_PINNS': 0.0510438383
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00719275, 0.02502741, 0.06027452, 0.05104384, 0.01911685,
+       0.00912538])
+Current Time: 14:49:22
+
+-----------------------------------------------------------------------------
+Training Epoch: 21
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0467638932 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00633843, 0.0115311593, 0.0559166111, 0.0467638932, 0.0125234798, 0.00778253423]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.051534351 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00881883595, 0.0148912361, 0.0607881397, 0.051534351, 0.0220870469, 0.0069513116]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0460395217 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00309356861, 0.00691752369, 0.0548303127, 0.0460395217, 0.0148297092, 0.00692302]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0390528291 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00249966467, 0.00526330573, 0.0455668904, 0.0390528291, 0.0164410286, 0.0095521491]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0394417532 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00210772501, 0.00523710204, 0.0455771647, 0.0394417532, 0.0204161946, 0.00938402116]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0492935516 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00684176804, 0.01333714, 0.0577523373, 0.0492935516, 0.0219487846, 0.00896805711]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0461168028 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00643511117, 0.0119120665, 0.0538457371, 0.0461168028, 0.0212268736, 0.00917524844]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0554519482 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00708409399, 0.0136157302, 0.0651139, 0.0554519482, 0.0175175816, 0.0160906985]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.050035391 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00729932869, 0.0136303306, 0.0589439161, 0.050035391, 0.0171458945, 0.0116566727]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0610142313 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.011505018, 0.0201686416, 0.0713465959, 0.0610142313, 0.0259312391, 0.0134383142]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0370830968 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00207600533, 0.0048027318, 0.0441985466, 0.0370830968, 0.0110692549, 0.00617331453]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0798710585 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0151262991, 0.104549818, 0.0963565111, 0.0798710585, 0.0213938877, 0.0064645512]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0506067164 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0096763242, 0.0171497688, 0.0596602224, 0.0506067164, 0.0168606639, 0.0119247176]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0312615819 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00198248844, 0.005586816, 0.0366317555, 0.0312615819, 0.0128595829, 0.00670219259]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0377163589 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00235957955, 0.0082450565, 0.0446037948, 0.0377163589, 0.0120792352, 0.00825397298]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.070754841 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0108018005, 0.116342902, 0.0843661651, 0.070754841, 0.0241748542, 0.00844425615]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0505363308 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0098609468, 0.016326895, 0.0585467182, 0.0505363308, 0.0245370306, 0.0124525251]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0395312458 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00169119227, 0.00445979834, 0.0443920493, 0.0395312458, 0.0213212855, 0.0188547764]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0580779091 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0108898133, 0.0196550842, 0.0675409585, 0.0580779091, 0.0301792324, 0.0102721583]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0519469343 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0069564674, 0.0125956833, 0.0613629185, 0.0519469343, 0.0212037843, 0.00736217201]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0469175763 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0029909506, 0.00692643551, 0.0550547242, 0.0469175763, 0.0195958875, 0.00914209243]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0461707897 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00532279024, 0.0107281348, 0.0537108332, 0.0461707897, 0.0236579664, 0.00836322177]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0541053489 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0137693444, 0.0226357281, 0.0633649081, 0.0541053489, 0.0244474858, 0.00968671]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0530626625 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00970694, 0.0166306403, 0.0612218194, 0.0530626625, 0.0289925039, 0.0118595213]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.0451845489 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00322994241, 0.00881079305, 0.0535889231, 0.0451845489, 0.0161474794, 0.00698659942]
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.0544612594 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0099474024, 0.0172789562, 0.0646666214, 0.0544612594, 0.0191522669, 0.00812734663]
+    Batch: 26000 || Loss 'Supervised_PINNS': 0.0436738729 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00593924895, 0.0105833672, 0.0513787232, 0.0436738729, 0.0156056611, 0.01010329]
+    Batch: 27000 || Loss 'Supervised_PINNS': 0.062830627 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0110544637, 0.020695392, 0.0749009773, 0.062830627, 0.0218355283, 0.00726293633]
+    Batch: 28000 || Loss 'Supervised_PINNS': 0.0553503931 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00737990858, 0.0162064433, 0.065853864, 0.0553503931, 0.0183363818, 0.00833660271]
+    Batch: 29000 || Loss 'Supervised_PINNS': 0.041522339 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00226490339, 0.00553769944, 0.0486916266, 0.041522339, 0.0182577893, 0.0074325949]
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0377458595 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00225304393, 0.00500285393, 0.0432641357, 0.0377458595, 0.0196481589, 0.0116973221]
+    Batch: 31000 || Loss 'Supervised_PINNS': 0.0476500876 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00606363406, 0.0124339024, 0.0564480275, 0.0476500876, 0.0194868334, 0.00542981178]
+    Batch: 32000 || Loss 'Supervised_PINNS': 0.039272856 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00219810638, 0.00501418626, 0.0474928506, 0.039272856, 0.00788487867, 0.00490088249]
+
+Training Epoch: 21
+Loss 'Supervised_PINNS': 0.052240245
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00729353866 0.0292373598 0.06151 0.052240245 0.0210295878 0.00929146633]
+Current Time: 14:52:11
+
+-----------------------------------------------------------------------------
+Validation Epoch
+Visualization of validation results in 'c_p_kde_epoch_21'
+Visualization of validation results in 'c_p_scatterplot_epoch_21'
+Visualization of validation results in 'rho_kde_epoch_21'
+Visualization of validation results in 'rho_scatterplot_epoch_21'
+Visualization of validation results in 'T_kde_epoch_21'
+Visualization of validation results in 'T_scatterplot_epoch_21'
+
+Validation Epoch: 21
+Loss 'Supervised_PINNS': 0.0509301163
+Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: array([0.00661969, 0.02903465, 0.06000938, 0.05093012, 0.02181901,
+       0.00740709])
+Current Time: 14:52:20
+
+-----------------------------------------------------------------------------
+Training Epoch: 22
+    Batch: 0 || Loss 'Supervised_PINNS': 0.0229026265 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.000662084902, 0.00152061821, 0.0253253337, 0.0229026265, 0.0208350904, 0.00558850821]
+    Batch: 1000 || Loss 'Supervised_PINNS': 0.0400039293 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00232859165, 0.005350661, 0.0468512215, 0.0400039293, 0.0171607099, 0.00806881487]
+    Batch: 2000 || Loss 'Supervised_PINNS': 0.0533652492 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0102156224, 0.0172747094, 0.0634365454, 0.0533652492, 0.0169074573, 0.00925264321]
+    Batch: 3000 || Loss 'Supervised_PINNS': 0.0428302027 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00558393402, 0.0104912398, 0.0498683788, 0.0428302027, 0.0219901167, 0.00736485794]
+    Batch: 4000 || Loss 'Supervised_PINNS': 0.0513325334 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00656040758, 0.0157714952, 0.0605395474, 0.0513325334, 0.0225799121, 0.00642904639]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0419601649 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0025290763, 0.00551088899, 0.0498209596, 0.0419601649, 0.0164676569, 0.0045663151]
+    Batch: 6000 || Loss 'Supervised_PINNS': 0.0464333668 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0028200876, 0.00639480399, 0.0548330434, 0.0464333668, 0.0158632509, 0.00980603509]
+    Batch: 7000 || Loss 'Supervised_PINNS': 0.0852314308 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0130338194, 0.210591927, 0.102784835, 0.0852314308, 0.0162296947, 0.0138059547]
+    Batch: 8000 || Loss 'Supervised_PINNS': 0.0572068505 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00969888549, 0.0190294255, 0.0671887919, 0.0572068505, 0.0201093666, 0.0144488011]
+    Batch: 9000 || Loss 'Supervised_PINNS': 0.0530206859 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00881312, 0.0166485738, 0.062184263, 0.0530206859, 0.0162320603, 0.0165007077]
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0569694899 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00724982889, 0.0158586, 0.0659579337, 0.0569694899, 0.0250641592, 0.0169672333]
+    Batch: 11000 || Loss 'Supervised_PINNS': 0.0522287413 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00926243514, 0.016171841, 0.0621157102, 0.0522287413, 0.0178899858, 0.00747174118]
+    Batch: 12000 || Loss 'Supervised_PINNS': 0.0618944839 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0143241771, 0.0239796415, 0.0732048154, 0.0618944839, 0.0261512548, 0.0071550454]
+    Batch: 13000 || Loss 'Supervised_PINNS': 0.0585894287 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00839137938, 0.031998802, 0.0685617849, 0.0585894287, 0.0293801613, 0.00801984221]
+    Batch: 14000 || Loss 'Supervised_PINNS': 0.0531907938 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00972190779, 0.017039001, 0.0620566308, 0.0531907938, 0.0261751022, 0.00927975494]
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0518073812 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0096985735, 0.0167704616, 0.0587215759, 0.0518073812, 0.0390831158, 0.00921806507]
+    Batch: 16000 || Loss 'Supervised_PINNS': 0.0549801253 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00960558, 0.0165823828, 0.0642034337, 0.0549801253, 0.0268983077, 0.00927545317]
+    Batch: 17000 || Loss 'Supervised_PINNS': 0.0464980192 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00610301504, 0.011388463, 0.0539513379, 0.0464980192, 0.0250866283, 0.00828284863]
+    Batch: 18000 || Loss 'Supervised_PINNS': 0.0710713267 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0193683896, 0.0385165326, 0.0836958066, 0.0710713267, 0.0334264599, 0.00772036705]
+    Batch: 19000 || Loss 'Supervised_PINNS': 0.0537690148 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0104668634, 0.0226963181, 0.0629897192, 0.0537690148, 0.0245753713, 0.00919705]
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0615965053 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0066345185, 0.0985408127, 0.0746986642, 0.0615965053, 0.013100151, 0.00527561083]
+    Batch: 21000 || Loss 'Supervised_PINNS': 0.0799945891 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.022789903, 0.0383711271, 0.0959841311, 0.0799945891, 0.0264570434, 0.005615809]
+    Batch: 22000 || Loss 'Supervised_PINNS': 0.0502265394 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.00305042323, 0.0105042579, 0.0596179552, 0.0502265394, 0.0186049528, 0.00671675755]
+    Batch: 23000 || Loss 'Supervised_PINNS': 0.0500484146 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.010299868, 0.0174611341, 0.0585770309, 0.0500484146, 0.0237198472, 0.00814803]
+    Batch: 24000 || Loss 'Supervised_PINNS': 0.083362557 || Metric ['MSE', 'RSE', 'RAE', 'Supervised_PINNS', 'RE_RealGasEq', 'RE_CpEq']: [0.0114127668, 0.21462135, 0.101005681, 0.083362557, 0.0145656317, 0.0110144289]
+^CTraceback (most recent call last):
+  File "/home/jofre/Students/Nuria_Masclans/repositories/NN_based_inference_in_High_Pressure_Transcritical_Turbulent_Channel_Flow/train_MLP_InputScalar_PINN.py", line 514, in <module>
+    mlp.fit_and_validate(dataset_tr, dataset_val, args)
+  File "/home/jofre/Students/Nuria_Masclans/repositories/NN_based_inference_in_High_Pressure_Transcritical_Turbulent_Channel_Flow/train_MLP_InputScalar_PINN.py", line 465, in fit_and_validate
+    grads, loss_batch, metric_batch = self.train_step(features, targets_gt)
+  File "/home/jofre/Students/Nuria_Masclans/miniconda3/envs/tf-gpu/lib/python3.9/site-packages/tensorflow/python/util/traceback_utils.py", line 150, in error_handler
+    return fn(*args, **kwargs)
+  File "/home/jofre/Students/Nuria_Masclans/miniconda3/envs/tf-gpu/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic_function/polymorphic_function.py", line 880, in __call__
+    result = self._call(*args, **kwds)
+  File "/home/jofre/Students/Nuria_Masclans/miniconda3/envs/tf-gpu/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic_function/polymorphic_function.py", line 919, in _call
+    results = self._variable_creation_fn(*args, **kwds)
+  File "/home/jofre/Students/Nuria_Masclans/miniconda3/envs/tf-gpu/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic_function/tracing_compiler.py", line 134, in __call__
+    return concrete_function._call_flat(
+  File "/home/jofre/Students/Nuria_Masclans/miniconda3/envs/tf-gpu/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic_function/monomorphic_function.py", line 1745, in _call_flat
+    return self._build_call_outputs(self._inference_function.call(
+  File "/home/jofre/Students/Nuria_Masclans/miniconda3/envs/tf-gpu/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic_function/monomorphic_function.py", line 378, in call
+    outputs = execute.execute(
+  File "/home/jofre/Students/Nuria_Masclans/miniconda3/envs/tf-gpu/lib/python3.9/site-packages/tensorflow/python/eager/execute.py", line 52, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+KeyboardInterrupt
