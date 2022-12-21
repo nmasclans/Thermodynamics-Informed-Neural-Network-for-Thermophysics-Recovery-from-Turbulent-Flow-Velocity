@@ -13,7 +13,7 @@ def get_arguments():
     parser.add_argument("--learning_rate", default=1e-4, type=float, help="Learning rate parameter of optimizer")
     parser.add_argument("--optimizer", default="Adam", type=str, help="Optimizer algorithm, Optimizer name")
     parser.add_argument("--loss", default="Supervised_PINNS", type=str, help="Loss function name, accepted values = ['MSE','RSE','Supervised_PINNS']")
-    parser.add_argument("--metrics", default=["MSE","RSE","RAE","Supervised_PINNS","RE_RealGasEq","RE_CpEq"], type=str, help="Metric function name")
+    parser.add_argument("--metrics", default=["MSE","RSE","RAE","RE_RealGasEq","RE_CpEq"], type=str, help="Metric function name")
     parser.add_argument("--Supervised_PINNS_weights", default="0.8, 0.1, 0.1", type=str, help="Weights of Supervised_PINNS Loss")
     parser.add_argument("--num_hidden_layers", default=3, type=int, help="Number of hidden layers of the model")
     parser.add_argument("--num_neurons_per_layer", default=8, type=int, help="Number of neurons per layer of the model")
