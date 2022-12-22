@@ -8,17 +8,19 @@ from my_utils import tf_print_time
 
 # ----- Model Class: Multi-Layer Perceptron -----
 class MLP(models.Model):
-    def __init__(self, model, optimizer, loss_func, metric_func=[], sopt=None, epochs=100, **kwargs):
+    def __init__(self, model, optimizer, loss_func, metric_func=[], epochs=100,
+                 early_stopping=None, lr_scheduler=None, **kwargs):
         super(MLP, self).__init__(**kwargs)
         self.model = model # neural network 
         self.optimizer = optimizer # Adam optimizer
-        self.sopt = sopt # L-BFGS-B optimizer 
         self.epochs = epochs # number of epochs for training using Adam
         self.hist = []
         self.hist_test = []
         self.epoch = 0
         self.loss_func = loss_func
         self.metric_func = metric_func
+        self.early_stopping = early_stopping
+        self.lr_scheduler = lr_scheduler
     
     @tf.function # (input_signature=(tf.TensorSpec(shape=(args.batch_size,args.num_features), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(args.batch_size,args.num_targets), dtype=tf.float32)))
@@ -45,11 +47,14 @@ class MLP(models.Model):
 
     def train_and_validate(self, dataset_tr, dataset_val, args):
         # --> training using Adam optimizer, validate at each epoch and visualize validation results
-        for epoch in range(1,self.epochs+1):
-            # train
+        for epoch in range(self.epochs):
+            # ---- train ----
             tf.print("\n-----------------------------------------------------------------------------")
             tf.print("Training Epoch:",epoch)
             loss_epoch = tf.Variable(0.0, dtype="float32")
+            # Learning rate scheduler, if required
+            if self.lr_scheduler is not None:
+                self.lr_scheduler.on_epoch_begin(epoch)
             for nbatch, (features, targets_gt) in enumerate(dataset_tr):
                 grads, loss_batch = self.train_step(features, targets_gt)
                 self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
@@ -63,7 +68,11 @@ class MLP(models.Model):
             self.hist.append(loss_epoch)
             tf.print(f"Loss '{args.loss}':",loss_epoch)
             tf_print_time()
-            # validate
+            # Check early stopping, if required
+            if self.early_stopping is not None:
+                self.early_stopping.on_epoch_end(epoch, loss_epoch)
+            
+            # ---- validate ----
             tf.print("\n-----------------------------------------------------------------------------")
             tf.print("Validation Epoch",epoch)
             loss_val   = tf.Variable(0.0, dtype="float32")

@@ -28,6 +28,8 @@ from my_dataset_builder import get_datasets
 from my_losses import *
 from my_models import MLP
 from my_parser import get_arguments
+from my_early_stopping import my_EarlyStopping 
+from my_scheduler import my_LearningRateScheduler
 
 # Get arguments
 args = get_arguments()
@@ -119,10 +121,16 @@ out = layers.Dense(args.num_targets, activation = act_fun, kernel_initializer = 
 model = models.Model(inp, out)
 print(model.summary())
 
+# Early Stopping
+early_stopping = my_EarlyStopping(min_delta=1e-2, patience=10, mode="min", start_from_epoch=0)
+
+# Learning Rate Scheduler
+lr_scheduler = my_LearningRateScheduler(scheduler_function=scheduler_function, optimizer=opt, verbose=1)
+
 # Model + Optimizer + Loss + Metrics
-mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, epochs=args.num_epochs) 
+mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, \
+    epochs=args.num_epochs, early_stopping=early_stopping, lr_scheduler=lr_scheduler) 
 
 
 # ----- Training + Validation -----
-
 mlp.train_and_validate(dataset_tr, dataset_val, args)
