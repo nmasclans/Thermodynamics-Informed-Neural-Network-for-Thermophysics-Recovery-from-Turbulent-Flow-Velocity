@@ -21,6 +21,10 @@ class MLP(models.Model):
         self.metric_func = metric_func
         self.early_stopping = early_stopping
         self.lr_scheduler = lr_scheduler
+        if self.lr_scheduler is not None:
+            self.lr_scheduler_call_frequency = self.lr_scheduler.get_call_frequency()
+        else: 
+            self.lr_scheduler_call_frequency = None
     
     @tf.function # (input_signature=(tf.TensorSpec(shape=(args.batch_size,args.num_features), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(args.batch_size,args.num_targets), dtype=tf.float32)))
@@ -53,9 +57,12 @@ class MLP(models.Model):
             tf.print("Training Epoch:",epoch)
             loss_epoch = tf.Variable(0.0, dtype="float32")
             # Learning rate scheduler, if required
-            if self.lr_scheduler is not None:
+            if self.lr_scheduler is not None and self.lr_scheduler_call_frequency == 'epoch':
                 self.lr_scheduler.on_epoch_begin(epoch)
             for nbatch, (features, targets_gt) in enumerate(dataset_tr):
+                # Learning rate scheduler, if required
+                if self.lr_scheduler is not None and self.lr_scheduler_call_frequency == 'batch':
+                    self.lr_scheduler.on_batch_begin(epoch, nbatch)
                 grads, loss_batch = self.train_step(features, targets_gt)
                 self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
                 loss_epoch.assign_add(loss_batch)
@@ -86,5 +93,5 @@ class MLP(models.Model):
             loss_val.assign(loss_val/(nbatch+1))
             metric_val.assign(metric_val/(nbatch+1))
             tf.print(f"Loss '{args.loss}':",loss_val)
-            tf.print(f"Metric {args.metrics}:\n",metric_val)
+            tf.print(f"Metric {args.metrics}:\n",metric_val, summarize=-1)
             tf_print_time()

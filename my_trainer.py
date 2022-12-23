@@ -58,6 +58,12 @@ for m in args.metrics:
         metric_func.append(MSE(args))
     elif m == "RAE":
         metric_func.append(RAE(args))
+    elif m == "RAE_target_0":
+        metric_func.append(RAE_target_0(args))
+    elif m == "RAE_target_1":
+        metric_func.append(RAE_target_1(args))
+    elif m == "RAE_target_2":
+        metric_func.append(RAE_target_2(args))
     elif m == "RSE":
         metric_func.append(RSE(args))
     elif m == "RE_RealGasEq":
@@ -103,41 +109,46 @@ else:
 # Regularizer: regularizer type and factor
 reg_type = args.regularizer_type
 reg_fact = args.regularizer_factor
-if reg_type == "None":
+if reg_type is None:
     regularizer = None
 elif reg_type == "L1":
     regularizer = regularizers.L1(l1 = reg_fact)
 elif reg_type == "L2":
     regularizer = regularizers.L2(l2 = reg_fact)
 else:
-    sys.exit(f"argument --regularizer_type is {reg_type}, accepted values: 'None', 'L1', 'L2'")
+    sys.exit(f"argument --regularizer_type is {reg_type}, accepted values: None, 'L1', 'L2'")
 
 # Model architecture
 inp = layers.Input(shape = (args.num_features))
 hl = inp
 for i in range(args.num_hidden_layers):
     hl = layers.Dense(args.num_neurons_per_layer, activation = act_fun, kernel_initializer=initializer, kernel_regularizer=regularizer)(hl)
-out = layers.Dense(args.num_targets, activation = act_fun, kernel_initializer = initializer)(hl)
+out = layers.Dense(args.num_targets, activation = act_fun, kernel_initializer = initializer)(hl) # you may try putting activation = act_fun, or None
 
 model = models.Model(inp, out)
 print(model.summary())
 
 # Early Stopping
-early_stopping = my_EarlyStopping(min_delta=1e-2, patience=10, mode="min", start_from_epoch=0)
+early_stopping = my_EarlyStopping(min_delta=args.early_stopping_min_delta, 
+    patience=args.early_stopping_patience, start_from_epoch=args.early_stopping_start_from_epoch)
 
 # Learning Rate Scheduler
-lr_decay = args.learning_rate_decay
+lr_decay = args.lr_decay
 if lr_decay is None:
     lr_scheduler = None
+    print(f"No learning rate scheduler is defined. Learning rate will have a constant value of {args.learning_rate}")
 elif lr_decay == 'exp':
-    decay_rate = args.decay_rate
-    decay_step = args.decay_step
     lr_0       = args.learning_rate
-    def func_lr_decay(epoch): 
-        return lr_0*np.pow(decay_rate,(epoch/decay_step))
-    lr_scheduler = my_LearningRateScheduler(scheduler_function=func_lr_decay, optimizer=opt, verbose=1)
+    decay_rate = args.lr_decay_rate
+    decay_step = args.lr_decay_step
+    def func_lr_decay(x): 
+        return lr_0*np.power(decay_rate,(x/decay_step))
+    lr_scheduler = my_LearningRateScheduler(scheduler_function=func_lr_decay, 
+        optimizer=opt, call_frequency = args.lr_scheduler_call_frequency, 
+        num_batches_per_epoch = args.num_batches_per_epoch, verbose=0)
+    print("Learning rate scheduler defined. Learning rate will decay exponentially.")
 else:
-    sys.exit(f"argument --learning_rate_decay is {reg_type}, accepted values: 'constant', 'exp'")
+    sys.exit(f"argument --lr_decay is {lr_decay}, accepted values: None, 'exp'")
 
 # Model + Optimizer + Loss + Metrics
 mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, \

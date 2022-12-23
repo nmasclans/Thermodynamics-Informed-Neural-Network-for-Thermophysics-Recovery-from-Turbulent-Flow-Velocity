@@ -59,8 +59,10 @@ class my_EarlyStopping():
 
         if mode == "min":
             self.monitor_op = np.less
+            self.best       = 1e9
         elif mode == "max":
             self.monitor_op = np.greater
+            self.best       = 1e-9
         else:
             raise ValueError(f"Incorrect input value mode = {mode} 'my_EarlyStopping'. Accepted values: 'min', 'max'")
 
@@ -75,8 +77,6 @@ class my_EarlyStopping():
         if self._is_improvement(current, self.best):
             self.best = current
             self.best_epoch = epoch
-            if self.restore_best_weights:
-                self.best_weights = self.model.get_weights()
             # Only restart wait if we beat both the baseline and our previous
             # best.
             if self.baseline is None or self._is_improvement(

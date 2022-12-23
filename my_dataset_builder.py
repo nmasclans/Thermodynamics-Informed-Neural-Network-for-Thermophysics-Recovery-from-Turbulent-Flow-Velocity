@@ -38,9 +38,10 @@ def get_datasets(args):
     features_val = features_val.reshape(-1, args.num_features)
     targets_tr   = targets_tr.reshape(-1,   args.num_targets)
     targets_val  = targets_val.reshape(-1,  args.num_targets)
+    args.num_batches_per_epoch = int(features_tr.shape[0]/args.batch_size)
     print(f"\nShape training features: {features_tr.shape}")
     print(f"Shape training targets: {targets_tr.shape}")
-    print(f"\nTraining Number of Batches per Epoch: {int(features_tr.shape[0]/args.batch_size)}, with number of samples {features_tr.shape[0]} and batch size {args.batch_size}")
+    print(f"\nTraining Number of Batches per Epoch: {args.num_batches_per_epoch}, with number of samples {features_tr.shape[0]} and batch size {args.batch_size}")
 
     # Normalize features and targets data
     act_fun = args.activation_function
