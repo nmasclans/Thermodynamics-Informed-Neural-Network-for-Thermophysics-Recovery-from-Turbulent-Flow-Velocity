@@ -20,6 +20,7 @@ import os
 import sys
 
 import tensorflow as tf
+import numpy as np
 
 from tensorflow.keras import models, layers, optimizers, activations, initializers, regularizers
 # from ScipyOP import optimizer as SciOP # L-BFGS-B optimizer
@@ -125,7 +126,18 @@ print(model.summary())
 early_stopping = my_EarlyStopping(min_delta=1e-2, patience=10, mode="min", start_from_epoch=0)
 
 # Learning Rate Scheduler
-lr_scheduler = my_LearningRateScheduler(scheduler_function=scheduler_function, optimizer=opt, verbose=1)
+lr_decay = args.learning_rate_decay
+if lr_decay is None:
+    lr_scheduler = None
+elif lr_decay == 'exp':
+    decay_rate = args.decay_rate
+    decay_step = args.decay_step
+    lr_0       = args.learning_rate
+    def func_lr_decay(epoch): 
+        return lr_0*np.pow(decay_rate,(epoch/decay_step))
+    lr_scheduler = my_LearningRateScheduler(scheduler_function=func_lr_decay, optimizer=opt, verbose=1)
+else:
+    sys.exit(f"argument --learning_rate_decay is {reg_type}, accepted values: 'constant', 'exp'")
 
 # Model + Optimizer + Loss + Metrics
 mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, \
