@@ -43,7 +43,7 @@ def get_arguments():
     parser.add_argument("--num_neurons_per_layer", default=16, type=int, help="Number of neurons per layer of the model")
     parser.add_argument("--activation_function", default="relu", type=str, help="Activation function (relu, tanh)")
     parser.add_argument("--initializer_type", default="normal", type=str, help="Type of initializers (He, Glorot), which can be 'uniform' or 'normal'")
-    parser.add_argument("--seed", default=4, help="Seed of the deterministic randomizers")
+    parser.add_argument("--seed", default=4, type=int, help="Seed of the deterministic randomizers")
     parser.add_argument("--regularizer_type", default="L2", help="Layers regularizer, accepted values: None, 'L1', 'L2'")
     parser.add_argument("--regularizer_factor", default=0.01, type=float, help="Regularizer factor")
     # Training & Validation
