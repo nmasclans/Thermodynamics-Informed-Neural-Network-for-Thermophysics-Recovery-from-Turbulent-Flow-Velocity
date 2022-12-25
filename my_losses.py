@@ -49,8 +49,8 @@ class Supervised_PINNS(tf.keras.losses.Loss):
         y_gt += self.eps
 
         # ----------------------- Supervised loss: RAE --------------------------
-        loss_RAE = tf.reduce_mean(tf.math.abs((y_gt - y_pred)/y_gt))
-        # tf.print("Supervised loss:",loss_RAE)
+        # loss_Supervised = tf.reduce_mean(tf.math.abs((y_gt - y_pred)/y_gt)) # RAE
+        loss_Supervised = tf.reduce_mean(tf.square(y_gt - y_pred))            # MSE
 
         # ------------------------- Unsupervised loss --------------------------
         c_p_scaled = y_pred[:,0]
@@ -101,10 +101,9 @@ class Supervised_PINNS(tf.keras.losses.Loss):
 
         # Relatife error between predicted c_p vs Real Gas c_p Equation (depending on T)
         loss_RE_CpEq = tf.reduce_mean(tf.math.abs((c_p-c_p_equation)/c_p_equation))
-        # tf.print("Unsupervised PINNS loss of RE Real Gas Cp Equation:",loss_RE_CpEq)
 
         # ------------------------------------ Total Loss -----------------------------------
-        loss_supervised_PINNS = self.loss_weights[0]*loss_RAE + self.loss_weights[1]*loss_RE_StateRealGas + self.loss_weights[2]*loss_RE_CpEq
+        loss_supervised_PINNS = self.loss_weights[0]*loss_Supervised + self.loss_weights[1]*loss_RE_StateRealGas + self.loss_weights[2]*loss_RE_CpEq
         
         return loss_supervised_PINNS
 

@@ -134,7 +134,7 @@ early_stopping = my_EarlyStopping(min_delta=args.early_stopping_min_delta,
 
 # Learning Rate Scheduler
 lr_decay = args.lr_decay
-if lr_decay is None:
+if lr_decay is None or lr_decay == "None":
     lr_scheduler = None
     print(f"No learning rate scheduler is defined. Learning rate will have a constant value of {args.learning_rate}")
 elif lr_decay == 'exp':
@@ -145,10 +145,14 @@ elif lr_decay == 'exp':
         return lr_0*np.power(decay_rate,(x/decay_step))
     lr_scheduler = my_LearningRateScheduler(scheduler_function=func_lr_decay, 
         optimizer=opt, call_frequency = args.lr_scheduler_call_frequency, 
-        num_batches_per_epoch = args.num_batches_per_epoch, verbose=0)
-    print("Learning rate scheduler defined. Learning rate will decay exponentially.")
+        num_batches_per_epoch = args.num_batches_per_epoch, verbose=args.lr_verbose)
+    print(f"Learning rate scheduler defined. Learning rate will decay exponentially, with:" \
+          f"\n    initial learning rate: {lr_0:.4e}" \
+          f"\n    decay rate: {decay_rate:.4e}" \
+          f"\n    decay step: {decay_step:.4e}" \
+          )
 else:
-    sys.exit(f"argument --lr_decay is {lr_decay}, accepted values: None, 'exp'")
+    sys.exit(f"argument --lr_decay is {lr_decay}, accepted values: None, 'None', 'exp'")
 
 # Model + Optimizer + Loss + Metrics
 mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, \
