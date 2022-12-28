@@ -46,7 +46,7 @@ class my_LearningRateScheduler():
         backend.set_value(self.optimizer.lr, backend.get_value(lr))
         if self.verbose > 0:
             print(
-                f"\nEpoch {epoch + 1}: LearningRateScheduler setting learning "
+                f"\nEpoch {epoch}: LearningRateScheduler setting learning "
                 f"rate to {lr}."
             )
 
