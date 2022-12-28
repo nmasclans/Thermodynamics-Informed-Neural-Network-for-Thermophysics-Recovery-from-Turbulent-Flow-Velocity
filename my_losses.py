@@ -43,7 +43,7 @@ class Supervised_PINNS(tf.keras.losses.Loss):
 
     @tf.function #(input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                  tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, epoch):
         
         # Add epsilon value to predicted values to prevent NaN values in RE-PINNS losses (when predicted values / model output = 0):
         y_pred += self.eps
@@ -104,7 +104,7 @@ class Supervised_PINNS(tf.keras.losses.Loss):
         loss_RE_CpEq = tf.reduce_mean(tf.math.abs((c_p-c_p_equation)/c_p_equation))
 
         # ------------------------------------ Total Loss -----------------------------------
-        if self.epoch == 0:
+        if epoch == 0:
             loss_supervised_PINNS = self.loss_weights_first_epoch[0]*loss_Supervised + self.loss_weights_first_epoch[1]*loss_RE_StateRealGas + self.loss_weights_first_epoch[2]*loss_RE_CpEq
             tf.print('loss_weights_first_epoch used')
         else: 
@@ -120,7 +120,7 @@ class MSE(tf.keras.losses.Loss):
 
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, **kwargs):
         return tf.reduce_mean(tf.square(y_gt - y_pred))
 
 
@@ -131,7 +131,7 @@ class RSE(tf.keras.losses.Loss):
 
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, **kwargs):
         y_gt += self.eps
         return tf.reduce_mean(tf.square(y_gt - y_pred)/tf.square(y_gt)) 
 
@@ -143,7 +143,7 @@ class RAE(tf.keras.losses.Loss):
 
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, **kwargs):
         y_gt += self.eps
         return tf.reduce_mean(tf.math.abs((y_gt - y_pred)/y_gt)) 
 
@@ -154,7 +154,7 @@ class RAE_target_0(tf.keras.losses.Loss):
 
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, **kwargs):
         y_gt += self.eps
         return tf.reduce_mean(tf.math.abs((y_gt[:,0] - y_pred[:,0])/y_gt[:,0])) 
 
@@ -165,7 +165,7 @@ class RAE_target_1(tf.keras.losses.Loss):
 
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, **kwargs):
         y_gt += self.eps
         return tf.reduce_mean(tf.math.abs((y_gt[:,1] - y_pred[:,1])/y_gt[:,1])) 
 
@@ -176,7 +176,7 @@ class RAE_target_2(tf.keras.losses.Loss):
 
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, **kwargs):
         y_gt += self.eps
         return tf.reduce_mean(tf.math.abs((y_gt[:,2] - y_pred[:,2])/y_gt[:,2])) 
 
@@ -215,7 +215,7 @@ class RelError_RealGasEquation(tf.keras.losses.Loss):
 
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, **kwargs):
         rho_scaled = y_pred[:,1]
         T_scaled   = y_pred[:,2]    
         rho = (rho_scaled - self.min_value) * (self.rho_max - self.rho_min) / (self.max_value - self.min_value) - self.rho_min
@@ -271,7 +271,7 @@ class RelError_CpEquation(tf.keras.losses.Loss):
     
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
-    def call(self, y_gt, y_pred):
+    def call(self, y_gt, y_pred, **kwargs):
         c_p_scaled = y_pred[:,0]
         rho_scaled = y_pred[:,1]
         T_scaled   = y_pred[:,2]    

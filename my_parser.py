@@ -9,8 +9,8 @@ def get_arguments():
     parser.add_argument("--features_idx", default=[1,2], type=list, help="Selected features index")
     parser.add_argument("--targets_name", default=['c_p','rho','T'], type=list, help="Selected targets name")
     parser.add_argument("--training_filename", default=[
+        '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_52100000_KGP_P.npz',
         '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_53900000.npz',
-        '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_52100000.npz',
         ], type=list, help="List of training filenames (abspath)")
     parser.add_argument("--validation_filename", default=[
         '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz',

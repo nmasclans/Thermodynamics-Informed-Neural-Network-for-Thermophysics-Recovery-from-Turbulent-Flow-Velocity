@@ -32,7 +32,7 @@ class MLP(models.Model):
         metric = []
         with tf.GradientTape() as tape:
             y_pred = self.model(x) 
-            loss   = self.loss_func(y_gt, y_pred)
+            loss   = self.loss_func(y_gt, y_pred, self.epoch)
         trainable_vars = self.trainable_variables
         grads = tape.gradient(loss, trainable_vars)
         # for f in self.metric_func:
@@ -44,7 +44,7 @@ class MLP(models.Model):
     def test_step(self, x, y_gt):
         metric = []
         y_pred = self.model(x)
-        loss   = self.loss_func(y_gt, y_pred)
+        loss   = self.loss_func(y_gt, y_pred, self.epoch)
         for f in self.metric_func:
             metric.append(f(y_gt, y_pred))
         return y_pred, loss, metric
@@ -52,6 +52,7 @@ class MLP(models.Model):
     def train_and_validate(self, dataset_tr, dataset_val, args):
         # --> training using Adam optimizer, validate at each epoch and visualize validation results
         for epoch in range(self.epochs):
+            self.epoch = epoch
             # ---- train ----
             tf.print("\n-----------------------------------------------------------------------------")
             tf.print("Training Epoch:",epoch)
