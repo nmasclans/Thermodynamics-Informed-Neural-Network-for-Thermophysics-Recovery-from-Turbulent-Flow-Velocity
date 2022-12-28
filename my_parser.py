@@ -57,7 +57,7 @@ def get_arguments():
     parser.add_argument("--batch_size", default=64, type=int, help="Batch size (recomended to be multiple of 8)")
     parser.add_argument("--batch_size_validation", default=128**3, type=int, help="Batch size (recomended to be multiple of 8)")
     # Logging
-    parser.add_argument("--num_batches_per_print_information", default=100000, type=int, help="number of batches for when results information is printed")
+    parser.add_argument("--num_batches_per_print_information", default=5000, type=int, help="number of batches for when results information is printed")
     parser.add_argument("--make_plots", default=True, type=bool, help="If True, make plots (scatter, histogram) in validation epoch") # TODO
     parser.add_argument("--visualization_step", default=500, type=int,   help="Plots data step, for less heavy plots") # TODO
     # Thermodynamics

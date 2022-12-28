@@ -214,13 +214,15 @@ class RelError_RealGasEquation(tf.keras.losses.Loss):
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
     def call(self, y_gt, y_pred):
+
+        y_pred += self.eps
+
         rho_scaled = y_pred[:,1]
         T_scaled   = y_pred[:,2]    
-        rho = (rho_scaled - self.min_value) * (self.rho_max - self.rho_min) / (self.max_value - self.min_value) - self.rho_min
-        T   = (T_scaled   - self.min_value) * (self.T_max   - self.T_min)   / (self.max_value - self.min_value) - self.T_min
-        rho += self.eps # in case rho = 0, prevent v = inf, rel_err = nan
-        T   += self.eps # in case T   = 0, prevent dadT = inf, rel_err = nan
-        v    = 1/rho
+
+        rho = (rho_scaled - self.min_value) / (self.max_value - self.min_value) * (self.rho_max - self.rho_min) + self.rho_min
+        T   = (T_scaled   - self.min_value) / (self.max_value - self.min_value) * (self.T_max   - self.T_min)   + self.T_min
+        v   = 1/rho
 
         # -------------------------- Peng Robinson -------------------------
         a      = (0.457236*(self.R*self.Tc)**2/self.pc) * tf.pow(1+self.c*(1-tf.math.sqrt(T/self.Tc)), 2)
@@ -270,16 +272,16 @@ class RelError_CpEquation(tf.keras.losses.Loss):
     @tf.function # (input_signature=(tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32),
                  #                   tf.TensorSpec(shape=(None,args.num_targets), dtype=tf.float32)))
     def call(self, y_gt, y_pred):
+
+        y_pred += self.eps
+
         c_p_scaled = y_pred[:,0]
         rho_scaled = y_pred[:,1]
         T_scaled   = y_pred[:,2]    
 
-        c_p = (c_p_scaled - self.min_value) * (self.c_p_max - self.c_p_min) / (self.max_value - self.min_value) - self.c_p_min
-        rho = (rho_scaled - self.min_value) * (self.rho_max - self.rho_min) / (self.max_value - self.min_value) - self.rho_min
-        T   = (T_scaled   - self.min_value) * (self.T_max   - self.T_min)   / (self.max_value - self.min_value) - self.T_min
-        rho += self.eps # in case rho = 0, prevent v = inf, rel_err = nan
-        T   += self.eps # in case T   = 0, prevent dadT = inf, rel_err = nan
-        c_p += self.eps
+        c_p = (c_p_scaled - self.min_value) / (self.max_value - self.min_value) * (self.c_p_max - self.c_p_min) + self.c_p_min
+        rho = (rho_scaled - self.min_value) / (self.max_value - self.min_value) * (self.rho_max - self.rho_min) + self.rho_min
+        T   = (T_scaled   - self.min_value) / (self.max_value - self.min_value) * (self.T_max   - self.T_min)   + self.T_min
         v   = 1/rho
 
         # -------------------------- Peng Robinson -------------------------
