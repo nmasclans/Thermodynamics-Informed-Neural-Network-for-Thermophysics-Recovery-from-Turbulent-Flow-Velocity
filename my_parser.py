@@ -18,11 +18,11 @@ def get_arguments():
     parser.add_argument("--spatial_dimension", default=[128,128,128], type=list, help="Spatial discretization, grid of statistics data. Equals the shape of the stored quantities in 'statistic")
     # Min-Max Scaling
     parser.add_argument("--features_limits", 
-        default={'y':[0.0,0.0002],'u':[0.0,3.5],'TKE_normalized':[0.0,0.2],'vorticity_magn_normalized':[0.0,55.0],'enstrophy_normalized':[0.0,1400.0]},
+        default={'y':[0.0,0.0002],'u':[-0.1,3.5],'TKE_normalized':[0.0,0.2],'vorticity_magn_normalized':[0.0,55.0],'enstrophy_normalized':[0.0,1400.0]},
         type=dict, help="features minimum and maximum values, used for data normalization"
     )
     parser.add_argument("--targets_limits", 
-        default={'c_p':[1500.0,3900.0],'rho':[145.0,850.0],'T':[90.0,200.0]},
+        default={'c_p':[1500.0,3900.0],'rho':[140.0,850.0],'T':[90.0,200.0]},
         #default={'c_p':[0.0,4200.0],'rho':[0.0,850.0],'T':[0.0,200.0]},
         type=dict, help="targets minimum and maximum values, used for data normalization"
     )
