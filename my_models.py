@@ -32,7 +32,7 @@ class MLP(models.Model):
         metric = []
         with tf.GradientTape() as tape:
             y_pred = self.model(x) 
-            loss   = self.loss_func(y_gt, y_pred, self.epoch)
+            loss   = self.loss_func(y_gt, y_pred)
         trainable_vars = self.trainable_variables
         grads = tape.gradient(loss, trainable_vars)
         # for f in self.metric_func:
@@ -44,7 +44,7 @@ class MLP(models.Model):
     def test_step(self, x, y_gt):
         metric = []
         y_pred = self.model(x)
-        loss   = self.loss_func(y_gt, y_pred, self.epoch)
+        loss   = self.loss_func(y_gt, y_pred)
         for f in self.metric_func:
             metric.append(f(y_gt, y_pred))
         return y_pred, loss, metric
@@ -60,6 +60,14 @@ class MLP(models.Model):
             # Learning rate scheduler, if required
             if self.lr_scheduler is not None and self.lr_scheduler_call_frequency == 'epoch':
                 self.lr_scheduler.on_epoch_begin(epoch)
+            # Set Supervised_PINNS loss weights, if required
+            if self.loss_func.name == "Supervised_PINNS":
+                if self.epoch == 0:
+                    self.loss_func.set_loss_weights(args.Supervised_PINNS_weights_first_epoch)
+                elif self.epoch == 1:
+                    self.loss_func.set_loss_weights(args.Supervised_PINNS_weights)
+                else:
+                    pass
             for nbatch, (features, targets_gt) in enumerate(dataset_tr):
                 # Learning rate scheduler, if required
                 if self.lr_scheduler is not None and self.lr_scheduler_call_frequency == 'batch':
