@@ -64,6 +64,9 @@ def get_arguments():
     parser.add_argument("--Substance", default="N2", type=str, help="'Substance' param of thermodynamics function, relative to gas type; admissible values: 'N2'")
     parser.add_argument("--P_constant", default=6791600.0, type=float, help="Pressure value [Pa], constant along all domain (2*Pc of N2)")
     parser.add_argument("--eps", default=1e-5, type=float, help="Epsilon, small value for preventing nan losses when output values are 0") # TODO
+    # Save checkpoints
+    parser.add_argument("--save_ckpt_freq", default=1, type=int, help="Save checkpoint weights every --save_ckpt_freq epochs, save no weights if 0") # TODO
+
 
     args = parser.parse_args()
     args.num_features = len(args.features_idx)

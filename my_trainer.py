@@ -128,6 +128,9 @@ out = layers.Dense(args.num_targets, activation = act_fun, kernel_initializer = 
 model = models.Model(inp, out)
 print(model.summary())
 
+# Save initial weights (random initialization)
+model.save_weights('weights_initialized')
+
 # Early Stopping
 early_stopping = my_EarlyStopping(min_delta=args.early_stopping_min_delta, 
     patience=args.early_stopping_patience, start_from_epoch=args.early_stopping_start_from_epoch)
@@ -156,7 +159,7 @@ else:
 
 # Model + Optimizer + Loss + Metrics
 mlp = MLP(model, opt, loss_func=loss_func, metric_func=metric_func, \
-    epochs=args.num_epochs, early_stopping=early_stopping, lr_scheduler=lr_scheduler) 
+    epochs=args.num_epochs, early_stopping=early_stopping, lr_scheduler=lr_scheduler, args=args) 
 
 
 # ----- Training + Validation -----

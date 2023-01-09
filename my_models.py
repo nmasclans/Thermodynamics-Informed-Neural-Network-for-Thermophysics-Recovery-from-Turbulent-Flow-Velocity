@@ -9,7 +9,7 @@ from my_utils import tf_print_time
 # ----- Model Class: Multi-Layer Perceptron -----
 class MLP(models.Model):
     def __init__(self, model, optimizer, loss_func, metric_func=[], epochs=100,
-                 early_stopping=None, lr_scheduler=None, **kwargs):
+                 early_stopping=None, lr_scheduler=None, args={}, **kwargs):
         super(MLP, self).__init__(**kwargs)
         self.model = model # neural network 
         self.optimizer = optimizer # Adam optimizer
@@ -21,6 +21,7 @@ class MLP(models.Model):
         self.metric_func = metric_func
         self.early_stopping = early_stopping
         self.lr_scheduler = lr_scheduler
+        self.save_ckpt_freq = args.save_ckpt_freq
         if self.lr_scheduler is not None:
             self.lr_scheduler_call_frequency = self.lr_scheduler.get_call_frequency()
         else: 
@@ -104,3 +105,7 @@ class MLP(models.Model):
             tf.print(f"Loss '{args.loss}':",loss_val)
             tf.print(f"Metric {args.metrics}:\n",metric_val, summarize=-1)
             tf_print_time()
+
+            # ---- save weights at checkpoints ----
+            if self.save_ckpt_freq != 0 and epoch % self.save_ckpt_freq == 0:
+                 self.model.save_weights(f"ckpt_{epoch}")
