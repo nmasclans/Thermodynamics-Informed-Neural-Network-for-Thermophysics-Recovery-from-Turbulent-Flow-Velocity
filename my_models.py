@@ -108,4 +108,4 @@ class MLP(models.Model):
 
             # ---- save weights at checkpoints ----
             if self.save_ckpt_freq != 0 and epoch % self.save_ckpt_freq == 0:
-                 self.model.save_weights(f"ckpt_{epoch}")
+                 self.model.save_weights(f"checkpoints/ckpt_{epoch}")

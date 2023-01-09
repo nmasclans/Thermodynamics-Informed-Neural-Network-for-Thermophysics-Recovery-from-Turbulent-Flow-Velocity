@@ -129,7 +129,7 @@ model = models.Model(inp, out)
 print(model.summary())
 
 # Save initial weights (random initialization)
-model.save_weights('weights_initialized')
+model.save_weights('checkpoints/weights_initialized')
 
 # Early Stopping
 early_stopping = my_EarlyStopping(min_delta=args.early_stopping_min_delta, 
