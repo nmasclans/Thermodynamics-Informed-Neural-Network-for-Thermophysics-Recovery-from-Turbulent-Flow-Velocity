@@ -15,6 +15,9 @@ def get_arguments():
     parser.add_argument("--validation_filename", default=[
         '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz',
         ], type=list, help="List of validation filenames (abspath)")
+    parser.add_argument("--prediction_filename", default=[
+        '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz',
+        ], type=list, help="List of prediction filenames (abspath)")
     parser.add_argument("--spatial_dimension", default=[128,128,128], type=list, help="Spatial discretization, grid of statistics data. Equals the shape of the stored quantities in 'statistic")
     # Min-Max Scaling
     parser.add_argument("--features_limits", 
@@ -56,16 +59,19 @@ def get_arguments():
     parser.add_argument("--num_epochs", default=100, type=int, help="Number of training epochs")
     parser.add_argument("--batch_size", default=16, type=int, help="Batch size (recomended to be multiple of 8)")
     parser.add_argument("--batch_size_validation", default=128**3, type=int, help="Batch size (recomended to be multiple of 8)")
+    parser.add_argument("--batch_size_prediction", default=128**3, type=int, help="Batch size (recomended to be multiple of 8)")
     # Logging
     parser.add_argument("--num_batches_per_print_information", default=100000, type=int, help="number of batches for when results information is printed")
-    parser.add_argument("--make_plots", default=True, type=bool, help="If True, make plots (scatter, histogram) in validation epoch") # TODO
-    parser.add_argument("--visualization_step", default=200, type=int,   help="Plots data step, for less heavy plots") # TODO
+    parser.add_argument("--make_plots", default=True, type=bool, help="If True, make plots (scatter, histogram) in validation epoch")
+    parser.add_argument("--visualization_step", default=200, type=int,   help="Plots data step, for less heavy plots")
     # Thermodynamics
     parser.add_argument("--Substance", default="N2", type=str, help="'Substance' param of thermodynamics function, relative to gas type; admissible values: 'N2'")
     parser.add_argument("--P_constant", default=6791600.0, type=float, help="Pressure value [Pa], constant along all domain (2*Pc of N2)")
-    parser.add_argument("--eps", default=1e-5, type=float, help="Epsilon, small value for preventing nan losses when output values are 0") # TODO
-    # Save checkpoints
-    parser.add_argument("--save_ckpt_freq", default=1, type=int, help="Save checkpoint weights every --save_ckpt_freq epochs, save no weights if 0") # TODO
+    parser.add_argument("--eps", default=1e-5, type=float, help="Epsilon, small value for preventing nan losses when output values are 0")
+    # Save checkpoints (for training + validation)
+    parser.add_argument("--save_ckpt_freq", default=1, type=int, help="Save checkpoint weights every --save_ckpt_freq epochs, save no weights if 0")
+    # Load checkpoints (for validation)
+    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/', type=str, help="Filename of load checkpoint for prediction")
 
 
     args = parser.parse_args()

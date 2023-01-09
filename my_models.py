@@ -8,7 +8,7 @@ from my_utils import tf_print_time
 
 # ----- Model Class: Multi-Layer Perceptron -----
 class MLP(models.Model):
-    def __init__(self, model, optimizer, loss_func, metric_func=[], epochs=100,
+    def __init__(self, model, optimizer=None, loss_func=None, metric_func=[], epochs=100,
                  early_stopping=None, lr_scheduler=None, args={}, **kwargs):
         super(MLP, self).__init__(**kwargs)
         self.model = model # neural network 
