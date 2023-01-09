@@ -26,7 +26,12 @@ def get_arguments():
         default={'c_p':[0.0,4200.0],'rho':[0.0,850.0],'T':[0.0,200.0]},
         type=dict, help="targets minimum and maximum values, used for data normalization"
     )
-    # learning rate & learning rate schedulerXLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/lib/cuda python3 <python_script_name>lt='epoch', help="Learning rate scheduler call frequency, accepted values: None, 'epoch', 'batch'")
+    # learning rate & learning rate scheduler
+    parser.add_argument("--learning_rate", default=1e-3, type=float, help="Learning rate parameter of optimizer")
+    parser.add_argument("--lr_decay", default="exp", help="Learning rate decay function, applied through lr scheduler. Accepted values: None, 'None', 'exp'")
+    parser.add_argument("--lr_decay_rate", default=0.1, type=float, help="Learning rate decay rate, used if lr_decay = 'exp'")
+    parser.add_argument("--lr_decay_step", default=5.0, type=float, help="Learning rate decay step, used if lr_decay = 'exp'")
+    parser.add_argument("--lr_scheduler_call_frequency", default='epoch', help="Learning rate scheduler call frequency, accepted values: None, 'epoch', 'batch'")
     parser.add_argument("--lr_verbose", default=1, type=int, help="Verbosity of Learning Rate scheduler")
     # Early Stopping
     parser.add_argument("--early_stopping_min_delta", default=1e-5, type=float, help="Early stopping minimum (absolute) change in the monitored quantity to qualify as an improvement")
