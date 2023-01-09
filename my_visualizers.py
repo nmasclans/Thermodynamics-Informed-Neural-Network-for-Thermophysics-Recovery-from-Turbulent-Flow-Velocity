@@ -12,7 +12,7 @@ def visualize_prediction(y_gt, y_pred, epoch, batch, args):
         y_pred_0 = y_pred[:,target_idx]
         target_name = args.targets_name[target_idx]
         # probability distribution
-        fig_title = f"{target_name}_kde_E{epoch}_B{batch}.png"
+        fig_title = f"figures/{target_name}_kde_E{epoch}_B{batch}.png"
         plt.figure()
         plt.hist(x=y_gt_0,  bins=100,label="ground-truth")
         plt.hist(x=y_pred_0,bins=100,label="prediction")
@@ -23,7 +23,7 @@ def visualize_prediction(y_gt, y_pred, epoch, batch, args):
         plt.close()
         # print(f"Visualization of validation results in '{fig_title}'")
         # scatter plot
-        fig_title = f"{target_name}_scatterplot_E{epoch}_B{batch}.png"
+        fig_title = f"figures/{target_name}_scatterplot_E{epoch}_B{batch}.png"
         plt.figure()
         plt.scatter(x=y_gt_0[::args.visualization_step],y=y_pred_0[::args.visualization_step],s=1)
         plt.xlabel(f'scaled {target_name} (ground truth)')
@@ -46,12 +46,12 @@ def visualize_prediction_by_xyplanes(y_gt, y_pred, epoch, batch, args):
         coord_y = np.linspace(0,1,args.spatial_dimension[1])
         # plot contourf of middle plane z
         # ground truth
-        fig_title = f"{target_name}_contourf_E{epoch}_B{batch}_gt.png"
+        fig_title = f"figures/{target_name}_contourf_E{epoch}_B{batch}_gt.png"
         plt.figure()
         plt.contourf(coord_y, coord_x, y_gt_target[64,:,:]); plt.axis('scaled'); plt.colorbar()
         plt.savefig(fig_title)
         # prediction
-        fig_title = f"{target_name}_contourf_E{epoch}_B{batch}_pred.png"
+        fig_title = f"figures/{target_name}_contourf_E{epoch}_B{batch}_pred.png"
         plt.figure()
         plt.contourf(coord_y, coord_x, y_pred_target[64,:,:]); plt.axis('scaled'); plt.colorbar()
         plt.savefig(fig_title)
