@@ -58,11 +58,10 @@ class MLP(models.Model):
         for nbatch, (features, targets_gt) in enumerate(dataset_pred):
             targets_pred, loss_batch, metric_batch = self.test_step(features, targets_gt)
             print('Prediction done')
-            if args.make_plots:
-                print('\nBuilding prediction plots....')
-                # visualize_prediction(targets_gt, targets_pred, 0, nbatch, args)
-                visualize_prediction_by_xyplanes(targets_gt, targets_pred, 0, nbatch, args)
-                print('Plots done')
+            print('\nBuilding prediction plots....')
+            # visualize_prediction(targets_gt, targets_pred, 0, nbatch, args)
+            visualize_prediction_by_xyplanes(targets_gt, targets_pred, 0, nbatch, args)
+            print('Plots done')
             loss_val.assign_add(loss_batch) 
             metric_val.assign_add(metric_batch)
         loss_val.assign(loss_val/(nbatch+1))
@@ -129,4 +128,6 @@ class MLP(models.Model):
 
             # ---- save weights at checkpoints ----
             if self.save_ckpt_freq != 0 and epoch % self.save_ckpt_freq == 0:
-                 self.model.save_weights(f"checkpoints/ckpt_E{epoch}")
+                ckpt_filename = f"checkpoints/ckpt_E{epoch}"
+                self.model.save_weights(ckpt_filename)
+                print(f"Checkpoint weights saved in '{ckpt_filename}'")

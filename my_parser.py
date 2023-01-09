@@ -61,7 +61,7 @@ def get_arguments():
     parser.add_argument("--batch_size_prediction", default=128**3, type=int, help="Batch size (recomended to be multiple of 8)")
     # Logging
     parser.add_argument("--num_batches_per_print_information", default=100000, type=int, help="number of batches for when results information is printed")
-    parser.add_argument("--make_plots", default=True, type=bool, help="If True, make plots (scatter, histogram) in validation epoch")
+    parser.add_argument("--make_plots", default=False, type=bool, help="If True, make plots (scatter, histogram) in validation epoch")
     parser.add_argument("--visualization_step", default=500, type=int,   help="Plots data step, for less heavy plots")
     # Thermodynamics
     parser.add_argument("--Substance", default="N2", type=str, help="'Substance' param of thermodynamics function, relative to gas type; admissible values: 'N2'")
@@ -70,7 +70,7 @@ def get_arguments():
     # Save checkpoints (for training + validation)
     parser.add_argument("--save_ckpt_freq", default=1, type=int, help="Save checkpoint weights every --save_ckpt_freq epochs, save no weights if 0")
     # Load checkpoints (for validation)
-    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/ckpt_initialization.data-00000-of-00001', type=str, help="Filename of load checkpoint for prediction")
+    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/ckpt_E0.data-00000-of-00001', type=str, help="Filename of load checkpoint for prediction")
 
 
     args = parser.parse_args()
