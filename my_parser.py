@@ -9,7 +9,6 @@ def get_arguments():
     parser.add_argument("--features_idx", default=[1,2], type=list, help="Selected features index")
     parser.add_argument("--targets_name", default=['c_p','rho','T'], type=list, help="Selected targets name")
     parser.add_argument("--training_filename", default=[
-        '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_52100000_KGP_P.npz',
         '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_53900000.npz',
         ], type=list, help="List of training filenames (abspath)")
     parser.add_argument("--validation_filename", default=[
@@ -63,7 +62,7 @@ def get_arguments():
     # Logging
     parser.add_argument("--num_batches_per_print_information", default=100000, type=int, help="number of batches for when results information is printed")
     parser.add_argument("--make_plots", default=True, type=bool, help="If True, make plots (scatter, histogram) in validation epoch")
-    parser.add_argument("--visualization_step", default=200, type=int,   help="Plots data step, for less heavy plots")
+    parser.add_argument("--visualization_step", default=500, type=int,   help="Plots data step, for less heavy plots")
     # Thermodynamics
     parser.add_argument("--Substance", default="N2", type=str, help="'Substance' param of thermodynamics function, relative to gas type; admissible values: 'N2'")
     parser.add_argument("--P_constant", default=6791600.0, type=float, help="Pressure value [Pa], constant along all domain (2*Pc of N2)")
@@ -71,7 +70,7 @@ def get_arguments():
     # Save checkpoints (for training + validation)
     parser.add_argument("--save_ckpt_freq", default=1, type=int, help="Save checkpoint weights every --save_ckpt_freq epochs, save no weights if 0")
     # Load checkpoints (for validation)
-    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/', type=str, help="Filename of load checkpoint for prediction")
+    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/ckpt_initialization.data-00000-of-00001', type=str, help="Filename of load checkpoint for prediction")
 
 
     args = parser.parse_args()

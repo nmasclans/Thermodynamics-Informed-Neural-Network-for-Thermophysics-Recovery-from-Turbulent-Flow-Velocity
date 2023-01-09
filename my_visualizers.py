@@ -1,6 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+import tensorflow as tf
+
 # Results Visualizaton
 
 # Plot the quantities of the validation dataset, single validation batch
@@ -40,18 +42,18 @@ def visualize_prediction_by_xyplanes(y_gt, y_pred, epoch, batch, args):
         y_pred_target = y_pred[:,target_idx]
         target_name = args.targets_name[target_idx]
         # recover spatial dimension
-        y_gt_target    = y_gt_target.reshape(args.spatial_dimension)         # shape: [128,128,128]
-        y_pred_target  = y_pred_target.reshape(args.spatial_dimension)
-        coord_x = np.linspace(0,1,args.spatial_dimension[2])
-        coord_y = np.linspace(0,1,args.spatial_dimension[1])
+        y_gt_target_d   = tf.reshape(y_gt_target,   args.spatial_dimension)         # shape: [128,128,128]
+        y_pred_target_d = tf.reshape(y_pred_target, args.spatial_dimension)
         # plot contourf of middle plane z
         # ground truth
         fig_title = f"figures/{target_name}_contourf_E{epoch}_B{batch}_gt.png"
         plt.figure()
-        plt.contourf(coord_y, coord_x, y_gt_target[64,:,:]); plt.axis('scaled'); plt.colorbar()
+        plt.imshow(y_gt_target_d[64,:,:]); plt.axis('scaled'); plt.colorbar()
         plt.savefig(fig_title)
+        plt.close()
         # prediction
         fig_title = f"figures/{target_name}_contourf_E{epoch}_B{batch}_pred.png"
         plt.figure()
-        plt.contourf(coord_y, coord_x, y_pred_target[64,:,:]); plt.axis('scaled'); plt.colorbar()
+        plt.imshow(y_pred_target_d[64,:,:]); plt.axis('scaled'); plt.colorbar()
         plt.savefig(fig_title)
+        plt.close()

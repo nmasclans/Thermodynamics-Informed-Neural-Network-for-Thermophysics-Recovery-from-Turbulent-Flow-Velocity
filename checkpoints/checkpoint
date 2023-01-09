@@ -1,0 +1,2 @@
+model_checkpoint_path: "ckpt_initialization.data-00000-of-00001"
+all_model_checkpoint_paths: "ckpt_initialization.data-00000-of-00001"

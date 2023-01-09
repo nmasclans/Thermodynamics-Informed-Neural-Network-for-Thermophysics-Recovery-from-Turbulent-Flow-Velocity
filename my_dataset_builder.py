@@ -110,9 +110,10 @@ def get_datasets_prediction(args):
     for i_file in range(num_snapshots_pred):
         with np.load(args.validation_filename[i_file]) as f:
             features_data  = f['x']
-            # features_names = f['features_names']
+            all_features_name = f['features_names']
             for ii in range(args.num_features):
                 features_pred[i_file,:,:,:,ii] = features_data[:,:,:,args.features_idx[ii]]
+                args.features_name.append(all_features_name[args.features_idx[ii]])
             for tt in range(args.num_targets):
                 targets_pred[i_file,:,:,:,tt]  = f[args.targets_name[tt]]
 

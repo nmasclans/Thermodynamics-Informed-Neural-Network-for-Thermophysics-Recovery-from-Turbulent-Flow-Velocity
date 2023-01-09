@@ -52,14 +52,17 @@ class MLP(models.Model):
 
     def predict(self, dataset_pred, args):
         tf.print("\n-----------------------------------------------------------------------------")
-        tf.print("Prediction")
+        tf.print("\nPredicting...")
         loss_val   = tf.Variable(0.0, dtype="float32")
         metric_val = tf.Variable(tf.zeros(args.num_metrics), dtype="float32")
         for nbatch, (features, targets_gt) in enumerate(dataset_pred):
             targets_pred, loss_batch, metric_batch = self.test_step(features, targets_gt)
+            print('Prediction done')
             if args.make_plots:
-                visualize_prediction(targets_gt, targets_pred, 0, nbatch, args)
+                print('\nBuilding prediction plots....')
+                # visualize_prediction(targets_gt, targets_pred, 0, nbatch, args)
                 visualize_prediction_by_xyplanes(targets_gt, targets_pred, 0, nbatch, args)
+                print('Plots done')
             loss_val.assign_add(loss_batch) 
             metric_val.assign_add(metric_batch)
         loss_val.assign(loss_val/(nbatch+1))
