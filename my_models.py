@@ -3,7 +3,7 @@ import sys
 import tensorflow as tf
 
 from tensorflow.keras import models
-from my_visualizers import visualize_prediction
+from my_visualizers import visualize_prediction, visualize_prediction_by_xyplanes
 from my_utils import tf_print_time
 
 # ----- Model Class: Multi-Layer Perceptron -----
@@ -49,6 +49,24 @@ class MLP(models.Model):
         for f in self.metric_func:
             metric.append(f(y_gt, y_pred))
         return y_pred, loss, metric
+
+    def predict(self, dataset_pred, args):
+        tf.print("\n-----------------------------------------------------------------------------")
+        tf.print("Prediction")
+        loss_val   = tf.Variable(0.0, dtype="float32")
+        metric_val = tf.Variable(tf.zeros(args.num_metrics), dtype="float32")
+        for nbatch, (features, targets_gt) in enumerate(dataset_pred):
+            targets_pred, loss_batch, metric_batch = self.test_step(features, targets_gt)
+            if args.make_plots:
+                visualize_prediction(targets_gt, targets_pred, 0, nbatch, args)
+                visualize_prediction_by_xyplanes(targets_gt, targets_pred, 0, nbatch, args)
+            loss_val.assign_add(loss_batch) 
+            metric_val.assign_add(metric_batch)
+        loss_val.assign(loss_val/(nbatch+1))
+        metric_val.assign(metric_val/(nbatch+1))
+        tf.print(f"Loss '{args.loss}':",loss_val)
+        tf.print(f"Metric {args.metrics}:\n",metric_val, summarize=-1)
+        tf_print_time()
 
     def train_and_validate(self, dataset_tr, dataset_val, args):
         # --> training using Adam optimizer, validate at each epoch and visualize validation results

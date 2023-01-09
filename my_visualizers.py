@@ -31,3 +31,27 @@ def visualize_prediction(y_gt, y_pred, epoch, batch, args):
         plt.savefig(fig_title)
         plt.close()
         # print(f"Visualization of validation results in '{fig_title}'")
+
+def visualize_prediction_by_xyplanes(y_gt, y_pred, epoch, batch, args):
+    assert y_gt.ndim == 2 and y_pred.ndim == 2
+    assert y_gt.shape[0] == 128**3 and y_pred.shape[0] == 128**3, "--batch_size of prediction must be set to 128**3"
+    for target_idx in range(args.num_targets):
+        y_gt_target   = y_gt[:,target_idx]
+        y_pred_target = y_pred[:,target_idx]
+        target_name = args.targets_name[target_idx]
+        # recover spatial dimension
+        y_gt_target    = y_gt_target.reshape(args.spatial_dimension)         # shape: [128,128,128]
+        y_pred_target  = y_pred_target.reshape(args.spatial_dimension)
+        coord_x = np.linspace(0,1,args.spatial_dimension[2])
+        coord_y = np.linspace(0,1,args.spatial_dimension[1])
+        # plot contourf of middle plane z
+        # ground truth
+        fig_title = f"{target_name}_contourf_E{epoch}_B{batch}_gt.png"
+        plt.figure()
+        plt.contourf(coord_y, coord_x, y_gt_target[64,:,:]); plt.axis('scaled'); plt.colorbar()
+        plt.savefig(fig_title)
+        # prediction
+        fig_title = f"{target_name}_contourf_E{epoch}_B{batch}_pred.png"
+        plt.figure()
+        plt.contourf(coord_y, coord_x, y_pred_target[64,:,:]); plt.axis('scaled'); plt.colorbar()
+        plt.savefig(fig_title)
