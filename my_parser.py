@@ -26,12 +26,7 @@ def get_arguments():
         default={'c_p':[0.0,4200.0],'rho':[0.0,850.0],'T':[0.0,200.0]},
         type=dict, help="targets minimum and maximum values, used for data normalization"
     )
-    # learning rate & learning rate scheduler
-    parser.add_argument("--learning_rate", default=1e-3, type=float, help="Learning rate parameter of optimizer")
-    parser.add_argument("--lr_decay", default="exp", help="Learning rate decay function, applied through lr scheduler. Accepted values: None, 'None', 'exp'")
-    parser.add_argument("--lr_decay_rate", default=0.1, type=float, help="Learning rate decay rate, used if lr_decay = 'exp'")
-    parser.add_argument("--lr_decay_step", default=5.0, type=float, help="Learning rate decay step, used if lr_decay = 'exp'")
-    parser.add_argument("--lr_scheduler_call_frequency", default='epoch', help="Learning rate scheduler call frequency, accepted values: None, 'epoch', 'batch'")
+    # learning rate & learning rate schedulerXLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/lib/cuda python3 <python_script_name>lt='epoch', help="Learning rate scheduler call frequency, accepted values: None, 'epoch', 'batch'")
     parser.add_argument("--lr_verbose", default=1, type=int, help="Verbosity of Learning Rate scheduler")
     # Early Stopping
     parser.add_argument("--early_stopping_min_delta", default=1e-5, type=float, help="Early stopping minimum (absolute) change in the monitored quantity to qualify as an improvement")
@@ -43,7 +38,7 @@ def get_arguments():
     parser.add_argument("--loss", default="Supervised_PINNS", type=str, help="Loss function name, accepted values = ['MSE','RSE','Supervised_PINNS']")
     parser.add_argument("--metrics", default=["MSE","RSE","RAE","RAE_target_0","RAE_target_1","RAE_target_2","RE_RealGasEq","RE_CpEq"], type=str, help="Metric function name")
     parser.add_argument("--Supervised_PINNS_weights", default="0.8, 0.1, 0.1", type=str, help="Weights of Supervised_PINNS Loss")
-    parser.add_argument("--Supervised_PINNS_weights_first_epoch", default="0.8 0.1 0.1", type=str, help="Weights of Supervised_PINNS Loss")
+    parser.add_argument("--Supervised_PINNS_weights_first_epoch", default="0.8, 0.1, 0.1", type=str, help="Weights of Supervised_PINNS Loss")
     # Model Architecture
     parser.add_argument("--num_hidden_layers", default=6, type=int, help="Number of hidden layers of the model")
     parser.add_argument("--num_neurons_per_layer", default=16, type=int, help="Number of neurons per layer of the model")
@@ -57,7 +52,7 @@ def get_arguments():
     parser.add_argument("--batch_size", default=16, type=int, help="Batch size (recomended to be multiple of 8)")
     parser.add_argument("--batch_size_validation", default=128**3, type=int, help="Batch size (recomended to be multiple of 8)")
     # Logging
-    parser.add_argument("--num_batches_per_print_information", default=5000, type=int, help="number of batches for when results information is printed")
+    parser.add_argument("--num_batches_per_print_information", default=100000, type=int, help="number of batches for when results information is printed")
     parser.add_argument("--make_plots", default=True, type=bool, help="If True, make plots (scatter, histogram) in validation epoch") # TODO
     parser.add_argument("--visualization_step", default=200, type=int,   help="Plots data step, for less heavy plots") # TODO
     # Thermodynamics

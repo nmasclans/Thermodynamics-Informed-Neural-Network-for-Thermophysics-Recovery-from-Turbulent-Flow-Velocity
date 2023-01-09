@@ -1,0 +1,263 @@
+/bin/bash: /home/jofre/Students/Nuria_Masclans/miniconda3/envs/tf-gpu/lib/libtinfo.so.6: no version information available (required by /bin/bash)
+
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+                                    Seed: 4
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+
+Arguments:
+
+ndim: 3
+
+features_idx: [1, 2]
+
+targets_name: ['c_p', 'rho', 'T']
+
+training_filename: ['/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_52100000_KGP_P.npz', '/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_53900000.npz']
+
+validation_filename: ['/home/jofre/Students/Nuria_Masclans/datasets/post_processed/59300000_5features_4targets/3d_high_pressure_turbulent_channel_flow_59300000.npz']
+
+spatial_dimension: [128, 128, 128]
+
+features_limits: {'y': [0.0, 0.0002], 'u': [-0.1, 3.5], 'TKE_normalized': [0.0, 0.2], 'vorticity_magn_normalized': [0.0, 55.0], 'enstrophy_normalized': [0.0, 1400.0]}
+
+targets_limits: {'c_p': [0.0, 4200.0], 'rho': [0.0, 850.0], 'T': [0.0, 200.0]}
+
+learning_rate: 0.001
+
+lr_decay: exp
+
+lr_decay_rate: 0.1
+
+lr_decay_step: 5.0
+
+lr_scheduler_call_frequency: epoch
+
+lr_verbose: 1
+
+early_stopping_min_delta: 1e-05
+
+early_stopping_patience: 5
+
+early_stopping_start_from_epoch: 0
+
+optimizer: Adam
+
+loss: Supervised_PINNS
+
+metrics: ['MSE', 'RSE', 'RAE', 'RAE_target_0', 'RAE_target_1', 'RAE_target_2', 'RE_RealGasEq', 'RE_CpEq']
+
+Supervised_PINNS_weights: [0.8, 0.1, 0.1]
+
+Supervised_PINNS_weights_first_epoch: [0.8, 0.1, 0.1]
+
+num_hidden_layers: 6
+
+num_neurons_per_layer: 16
+
+activation_function: relu
+
+initializer_type: normal
+
+seed: 4
+
+regularizer_type: L2
+
+regularizer_factor: 0.01
+
+num_epochs: 100
+
+batch_size: 16
+
+batch_size_validation: 2097152
+
+num_batches_per_print_information: 5000
+
+make_plots: True
+
+visualization_step: 200
+
+Substance: N2
+
+P_constant: 6791600.0
+
+eps: 1e-05
+
+num_features: 2
+
+num_targets: 3
+
+
+Shape training features: (4194304, 2)
+Shape training targets: (4194304, 3)
+
+Features name: ['u', 'TKE_normalized', 'u', 'TKE_normalized']
+Targets name: ['c_p', 'rho', 'T']
+
+Training Number of Batches per Epoch: 262144, with number of samples 4194304 and batch size 16
+
+Min-Max Scaler to feature 'u', from (min, max) = (-0.1000, 3.5000) to (0, 1)
+Min-Max after scaling,  training  dataset: (0.0268,0.8573)
+Min-Max after scaling, validation dataset: (0.0288,0.9207)
+
+Min-Max Scaler to feature 'TKE_normalized', from (min, max) = (0.0000, 0.2000) to (0, 1)
+Min-Max after scaling,  training  dataset: (0.0000,0.9377)
+Min-Max after scaling, validation dataset: (0.0000,0.8237)
+
+Min-Max Scaler to target 'c_p', from (min, max) = (0.0000, 4200.0000) to (0, 1)
+Min-Max after scaling,  training  dataset: (0.3653,0.9223)
+Min-Max after scaling, validation dataset: (0.3653,0.9224)
+
+Min-Max Scaler to target 'rho', from (min, max) = (0.0000, 850.0000) to (0, 1)
+Min-Max after scaling,  training  dataset: (0.1738,0.9870)
+Min-Max after scaling, validation dataset: (0.1738,0.9870)
+
+Min-Max Scaler to target 'T', from (min, max) = (0.0000, 200.0000) to (0, 1)
+Min-Max after scaling,  training  dataset: (0.4736,0.9464)
+Min-Max after scaling, validation dataset: (0.4736,0.9464)
+
+Dataset Training: 
+<BatchDataset element_spec=(TensorSpec(shape=(None, 2), dtype=tf.float32, name=None), TensorSpec(shape=(None, 3), dtype=tf.float32, name=None))>
+
+Dataset Validation: 
+<BatchDataset element_spec=(TensorSpec(shape=(None, 2), dtype=tf.float32, name=None), TensorSpec(shape=(None, 3), dtype=tf.float32, name=None))>
+Model: "model"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_1 (InputLayer)        [(None, 2)]               0         
+                                                                 
+ dense (Dense)               (None, 16)                48        
+                                                                 
+ dense_1 (Dense)             (None, 16)                272       
+                                                                 
+ dense_2 (Dense)             (None, 16)                272       
+                                                                 
+ dense_3 (Dense)             (None, 16)                272       
+                                                                 
+ dense_4 (Dense)             (None, 16)                272       
+                                                                 
+ dense_5 (Dense)             (None, 16)                272       
+                                                                 
+ dense_6 (Dense)             (None, 3)                 51        
+                                                                 
+=================================================================
+Total params: 1,459
+Trainable params: 1,459
+Non-trainable params: 0
+_________________________________________________________________
+
+-----------------------------------------------------------------------------
+Training Epoch: 0
+Supervised PINNS Loss weights are set to: [0.8, 0.1, 0.1]
+WARNING:tensorflow:5 out of the last 5 calls to <function _BaseOptimizer._update_step_xla at 0x7f7b2418bd30> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:6 out of the last 6 calls to <function _BaseOptimizer._update_step_xla at 0x7f7b2418bd30> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.0165007543
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.0130908191
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.0104670785
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.0148014426
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.00455428706
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.00847142376
+    Batch: 35000 || Loss 'Supervised_PINNS': 0.0122864051
+    Batch: 40000 || Loss 'Supervised_PINNS': 0.00549800182
+    Batch: 45000 || Loss 'Supervised_PINNS': 0.0147003559
+    Batch: 50000 || Loss 'Supervised_PINNS': 0.0241789278
+    Batch: 55000 || Loss 'Supervised_PINNS': 0.00321139349
+    Batch: 60000 || Loss 'Supervised_PINNS': 0.00548764504
+    Batch: 65000 || Loss 'Supervised_PINNS': 0.00306947576
+    Batch: 70000 || Loss 'Supervised_PINNS': 0.00303896633
+    Batch: 75000 || Loss 'Supervised_PINNS': 0.00398644153
+    Batch: 80000 || Loss 'Supervised_PINNS': 0.00508069154
+    Batch: 85000 || Loss 'Supervised_PINNS': 0.00267648231
+    Batch: 90000 || Loss 'Supervised_PINNS': 0.0028949494
+    Batch: 95000 || Loss 'Supervised_PINNS': 0.00888531376
+    Batch: 100000 || Loss 'Supervised_PINNS': 0.0028964628
+    Batch: 105000 || Loss 'Supervised_PINNS': 0.0122417295
+    Batch: 110000 || Loss 'Supervised_PINNS': 0.00173342181
+    Batch: 115000 || Loss 'Supervised_PINNS': 0.00318662031
+    Batch: 120000 || Loss 'Supervised_PINNS': 0.0130407112
+    Batch: 125000 || Loss 'Supervised_PINNS': 0.00511438539
+    Batch: 130000 || Loss 'Supervised_PINNS': 0.013365075
+    Batch: 135000 || Loss 'Supervised_PINNS': 0.00315584429
+    Batch: 140000 || Loss 'Supervised_PINNS': 0.0205970407
+    Batch: 145000 || Loss 'Supervised_PINNS': 0.00174415135
+    Batch: 150000 || Loss 'Supervised_PINNS': 0.00281902635
+    Batch: 155000 || Loss 'Supervised_PINNS': 0.00270593818
+    Batch: 160000 || Loss 'Supervised_PINNS': 0.00241532293
+    Batch: 165000 || Loss 'Supervised_PINNS': 0.00260199234
+    Batch: 170000 || Loss 'Supervised_PINNS': 0.00223420514
+    Batch: 175000 || Loss 'Supervised_PINNS': 0.00330445589
+    Batch: 180000 || Loss 'Supervised_PINNS': 0.00320543558
+    Batch: 185000 || Loss 'Supervised_PINNS': 0.00498016458
+    Batch: 190000 || Loss 'Supervised_PINNS': 0.00517337956
+    Batch: 195000 || Loss 'Supervised_PINNS': 0.00235792366
+    Batch: 200000 || Loss 'Supervised_PINNS': 0.0116083734
+    Batch: 205000 || Loss 'Supervised_PINNS': 0.00177701272
+    Batch: 210000 || Loss 'Supervised_PINNS': 0.00187710067
+    Batch: 215000 || Loss 'Supervised_PINNS': 0.00156593404
+    Batch: 220000 || Loss 'Supervised_PINNS': 0.00339267566
+    Batch: 225000 || Loss 'Supervised_PINNS': 0.00327383145
+    Batch: 230000 || Loss 'Supervised_PINNS': 0.00381551939
+    Batch: 235000 || Loss 'Supervised_PINNS': 0.00345154642
+    Batch: 240000 || Loss 'Supervised_PINNS': 0.00520517351
+    Batch: 245000 || Loss 'Supervised_PINNS': 0.00381899136
+    Batch: 250000 || Loss 'Supervised_PINNS': 0.0131861176
+    Batch: 255000 || Loss 'Supervised_PINNS': 0.00555465464
+    Batch: 260000 || Loss 'Supervised_PINNS': 0.00309824781
+Loss 'Supervised_PINNS': 0.00669440581
+Current Time: 08:59:33
+
+-----------------------------------------------------------------------------
+Validation Epoch 0
+Loss 'Supervised_PINNS': 0.00903969258
+Metric ['MSE', 'RSE', 'RAE', 'RAE_target_0', 'RAE_target_1', 'RAE_target_2', 'RE_RealGasEq', 'RE_CpEq']:
+ [0.00775606185 0.0911593437 0.105126143 0.085211888 0.18780829 0.0423582494 0.0179236233 0.0104248039]
+Current Time: 08:59:41
+
+-----------------------------------------------------------------------------
+Training Epoch: 1
+Supervised PINNS Loss weights are set to: [0.8, 0.1, 0.1]
+    Batch: 5000 || Loss 'Supervised_PINNS': 0.00278974837
+    Batch: 10000 || Loss 'Supervised_PINNS': 0.00307151349
+    Batch: 15000 || Loss 'Supervised_PINNS': 0.00274646492
+    Batch: 20000 || Loss 'Supervised_PINNS': 0.00275666453
+    Batch: 25000 || Loss 'Supervised_PINNS': 0.00213270844
+    Batch: 30000 || Loss 'Supervised_PINNS': 0.0336825401
+    Batch: 35000 || Loss 'Supervised_PINNS': 0.0143954875
+    Batch: 40000 || Loss 'Supervised_PINNS': 0.00136162282
+    Batch: 45000 || Loss 'Supervised_PINNS': 0.00491811335
+    Batch: 50000 || Loss 'Supervised_PINNS': 0.000806068652
+    Batch: 55000 || Loss 'Supervised_PINNS': 0.012239811
+    Batch: 60000 || Loss 'Supervised_PINNS': 0.00209163874
+    Batch: 65000 || Loss 'Supervised_PINNS': 0.00247581513
+    Batch: 70000 || Loss 'Supervised_PINNS': 0.00270270905
+    Batch: 75000 || Loss 'Supervised_PINNS': 0.00475900527
+    Batch: 80000 || Loss 'Supervised_PINNS': 0.00291545037
+    Batch: 85000 || Loss 'Supervised_PINNS': 0.00255204854
+    Batch: 90000 || Loss 'Supervised_PINNS': 0.0141489143
+    Batch: 95000 || Loss 'Supervised_PINNS': 0.00464429893
+    Batch: 100000 || Loss 'Supervised_PINNS': 0.0134031633
+    Batch: 105000 || Loss 'Supervised_PINNS': 0.00361435791
+    Batch: 110000 || Loss 'Supervised_PINNS': 0.00310257357
+    Batch: 115000 || Loss 'Supervised_PINNS': 0.0256274026
+    Batch: 120000 || Loss 'Supervised_PINNS': 0.00324591412
+    Batch: 125000 || Loss 'Supervised_PINNS': 0.00576800108
+    Batch: 130000 || Loss 'Supervised_PINNS': 0.00199411507
+    Batch: 135000 || Loss 'Supervised_PINNS': 0.00458557438
+    Batch: 140000 || Loss 'Supervised_PINNS': 0.00455778744
+    Batch: 145000 || Loss 'Supervised_PINNS': 0.00234569726
+    Batch: 150000 || Loss 'Supervised_PINNS': 0.00352824247
+    Batch: 155000 || Loss 'Supervised_PINNS': 0.0114066862
+    Batch: 160000 || Loss 'Supervised_PINNS': 0.0102179274
+    Batch: 165000 || Loss 'Supervised_PINNS': 0.0219854638
+    Batch: 170000 || Loss 'Supervised_PINNS': 0.00551844202
+    Batch: 175000 || Loss 'Supervised_PINNS': 0.00207299506
+    Batch: 180000 || Loss 'Supervised_PINNS': 0.00252372352
+    Batch: 185000 || Loss 'Supervised_PINNS': 0.0163824223
+    Batch: 190000 || Loss 'Supervised_PINNS': 0.00201650383
+    Batch: 195000 || Loss 'Supervised_PINNS': 0.00247889897
+    Batch: 200000 || Loss 'Supervised_PINNS': 0.00212763669
+    Batch: 205000 || Loss 'Supervised_PINNS': 0.0012617663
+    Batch: 210000 || Loss 'Supervised_PINNS': 0.0100070415
+    Batch: 215000 || Loss 'Supervised_PINNS': 0.00311510824
