@@ -70,7 +70,7 @@ def get_arguments():
     # Save checkpoints (for training + validation)
     parser.add_argument("--save_ckpt_freq", default=1, type=int, help="Save checkpoint weights every --save_ckpt_freq epochs, save no weights if 0")
     # Load checkpoints (for validation)
-    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/ckpt_E0.data-00000-of-00001', type=str, help="Filename of load checkpoint for prediction")
+    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/ckpt_E8', type=str, help="Filename of load checkpoint for prediction")
 
 
     args = parser.parse_args()
