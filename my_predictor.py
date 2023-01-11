@@ -41,13 +41,10 @@ dataset_pred, args = get_datasets_prediction(args)
 
 if args.loss == "MSE":
     loss_func = MSE(args)
-    loss_func_after_first_epoch = MSE(args)
 elif args.loss == "RSE":
     loss_func = RSE(args)
-    loss_func_after_first_epoch = RSE(args)
 elif args.loss == "Supervised_PINNS":
-    loss_func = Supervised_PINNS(args.Supervised_PINNS_weights_first_epoch, args)
-    loss_func_after_first_epoch = Supervised_PINNS(args.Supervised_PINNS_weights, args)
+    loss_func = Supervised_PINNS(args)
 else:
     sys.exit(f"ValueError: Incorrect argument --loss = '{args.loss}'")
 
@@ -73,7 +70,7 @@ for m in args.metrics:
     elif m == "RE_CpEq":
         metric_func.append(RelError_CpEquation(args))
     elif m == "Supervised_PINNS":
-        metric_func.append(args.Supervised_PINNS_weights, Supervised_PINNS(args))
+        metric_func.append(Supervised_PINNS(args))
     else:
         sys.exit(f"ValueError: Incorrect argument --metric = '{m}'")
 args.num_metrics = len(metric_func)
@@ -95,7 +92,7 @@ model.load_weights(args.ckpt_filename_prediction)
 
 
 # Model + Optimizer + Loss + Metrics
-mlp = MLP(model, loss_func=loss_func, loss_func_after_first_epoch=loss_func_after_first_epoch, metric_func=metric_func, epochs=args.num_epochs, args=args) 
+mlp = MLP(model, loss_func=loss_func, metric_func=metric_func, epochs=args.num_epochs, args=args) 
 
 # ----- Training + Validation -----
 mlp.predict(dataset_pred, args)

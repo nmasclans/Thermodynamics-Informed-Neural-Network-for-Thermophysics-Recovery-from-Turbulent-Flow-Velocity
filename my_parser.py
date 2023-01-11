@@ -44,8 +44,7 @@ def get_arguments():
     # Loss & Metrics
     parser.add_argument("--loss", default="Supervised_PINNS", type=str, help="Loss function name, accepted values = ['MSE','RSE','Supervised_PINNS']")
     parser.add_argument("--metrics", default=["MSE","RSE","RAE","RAE_target_0","RAE_target_1","RAE_target_2","RE_RealGasEq","RE_CpEq"], type=str, help="Metric function name")
-    parser.add_argument("--Supervised_PINNS_weights", default="0.5, 0.25, 0.25", type=str, help="Weights of Supervised_PINNS Loss, except first epoch")
-    parser.add_argument("--Supervised_PINNS_weights_first_epoch", default="1.0, 0.0, 0.0", type=str, help="Weights of Supervised_PINNS Loss, only first epoch")
+    parser.add_argument("--Supervised_PINNS_weights", default="0.7, 0.15, 0.15", type=str, help="Weights of Supervised_PINNS Loss, except first epoch")
     # Model Architecture
     parser.add_argument("--num_hidden_layers", default=6, type=int, help="Number of hidden layers of the model")
     parser.add_argument("--num_neurons_per_layer", default=16, type=int, help="Number of neurons per layer of the model")

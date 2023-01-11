@@ -3,9 +3,9 @@ import sys
 import time
 
 class Supervised_PINNS(tf.keras.losses.Loss):
-    def __init__(self, loss_weights, args):
+    def __init__(self, args):
         super().__init__(name="Supervised_PINNS")
-        self.loss_weights = loss_weights
+        self.loss_weights = args.Supervised_PINNS_weights
         assert sum(self.loss_weights) == 1.0
 
         # ---- For calculating Relative Errors in Physics Equations ----
