@@ -69,7 +69,7 @@ def get_arguments():
     # Save checkpoints (for training + validation)
     parser.add_argument("--save_ckpt_freq", default=1, type=int, help="Save checkpoint weights every --save_ckpt_freq epochs, save no weights if 0")
     # Load checkpoints (for validation)
-    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/checkpoints_6513607/ckpt_E8', type=str, help="Filename of load checkpoint for prediction")
+    parser.add_argument("--ckpt_filename_prediction", default='checkpoints/checkpoints_6513607/ckpt_E11', type=str, help="Filename of load checkpoint for prediction")
     # Three-regime model for supercritical pseudo-boiling (SPPB)
     parser.add_argument("--T_minus", default=123.33293, type=float, help=
         "the onset of pseudo-boiling temperature (K), for isobaric cond. temperature of transition between liquid-like (LL) and two-phase-like (TPL)")

@@ -21,7 +21,6 @@ def visualize_prediction(y_gt, y_pred, epoch, batch, args):
         plt.figure()
         plt.hist(x=y_gt_0,  bins=100,label="ground-truth")
         plt.hist(x=y_pred_0,bins=100,label="prediction")
-        plt.xlim([args.min_value, args.max_value])
         plt.ylabel(f"{target_name} kde, density of probability")
         plt.legend()
         plt.savefig(fig_title)

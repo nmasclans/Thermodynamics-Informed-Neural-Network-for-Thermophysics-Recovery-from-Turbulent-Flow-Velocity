@@ -59,7 +59,7 @@ class MLP(models.Model):
             targets_pred, loss_batch, metric_batch = self.test_step(features, targets_gt)
             print('Prediction done')
             print('\nBuilding prediction plots....')
-            # visualize_prediction(targets_gt, targets_pred, 0, nbatch, args)
+            visualize_prediction(targets_gt, targets_pred, 0, nbatch, args)
             visualize_prediction_regression_by_xyplanes(targets_gt, targets_pred, 0, nbatch, args)
             visualize_prediction_classification_by_xyplanes(targets_gt, targets_pred, 0, nbatch, args)
             print('Plots done')
