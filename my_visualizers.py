@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import tensorflow as tf
 
 from my_utils import transform_targets_to_original_scaling, classify_state_from_temperature
+from my_metrics_classification import compute_metrics
 
 # Results Visualizaton
 
@@ -72,6 +73,8 @@ def visualize_prediction_classification_by_xyplanes(y_gt, y_pred, epoch, batch, 
     T_pred = y_pred[:,2]
     # predict class from regression data!
     (state_gt, state_pred) = classify_state_from_temperature(args, T_gt, T_pred)
+    # compute (and print) metrics
+    compute_metrics(state_gt, state_pred)
     # recover spatial dimension
     state_gt_d   = tf.reshape(state_gt,   args.spatial_dimension)   # shape: [128,128,128]
     state_pred_d = tf.reshape(state_pred, args.spatial_dimension)
