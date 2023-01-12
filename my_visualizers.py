@@ -53,14 +53,18 @@ def visualize_prediction_regression_by_xyplanes(y_gt, y_pred, epoch, batch, args
         fig_title = f"figures/{target_name}_contourf_E{epoch}_B{batch}_gt.png"
         plt.figure()
         plt.imshow(y_gt_target_d[64,:,:]); plt.axis('scaled'); plt.colorbar()
-        plt.gca().invert_yaxis()
+        frame = plt.gca()
+        plt.xticks([]),plt.yticks([])
+        frame.invert_yaxis()
         plt.savefig(fig_title)
         plt.close()
         # prediction
         fig_title = f"figures/{target_name}_contourf_E{epoch}_B{batch}_pred.png"
         plt.figure()
         plt.imshow(y_pred_target_d[64,:,:]); plt.axis('scaled'); plt.colorbar()
-        plt.gca().invert_yaxis()
+        frame = plt.gca()
+        plt.xticks([]),plt.yticks([])
+        frame.invert_yaxis()
         plt.savefig(fig_title)
         plt.close()
 
@@ -83,13 +87,17 @@ def visualize_prediction_classification_by_xyplanes(y_gt, y_pred, epoch, batch, 
     fig_title = f"figures/fluid_state_contourf_E{epoch}_B{batch}_gt.png"
     plt.figure()
     plt.imshow(state_gt_d[64,:,:]); plt.axis('scaled'); plt.colorbar()
-    plt.gca().invert_yaxis()
+    frame = plt.gca()
+    plt.xticks([]),plt.yticks([])
+    frame.invert_yaxis()
     plt.savefig(fig_title)
     plt.close()
     # prediction
     fig_title = f"figures/fluid_state_contourf_E{epoch}_B{batch}_pred.png"
     plt.figure()
     plt.imshow(state_pred_d[64,:,:]); plt.axis('scaled'); plt.colorbar()
-    plt.gca().invert_yaxis()
+    frame = plt.gca()
+    plt.xticks([]),plt.yticks([])
+    frame.invert_yaxis()
     plt.savefig(fig_title)
     plt.close()
