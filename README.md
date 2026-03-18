@@ -1,4 +1,4 @@
-# NN-based inference in high-pressure transcritical turbulent channel flow
+# Thermodynamics-Informed Neural Network (TINN) framework for thermodynamic fields reconstruction from velocity data in high-pressure transcritical turbulent channel flow
 
 This repository contains TensorFlow models and utilities used to **learn/infer thermodynamic fields** in a high-pressure transcritical turbulent channel flow. The workflow is centered around a **multi-layer perceptron (MLP)** trained with either:
 
