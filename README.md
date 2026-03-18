@@ -3,7 +3,7 @@
 This repository contains TensorFlow models and utilities used to **learn/infer thermodynamic fields** in a high-pressure transcritical turbulent channel flow. The workflow is centered around a **multi-layer perceptron (MLP)** trained with either:
 
 - **Supervised losses** (e.g., MSE / relative errors), and/or
-- A **physics-informed (PINNs-like) supervised loss** that combines a supervised regression term with **real-gas thermodynamic constraints** (Peng–Robinson EOS and a \(c_p\) equation).
+- A **physics-informed (PINNs-like) supervised loss** that combines a supervised regression term with **real-gas thermodynamic constraints** (Peng–Robinson Equation of State).
 
 The main scripts are:
 
