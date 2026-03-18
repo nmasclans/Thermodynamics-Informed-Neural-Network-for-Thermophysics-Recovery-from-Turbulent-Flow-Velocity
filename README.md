@@ -1,9 +1,9 @@
-# Thermodynamics-Informed Neural Network (TINN) framework for thermodynamic fields reconstruction from velocity data in high-pressure transcritical turbulent channel flow
+# Thermodynamics-Informed Neural Network (TINN) framework for thermophysics fields reconstruction from velocity data in high-pressure transcritical turbulent channel flow
 
 This repository contains TensorFlow models and utilities used to **learn/infer thermodynamic fields** in a high-pressure transcritical turbulent channel flow. The workflow is centered around a **multi-layer perceptron (MLP)** trained with either:
 
-- **Supervised losses** (e.g., MSE / relative errors), and/or
-- A **physics-informed (PINNs-like) supervised loss** that combines a supervised regression term with **real-gas thermodynamic constraints** (Peng–Robinson Equation of State).
+- A **fully-connected neural network** (FCNN), and
+- A **thermodynamics-informed neural network (TINN)** that combines hard-constrained boundary conditions and a physics-informed loss function via the residual of the Peng-Robinson real-gas equation of state (EoS).
 
 The main scripts are:
 
